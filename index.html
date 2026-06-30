@@ -16,6 +16,7 @@
   --purple:#5B4FC0; --purple-light:#EFECFB; --purple-border:#D4CCF2;
   --blue:#2563EB; --blue-light:#EAF1FE; --blue-border:#C3D9FB;
   --red:#C0392B; --red-light:#FBEAE7; --red-border:#F2C9C0;
+  --slate:#2C7A7B; --slate-light:#E3F4F2; --slate-border:#B8E0DD;
   --radius:10px; --radius-lg:16px; --radius-xl:28px;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -112,9 +113,9 @@ a{color:inherit}
 .row-shout{border-left-color:var(--blue)}
 .row-shout .pr-name small{color:var(--blue)}
 .row-shout .pr-pill{background:var(--blue-light);color:var(--blue)}
-.row-note{border-left-color:var(--red)}
-.row-note .pr-name small{color:var(--red)}
-.row-note .pr-pill{background:var(--red-light);color:var(--red)}
+.row-note{border-left-color:var(--green)}
+.row-note .pr-name small{color:var(--green-dark)}
+.row-note .pr-pill{background:var(--green-light);color:var(--green-dark)}
 
 /* ── FOR RETAILERS (now a section, not the hero) ────────────────── */
 .retailer-section{background:var(--ink);border-radius:var(--radius-xl);padding:3rem}
@@ -174,6 +175,7 @@ a{color:inherit}
 .rec-send-btn{display:block;width:calc(100% - 1.75rem);margin:0 .875rem .25rem;padding:.625rem;background:#1C1A14;color:#fff;border:none;border-radius:10px;font-size:.8rem;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s;text-align:center}
 .rec-send-btn:hover{background:#2A2823}
 .rec-privacy-note{font-size:.62rem;color:#9EA8B3;text-align:center;padding:0 .875rem .625rem}
+.rec-powered{font-size:.6rem;color:#C9A200;text-align:center;font-weight:700;letter-spacing:.05em;padding:0 .875rem .75rem}
 .rec-sent-state{display:none;flex-direction:column;align-items:center;padding:1.25rem .875rem;text-align:center}
 
 /* gifter phone */
@@ -189,6 +191,7 @@ a{color:inherit}
 .gifter-photo-inner{background:var(--gold-pale);height:64px;display:flex;align-items:center;justify-content:center;border-bottom:.5px solid var(--gold-mid)}
 .gifter-photo-caption{background:var(--gold-pale);padding:.4rem .7rem;font-size:.62rem;color:#4A4535;font-style:italic;border-top:1px solid var(--gold-mid)}
 .gifter-input-bar{border-top:.5px solid #E3E8EF;padding:.5rem .75rem;display:flex;align-items:center;gap:.5rem}
+.gif-powered{font-size:.6rem;color:#C9A200;text-align:center;font-weight:700;letter-spacing:.05em;padding:.375rem .75rem 0;background:#fff}
 .gifter-msg-input{flex:1;padding:.375rem .625rem;border:1.5px solid #E3E8EF;border-radius:16px;font-size:.7rem;font-family:'DM Sans',sans-serif;color:#9EA8B3;background:#F6F8FA}
 .gifter-send-btn{width:24px;height:24px;border-radius:50%;background:#007AFF;display:flex;align-items:center;justify-content:center;flex-shrink:0;border:none}
 
@@ -487,6 +490,7 @@ footer{border-top:1px solid var(--cream-border);padding:3rem 2rem 2.5rem;margin-
             </div>
             <button class="rec-send-btn" id="rec-send-btn" onclick="sendThx()">Send Thx</button>
             <div class="rec-privacy-note" id="rec-privacy-note">Only <span id="rec-gifter-name">Bob</span> will see your message</div>
+            <div class="rec-powered">POWERED BY SENDINGTHX</div>
             <div class="rec-sent-state" id="rec-sent-state">
               <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#1E8C60" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="9,12 12,15 16,9"/></svg>
               <div style="font-size:.78rem;font-weight:600;color:#1E8C60;margin-top:.375rem">Thx sent!</div>
@@ -532,6 +536,7 @@ footer{border-top:1px solid var(--cream-border);padding:3rem 2rem 2.5rem;margin-
                 <div class="gifter-photo-caption">"Made my day! Love you so much 💕"</div>
               </div>
             </div>
+            <div class="gif-powered">POWERED BY SENDINGTHX</div>
             <div class="gifter-input-bar">
               <input class="gifter-msg-input" type="text" placeholder="Message" readonly>
               <div class="gifter-send-btn">
@@ -550,141 +555,6 @@ footer{border-top:1px solid var(--cream-border);padding:3rem 2rem 2.5rem;margin-
     </div>
   </div>
 
-  <!-- ALERT DEMO -->
-  <div class="shout-demo-section">
-    <div class="shout-eyebrow">Alert in action</div>
-    <div class="shout-headline">Delivered.<br><span class="gold">Everyone knows.</span></div>
-    <div class="shout-subhead">Purchaser and anyone they designate get an SMS on delivery. Each designated recipient gets one reply — text or photo. Relayed privately to the purchaser.</div>
-
-    <div class="shout-state-bar" id="shout-state-bar">
-      <button class="demo-state-btn active" onclick="shoutState('notified',this)">Delivered SMS</button>
-      <button class="demo-state-btn" onclick="shoutState('reply',this)">Recipient replies</button>
-      <button class="demo-state-btn" onclick="shoutState('photo',this)">With photo</button>
-    </div>
-
-    <div class="shout-phones">
-
-      <!-- PURCHASER PHONE -->
-      <div class="shout-phone-wrap">
-        <div class="shout-phone-label">Purchaser</div>
-        <div class="phone-frame" style="background:#1C1A14">
-          <div class="phone-notch"><div class="phone-notch-pill"></div></div>
-          <div style="background:#fff">
-            <div class="shout-thread-header">
-              <div class="shout-thread-avatar">AL</div>
-              <div>
-                <div class="shout-thread-name">Alert</div>
-                <div class="shout-thread-sub">text message</div>
-              </div>
-            </div>
-            <div class="shout-thread-msgs">
-              <div class="shout-thread-ts">Today, 4:43 PM</div>
-              <div class="shout-tbubble inbound">Your order from Acme Home Goods has arrived at 742 Evergreen Terrace. Reply STOP to opt out.</div>
-              <div class="shout-tbubble inbound" id="sp-reply-bubble" style="display:none">"Got it! Grabbed it from the door." — Sarah</div>
-              <div class="shout-photo-bubble" id="sp-photo-bubble">
-                <div class="shout-photo-inner">
-                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21,15 16,10 5,21"/></svg>
-                </div>
-                <div class="shout-photo-cap">"Got it! Grabbed it from the door." — Sarah</div>
-              </div>
-            </div>
-            <div class="shout-thread-input">
-              <input class="shout-msg-input" type="text" placeholder="Message" readonly>
-              <div class="shout-send-ico">
-                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22,2 15,22 11,13 2,9 22,2"/></svg>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="shout-caption">Delivery confirmed via SMS.<br>Replies arrive attributed by name.</div>
-      </div>
-
-      <!-- DESIGNATED RECIPIENT PHONE -->
-      <div class="shout-phone-wrap">
-        <div class="shout-phone-label">Designated recipient</div>
-        <div class="phone-frame">
-          <div class="phone-notch"><div class="phone-notch-pill"></div></div>
-          <div id="sr-notif">
-            <div class="shout-notif">
-              <div class="shout-notif-header">
-                <div class="shout-notif-icon">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
-                </div>
-                <div>
-                  <div class="shout-notif-name">Alert</div>
-                  <div class="shout-notif-sub">via Acme Home Goods</div>
-                </div>
-              </div>
-              <div class="shout-notif-body">Your order from <strong>Acme Home Goods</strong> has arrived at 742 Evergreen Terrace. Reply STOP to opt out.</div>
-              <div id="sr-reply-section">
-                <div style="font-size:.6rem;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:#9EA8B3;margin-bottom:.375rem">Send a quick reply</div>
-                <div class="shout-quick-btns">
-                  <div class="shout-quick-btn" onclick="shoutTapNote(this)">Got it!</div>
-                  <div class="shout-quick-btn" onclick="shoutTapNote(this)">Grabbed it from the door.</div>
-                  <div class="shout-quick-btn" onclick="shoutTapNote(this)">On my way to pick it up.</div>
-                </div>
-                <div class="shout-custom-row">
-                  <input class="shout-custom-input" type="text" placeholder="Or write your own…" id="shout-custom-input">
-                  <div class="shout-photo-btn" id="shout-photo-btn" onclick="toggleShoutPhoto()">
-                    <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21,15 16,10 5,21"/></svg>
-                  </div>
-                </div>
-                <button class="shout-send-btn" onclick="sendShoutReply()">Reply to Bob</button>
-                <div class="shout-privacy">One reply only · Bob receives it privately via SendingThx</div>
-              </div>
-              <div class="shout-sent-state" id="sr-sent-state">
-                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="9,12 12,15 16,9"/></svg>
-                <div style="font-size:.7rem;font-weight:600;color:#2563EB;margin-top:.375rem">Reply sent!</div>
-                <div style="font-size:.62rem;color:#9EA8B3;margin-top:.2rem">Bob has been notified · reply sent</div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="shout-phone-dots">
-          <div class="shout-dot active" id="sdot-0"></div>
-          <div class="shout-dot" id="sdot-1"></div>
-          <div class="shout-dot" id="sdot-2"></div>
-        </div>
-        <div class="shout-sub-btns">
-          <button class="shout-sub-btn active" onclick="shoutSubState(0,this)">Tap a note</button>
-          <button class="shout-sub-btn" onclick="shoutSubState(1,this)">Type reply</button>
-          <button class="shout-sub-btn" onclick="shoutSubState(2,this)">Send</button>
-          <button class="shout-sub-btn shout-reset-btn" onclick="resetShout()">↺ Reset</button>
-        </div>
-        <div class="shout-caption">One reply per recipient · text or photo.<br>Relayed privately to the purchaser.</div>
-      </div>
-
-      <!-- ADDITIONAL RECIPIENT -->
-      <div class="shout-phone-wrap">
-        <div class="shout-phone-label">Additional recipient</div>
-        <div class="phone-frame" style="background:#1C1A14">
-          <div class="phone-notch"><div class="phone-notch-pill"></div></div>
-          <div style="background:#fff">
-            <div class="shout-thread-header">
-              <div class="shout-thread-avatar" style="background:#4338B0">AL</div>
-              <div>
-                <div class="shout-thread-name">Alert</div>
-                <div class="shout-thread-sub">text message</div>
-              </div>
-            </div>
-            <div class="shout-thread-msgs">
-              <div class="shout-thread-ts">Today, 4:43 PM</div>
-              <div class="shout-tbubble inbound">Your order from Acme Home Goods has arrived at 742 Evergreen Terrace. Reply STOP to opt out.</div>
-              <div class="shout-tbubble inbound" id="ar-reply-bubble" style="display:none">"Confirmed — I signed for it." — Building mgr.</div>
-            </div>
-            <div class="shout-thread-input">
-              <input class="shout-msg-input" type="text" placeholder="Message" readonly>
-              <div class="shout-send-ico" style="background:#4338B0">
-                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22,2 15,22 11,13 2,9 22,2"/></svg>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="shout-caption">Every designated recipient gets their own<br>notification · one reply each.</div>
-      </div>
-
-    </div>
-  </div>
 </section>
 
 <!-- ══ COMPLIANCE BAND ══════════════════════════════════════════════ -->
