@@ -62,6 +62,30 @@ footer{border-top:1px solid var(--cream-border);padding:2.5rem 2rem;margin-top:1
   .doc-header h1{font-size:2rem}
   .pair-row{flex-direction:column}
 }
+
+.zoomable{cursor:zoom-in;transition:opacity .15s}
+.zoomable:hover{opacity:.88}
+
+.lightbox-overlay{
+  display:none;position:fixed;inset:0;z-index:1000;
+  background:rgba(28,26,20,.86);
+  align-items:center;justify-content:center;
+  padding:2rem;cursor:zoom-out;
+}
+.lightbox-overlay.open{display:flex}
+.lightbox-overlay img{
+  max-width:100%;max-height:100%;
+  border-radius:8px;
+  box-shadow:0 20px 60px rgba(0,0,0,.4);
+}
+.lightbox-close{
+  position:absolute;top:1.5rem;right:1.5rem;
+  width:40px;height:40px;border-radius:50%;
+  background:rgba(255,255,255,.12);color:#fff;
+  border:none;font-size:1.4rem;line-height:1;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;
+}
+.lightbox-close:hover{background:rgba(255,255,255,.22)}
 </style>
 </head>
 <body>
@@ -107,11 +131,11 @@ footer{border-top:1px solid var(--cream-border);padding:2.5rem 2rem;margin-top:1
     <p><strong>Retailer consent attestation</strong> — shown in the SendingThx settings inside the retailer's store admin</p>
     <div class="pair-row" style="display:flex;gap:1rem;margin-top:.75rem;flex-wrap:wrap">
       <div style="flex:1;min-width:220px">
-        <img src="screenshots/settings-unchecked.png" alt="SendingThx retailer settings page showing the Recipient Notification Consent checkbox unchecked, with Gift Detection disabled warning" style="width:100%;border-radius:8px;border:1px solid var(--cream-border)">
+        <img src="screenshots/settings-unchecked.png" class="zoomable" onclick="openLightbox(this.src, this.alt)" alt="SendingThx retailer settings page showing the Recipient Notification Consent checkbox unchecked, with Gift Detection disabled warning" style="width:100%;border-radius:8px;border:1px solid var(--cream-border)">
         <p style="text-align:center;font-size:.78rem;color:var(--ink-light);margin-top:.4rem;margin-bottom:0">Unconfirmed — notifications disabled</p>
       </div>
       <div style="flex:1;min-width:220px">
-        <img src="screenshots/settings-checked.png" alt="SendingThx retailer settings page showing the Recipient Notification Consent checkbox confirmed, with timestamp" style="width:100%;border-radius:8px;border:1px solid var(--cream-border)">
+        <img src="screenshots/settings-checked.png" class="zoomable" onclick="openLightbox(this.src, this.alt)" alt="SendingThx retailer settings page showing the Recipient Notification Consent checkbox confirmed, with timestamp" style="width:100%;border-radius:8px;border:1px solid var(--cream-border)">
         <p style="text-align:center;font-size:.78rem;color:var(--ink-light);margin-top:.4rem;margin-bottom:0">Confirmed by retailer</p>
       </div>
     </div>
@@ -121,11 +145,11 @@ footer{border-top:1px solid var(--cream-border);padding:2.5rem 2rem;margin-top:1
     <p><strong>Gifter opt-in at cart</strong> — shown on the participating retailer's storefront, before checkout</p>
     <div class="pair-row" style="display:flex;gap:1rem;margin-top:.75rem;flex-wrap:wrap">
       <div style="flex:1;min-width:220px">
-        <img src="screenshots/cart-unchecked.png" alt="Cart page showing the Notify the recipient via text message checkbox unchecked by default" style="width:100%;border-radius:8px;border:1px solid var(--cream-border)">
+        <img src="screenshots/cart-unchecked.png" class="zoomable" onclick="openLightbox(this.src, this.alt)" alt="Cart page showing the Notify the recipient via text message checkbox unchecked by default" style="width:100%;border-radius:8px;border:1px solid var(--cream-border)">
         <p style="text-align:center;font-size:.78rem;color:var(--ink-light);margin-top:.4rem;margin-bottom:0">Default state — unchecked</p>
       </div>
       <div style="flex:1;min-width:220px">
-        <img src="screenshots/cart-checked.png" alt="Cart page showing the Notify the recipient via text message checkbox checked, phone number entered, and SendingGifts a SendingThx service badge" style="width:100%;border-radius:8px;border:1px solid var(--cream-border)">
+        <img src="screenshots/cart-checked.png" class="zoomable" onclick="openLightbox(this.src, this.alt)" alt="Cart page showing the Notify the recipient via text message checkbox checked, phone number entered, and SendingGifts a SendingThx service badge" style="width:100%;border-radius:8px;border:1px solid var(--cream-border)">
         <p style="text-align:center;font-size:.78rem;color:var(--ink-light);margin-top:.4rem;margin-bottom:0">After the gifter opts in</p>
       </div>
     </div>
@@ -181,6 +205,30 @@ footer{border-top:1px solid var(--cream-border);padding:2.5rem 2rem;margin-top:1
     </div>
   </div>
 </footer>
+
+<div class="lightbox-overlay" id="lightboxOverlay" onclick="closeLightbox(event)">
+  <button class="lightbox-close" onclick="closeLightbox(event)" aria-label="Close">&times;</button>
+  <img id="lightboxImg" src="" alt="">
+</div>
+
+<script>
+function openLightbox(src, alt) {
+  const overlay = document.getElementById('lightboxOverlay');
+  const img = document.getElementById('lightboxImg');
+  img.src = src;
+  img.alt = alt;
+  overlay.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeLightbox(e) {
+  const overlay = document.getElementById('lightboxOverlay');
+  overlay.classList.remove('open');
+  document.body.style.overflow = '';
+}
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') closeLightbox(e);
+});
+</script>
 
 </body>
 </html>
