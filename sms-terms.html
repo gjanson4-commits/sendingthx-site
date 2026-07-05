@@ -123,12 +123,12 @@ footer{border-top:1px solid var(--cream-border);padding:2.5rem 2rem;margin-top:1
   <h2>How consent is collected</h2>
   <p>Consent is collected in two steps, both of which happen before any message is sent:</p>
   <ul>
-    <li><strong>Gifter opt-in at checkout.</strong> At the cart, the person placing the order sees a plain-language checkbox — "Notify the recipient via text message" — and enters the recipient's phone number themselves. No box is pre-checked, and no message is sent unless this box is checked.</li>
+    <li><strong>Purchaser confirms recipient notification.</strong> At the cart, the person placing the order sees a plain-language checkbox — "Notify the recipient via text message" — and enters the recipient's phone number themselves. This is the purchaser confirming, on behalf of the recipient, that a delivery notification should be sent — not the recipient opting themselves in. No box is pre-checked, and no message is sent unless this box is checked.</li>
     <li><strong>Retailer attestation.</strong> Before gift notifications can be enabled on their store, the retailer confirms — in their SendingThx settings — that customers are informed a one-time SMS delivery notification may be sent to the gift recipient. Gift Detection stays disabled for that store until this is confirmed.</li>
   </ul>
 
   <div class="callout-box">
-    <p><strong>Gifter opt-in at cart</strong> — shown on the participating retailer's storefront, before checkout</p>
+    <p><strong>Purchaser confirms recipient notification</strong> — shown on the participating retailer's storefront, before checkout</p>
     <div class="pair-row" style="display:flex;gap:1rem;margin-top:.75rem;flex-wrap:wrap">
       <div style="flex:1;min-width:220px">
         <img src="screenshots/cart-unchecked.png" class="zoomable" onclick="openLightbox(this.src, this.alt)" alt="Cart page showing the Notify the recipient via text message checkbox unchecked by default" style="width:100%;border-radius:8px;border:1px solid var(--cream-border)">
@@ -136,11 +136,11 @@ footer{border-top:1px solid var(--cream-border);padding:2.5rem 2rem;margin-top:1
       </div>
       <div style="flex:1;min-width:220px">
         <img src="screenshots/cart-checked.png" class="zoomable" onclick="openLightbox(this.src, this.alt)" alt="Cart page showing the Notify the recipient via text message checkbox checked, phone number entered, and SendingGifts a SendingThx service badge" style="width:100%;border-radius:8px;border:1px solid var(--cream-border)">
-        <p style="text-align:center;font-size:.78rem;color:var(--ink-light);margin-top:.4rem;margin-bottom:0">After the gifter opts in</p>
+        <p style="text-align:center;font-size:.78rem;color:var(--ink-light);margin-top:.4rem;margin-bottom:0">After the purchaser confirms</p>
       </div>
     </div>
   </div>
-  <p>This cart-time opt-in appears under the <strong>SendingGifts</strong> name — a SendingThx service focused on gift delivery notifications and consent collection.</p>
+  <p>This cart-time confirmation appears under the <strong>SendingGifts</strong> name — a SendingThx service focused on gift delivery notifications and consent collection.</p>
 
   <div class="callout-box">
     <p><strong>Retailer consent attestation</strong> — shown in the SendingThx settings inside the retailer's store admin</p>
