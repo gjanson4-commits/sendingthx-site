@@ -123,23 +123,9 @@ footer{border-top:1px solid var(--cream-border);padding:2.5rem 2rem;margin-top:1
   <h2>How consent is collected</h2>
   <p>Consent is collected in two steps, both of which happen before any message is sent:</p>
   <ul>
-    <li><strong>Retailer attestation.</strong> Before gift notifications can be enabled on their store, the retailer confirms — in their SendingThx settings — that customers are informed a one-time SMS delivery notification may be sent to the gift recipient. Gift Detection stays disabled for that store until this is confirmed.</li>
     <li><strong>Gifter opt-in at checkout.</strong> At the cart, the person placing the order sees a plain-language checkbox — "Notify the recipient via text message" — and enters the recipient's phone number themselves. No box is pre-checked, and no message is sent unless this box is checked.</li>
+    <li><strong>Retailer attestation.</strong> Before gift notifications can be enabled on their store, the retailer confirms — in their SendingThx settings — that customers are informed a one-time SMS delivery notification may be sent to the gift recipient. Gift Detection stays disabled for that store until this is confirmed.</li>
   </ul>
-
-  <div class="callout-box">
-    <p><strong>Retailer consent attestation</strong> — shown in the SendingThx settings inside the retailer's store admin</p>
-    <div class="pair-row" style="display:flex;gap:1rem;margin-top:.75rem;flex-wrap:wrap">
-      <div style="flex:1;min-width:220px">
-        <img src="screenshots/settings-unchecked.png" class="zoomable" onclick="openLightbox(this.src, this.alt)" alt="SendingThx retailer settings page showing the Recipient Notification Consent checkbox unchecked, with Gift Detection disabled warning" style="width:100%;border-radius:8px;border:1px solid var(--cream-border)">
-        <p style="text-align:center;font-size:.78rem;color:var(--ink-light);margin-top:.4rem;margin-bottom:0">Unconfirmed — notifications disabled</p>
-      </div>
-      <div style="flex:1;min-width:220px">
-        <img src="screenshots/settings-checked.png" class="zoomable" onclick="openLightbox(this.src, this.alt)" alt="SendingThx retailer settings page showing the Recipient Notification Consent checkbox confirmed, with timestamp" style="width:100%;border-radius:8px;border:1px solid var(--cream-border)">
-        <p style="text-align:center;font-size:.78rem;color:var(--ink-light);margin-top:.4rem;margin-bottom:0">Confirmed by retailer</p>
-      </div>
-    </div>
-  </div>
 
   <div class="callout-box">
     <p><strong>Gifter opt-in at cart</strong> — shown on the participating retailer's storefront, before checkout</p>
@@ -155,6 +141,20 @@ footer{border-top:1px solid var(--cream-border);padding:2.5rem 2rem;margin-top:1
     </div>
   </div>
   <p>This cart-time opt-in appears under the <strong>SendingGifts</strong> name — a SendingThx service focused on gift delivery notifications and consent collection.</p>
+
+  <div class="callout-box">
+    <p><strong>Retailer consent attestation</strong> — shown in the SendingThx settings inside the retailer's store admin</p>
+    <div class="pair-row" style="display:flex;gap:1rem;margin-top:.75rem;flex-wrap:wrap">
+      <div style="flex:1;min-width:220px">
+        <img src="screenshots/settings-unchecked.png" class="zoomable" onclick="openLightbox(this.src, this.alt)" alt="SendingThx retailer settings page showing the Recipient Notification Consent checkbox unchecked, with Gift Detection disabled warning" style="width:100%;border-radius:8px;border:1px solid var(--cream-border)">
+        <p style="text-align:center;font-size:.78rem;color:var(--ink-light);margin-top:.4rem;margin-bottom:0">Unconfirmed — notifications disabled</p>
+      </div>
+      <div style="flex:1;min-width:220px">
+        <img src="screenshots/settings-checked.png" class="zoomable" onclick="openLightbox(this.src, this.alt)" alt="SendingThx retailer settings page showing the Recipient Notification Consent checkbox confirmed, with timestamp" style="width:100%;border-radius:8px;border:1px solid var(--cream-border)">
+        <p style="text-align:center;font-size:.78rem;color:var(--ink-light);margin-top:.4rem;margin-bottom:0">Confirmed by retailer</p>
+      </div>
+    </div>
+  </div>
 
   <h2>Example message</h2>
   <p>Here's what a SendingThx notification looks like — both on the recipient's side and the gifter's side. Every message carries the sender name <strong>SendingThx</strong>, shown below as it appears in a live text thread.</p>
