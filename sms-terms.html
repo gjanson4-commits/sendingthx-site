@@ -115,36 +115,39 @@ footer{border-top:1px solid var(--cream-border);padding:2.5rem 2rem;margin-top:1
   <p>SendingThx does not send marketing, promotional, or advertising messages of any kind under this program. No message contains discount codes, promotions, or unrelated offers.</p>
 
   <h2>How you came to receive a message</h2>
-  <p>If you received a SendingThx text, it's because a purchaser made a real purchase from one of our retail partners and chose, themselves, to send you a one-time delivery notification. This is a <strong>Consumer-Initiated Viral Message</strong>: the purchaser — not SendingThx — manually enters your phone number and must affirmatively confirm they have your consent to receive this single notification before it can be sent. SendingThx does not import contact lists, buy phone numbers, or message anyone the purchaser hasn't specifically identified and personally vouched for.</p>
+  <p>There are two ways someone ends up receiving a SendingThx text, and both require an explicit, affirmative opt-in captured at checkout — nobody is texted automatically.</p>
+  <p><strong>If you're the purchaser:</strong> you opted in yourself. At checkout, you were shown your own phone number alongside an unchecked-by-default consent box, and you only receive a message — for example, if the recipient responds to your gift — because you personally checked that box for your own number.</p>
+  <p><strong>If you're the gift recipient:</strong> this is a <strong>Consumer-Initiated Viral Message</strong>. A purchaser made a real purchase from one of our retail partners and chose, themselves, to send you a one-time delivery notification. The purchaser — not SendingThx — manually enters your phone number and must affirmatively confirm they have your consent before it can be sent. That recipient confirmation is only available to check at all after the purchaser has separately opted themselves in first. SendingThx does not import contact lists, buy phone numbers, or message anyone the purchaser hasn't specifically identified and personally vouched for.</p>
   <div class="callout-box">
-    <p>In plain terms: <strong>SendingThx doesn't collect phone numbers or build a contact list.</strong> Every number used comes from a single purchaser, entered by hand, for one specific delivery — and that purchaser has affirmatively confirmed they have your consent before anything is sent.</p>
+    <p>In plain terms: <strong>SendingThx doesn't collect phone numbers or build a contact list.</strong> The purchaser's number is entered and confirmed by the purchaser, for themselves. The recipient's number is entered by hand by the purchaser, for one specific delivery, with the purchaser's affirmative confirmation of the recipient's consent — and that confirmation can't even be reached until the purchaser has opted in for their own number first.</p>
   </div>
 
   <h2 id="consent-flow">How consent is collected</h2>
-  <p><strong>Purchaser affirmatively confirms recipient consent.</strong> At checkout, the purchaser enters the recipient's phone number themselves and must check an unchecked-by-default box confirming they have that recipient's consent to receive this one-time delivery notification from SendingThx. This confirmation is specific to that recipient and that order — it is not a store-wide setting, and no message is sent unless the purchaser affirmatively checks it for that transaction.</p>
+  <p><strong>Step 1 — purchaser confirms their own consent.</strong> At checkout, the purchaser sees their own phone number field and an unchecked-by-default box agreeing to receive SMS from SendingThx at that number, including a one-time message if the recipient responds. Nothing else on this panel is usable until this box is checked.</p>
+  <p><strong>Step 2 — purchaser confirms recipient consent.</strong> Once step 1 is checked, a second section unlocks: the purchaser enters the recipient's phone number and checks a separate box confirming they have that recipient's consent to receive a one-time delivery notification from SendingThx. This confirmation is specific to that recipient and that order — it is not a store-wide setting, and it cannot be checked at all until step 1 is complete.</p>
 
   <div class="callout-box">
-    <p><strong>Purchaser affirmatively confirms recipient consent</strong> — shown on the participating retailer's storefront, before checkout</p>
+    <p><strong>Cart-time consent flow</strong> — shown on the participating retailer's storefront, before checkout</p>
     <div class="pair-row" style="display:flex;gap:1rem;margin-top:.75rem;flex-wrap:wrap">
       <div style="flex:1;min-width:220px">
-        <img src="screenshots/cart-unchecked.png" class="zoomable" onclick="openLightbox(this.src, this.alt)" alt="Cart page showing the Notify the recipient via text message checkbox unchecked by default" style="width:100%;border-radius:8px;border:1px solid var(--cream-border)">
-        <p style="text-align:center;font-size:.78rem;color:var(--ink-light);margin-top:.4rem;margin-bottom:0">Default state — unchecked</p>
+        <img src="screenshots/cart-unchecked.png" class="zoomable" onclick="openLightbox(this.src, this.alt)" alt="Cart page collapsed panel reading Add delivery text notifications, with the purchaser consent checkbox unchecked and the recipient section locked and grayed out" style="width:100%;border-radius:8px;border:1px solid var(--cream-border)">
+        <p style="text-align:center;font-size:.78rem;color:var(--ink-light);margin-top:.4rem;margin-bottom:0">Default state — recipient section locked until purchaser opts in</p>
       </div>
       <div style="flex:1;min-width:220px">
-        <img src="screenshots/cart-checked.png" class="zoomable" onclick="openLightbox(this.src, this.alt)" alt="Cart page showing the Notify the recipient via text message checkbox checked, phone number entered, and SendingGifts a SendingThx service badge" style="width:100%;border-radius:8px;border:1px solid var(--cream-border)">
-        <p style="text-align:center;font-size:.78rem;color:var(--ink-light);margin-top:.4rem;margin-bottom:0">After the purchaser confirms</p>
+        <img src="screenshots/cart-checked.png" class="zoomable" onclick="openLightbox(this.src, this.alt)" alt="Cart page showing the purchaser consent checkbox checked, unlocking the recipient phone number field and recipient consent checkbox, both now checked" style="width:100%;border-radius:8px;border:1px solid var(--cream-border)">
+        <p style="text-align:center;font-size:.78rem;color:var(--ink-light);margin-top:.4rem;margin-bottom:0">After the purchaser confirms — recipient section unlocked</p>
       </div>
     </div>
   </div>
-  <p>This cart-time confirmation appears under the <strong>SendingGifts</strong> name — a SendingThx service focused on gift delivery notifications and consent collection.</p>
+  <p>This cart-time consent flow is powered by <strong>SendingThx Gift Notifications</strong>, the SendingThx feature that handles delivery notifications and consent collection at checkout.</p>
 
   <h2>Example message</h2>
-  <p>Here's what a SendingThx notification looks like — both on the recipient's side and the gifter's side. Every message carries the sender name <strong>SendingThx</strong>, shown below as it appears in a live text thread.</p>
+  <p>Here's what a SendingThx notification looks like — both on the recipient's side and the purchaser's side. Every message carries the sender name <strong>SendingThx</strong>, shown below as it appears in a live text thread.</p>
   <div class="callout-box green">
     <p><strong>Recipient receives:</strong> "Your birthday flowers from Green Garden Florist just arrived — sent by Bob Smith via SendingThx. One-time notification sent at Bob Smith's request. Reply STOP to opt out." Recipient can reply with a quick thank-you — relayed privately back to Bob Smith. No app, no login, no sign-up required.</p>
   </div>
   <div class="callout-box">
-    <p><strong>Gifter's text thread:</strong> "Your birthday flowers from Green Garden Florist were just delivered to Mom. Reply STOP to opt out." — sent from SendingThx, the same sender name used across Thx, Ping, Alert, and Msg.</p>
+    <p><strong>Purchaser's text thread:</strong> "Mom replied to your gift on SendingThx: 'Thank you so much!' This is a one-time message sent because you opted in at checkout. Reply STOP to opt out." — sent from SendingThx, the same sender name used across Thx, Ping, Alert, and Msg.</p>
   </div>
 
   <h2>Message types</h2>
@@ -168,7 +171,7 @@ footer{border-top:1px solid var(--cream-border);padding:2.5rem 2rem;margin-top:1
   </div>
 
   <h2>Privacy</h2>
-  <p>Phone numbers used by SendingThx are provided directly by the retailer as part of a verified order and are used only to deliver the notifications described above. Where a message is relayed between a recipient and a sender (as with Thx and Alert), SendingThx acts as a privacy-preserving intermediary — the recipient and sender are not shown each other's personal phone numbers.</p>
+  <p>The purchaser's phone number is entered directly by the purchaser at checkout and used only to deliver the notifications described above. The recipient's phone number is entered by the purchaser, by hand, for that specific order. Where a message is relayed between a recipient and a purchaser (as with Thx and Alert), SendingThx acts as a privacy-preserving intermediary — the recipient and purchaser are not shown each other's personal phone numbers.</p>
 
   <h2>Carriers</h2>
   <p>Carriers are not liable for delayed or undelivered messages. SendingThx works to ensure timely delivery but cannot guarantee message delivery in all circumstances.</p>
