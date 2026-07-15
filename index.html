@@ -156,13 +156,19 @@ a{color:inherit}
 .rec-powered{font-size:.6rem;color:#C9A200;text-align:center;font-weight:700;letter-spacing:.05em;padding:0 .875rem .75rem}
 .rec-sent-state{display:none;flex-direction:column;align-items:center;padding:1.25rem .875rem;text-align:center}
 
+/* phone status bar + native contact header */
+.phone-statusbar{display:flex;align-items:center;justify-content:space-between;padding:.5rem .875rem 0;background:#fff}
+.ps-time{font-size:.72rem;font-weight:700;color:#1C1A14;font-family:'DM Sans',sans-serif}
+.ps-icons{display:flex;align-items:center;gap:.25rem}
+.phone-contact-header{background:#fff;display:flex;align-items:center;justify-content:center;gap:.4rem;padding:.55rem .875rem;position:relative}
+.pch-back{color:#007AFF;font-size:1.15rem;font-weight:700;position:absolute;left:.875rem;line-height:1}
+.pch-number{font-size:.8rem;font-weight:700;color:#1C1A14}
+.pch-fwd{color:#C1CDD8;font-size:.95rem;font-weight:700;position:absolute;right:.875rem;line-height:1}
+.phone-meta{text-align:center;padding:0 .875rem .5rem;border-bottom:.5px solid #E3E8EF;background:#fff}
+.phone-meta div{font-size:.6rem;color:#9EA8B3;line-height:1.5}
+
 /* gifter phone */
-.gifter-convo-header{background:#F6F8FA;border-bottom:.5px solid #E3E8EF;padding:.625rem .875rem;display:flex;align-items:center;gap:.625rem}
-.gifter-avatar{width:30px;height:30px;border-radius:50%;background:var(--gold);display:flex;align-items:center;justify-content:center;font-size:.68rem;font-weight:700;color:#1C1A14;flex-shrink:0;font-family:'Fraunces',serif}
-.gifter-contact-name{font-size:.8rem;font-weight:600;color:#1C1A14}
-.gifter-contact-sub{font-size:.62rem;color:#9EA8B3}
 .gifter-messages{padding:.75rem;min-height:130px;display:flex;flex-direction:column;gap:.5rem}
-.gifter-timestamp{font-size:.62rem;color:#C1CDD8;text-align:center;margin-bottom:.125rem}
 .gifter-bubble{background:#E3E8EF;border-radius:14px 14px 14px 3px;padding:.5rem .7rem;font-size:.7rem;color:#1C1A14;line-height:1.5;max-width:88%;align-self:flex-start}
 .gifter-bubble2{background:var(--gold-pale);border:1px solid var(--gold-mid);border-radius:14px 14px 3px 14px;padding:.5rem .7rem;font-size:.7rem;color:#1C1A14;line-height:1.5;max-width:88%;align-self:flex-end;display:none}
 .gifter-photo-bubble{border-radius:14px 14px 3px 14px;overflow:hidden;max-width:88%;align-self:flex-end;display:none}
@@ -274,7 +280,7 @@ footer{border-top:1px solid var(--cream-border);padding:3rem 2rem 2.5rem;margin-
 <section class="section section-narrow" style="margin:0 auto;padding-top:0">
   <div class="section-eyebrow">The fix</div>
   <div class="section-head">
-    <h2>One tap. <em>One Thx.</em></h2>
+    <h2>One text. <em>One Thx.</em></h2>
     <p>One normalized delivery event powers the whole loop — from the moment an order ships to the moment a thank-you lands.</p>
   </div>
   <div class="tap-strip">
@@ -291,7 +297,7 @@ footer{border-top:1px solid var(--cream-border);padding:3rem 2rem 2.5rem;margin-
     <div class="tap-card">
       <div class="tap-icon">⚡</div>
       <h3>SendingThx fires</h3>
-      <p>Recipient gets a branded tap. And can send a thank-you in seconds. Gifter's phone lights up. Loop closed.</p>
+      <p>Recipient gets a branded text. And can send a thank-you in seconds. Gifter's phone lights up. Loop closed.</p>
     </div>
   </div>
 </section>
@@ -318,8 +324,8 @@ footer{border-top:1px solid var(--cream-border);padding:3rem 2rem 2.5rem;margin-
     </div>
     <div class="step-card">
       <div class="step-num">03</div>
-      <h3>Recipient taps</h3>
-      <p>One text. One tap. A thank-you, with a photo if they want.</p>
+      <h3>Recipient replies</h3>
+      <p>One text. One reply. A thank-you, with a photo if they want.</p>
       <div class="step-tag">Under 10 seconds</div>
     </div>
     <div class="step-card">
@@ -336,7 +342,7 @@ footer{border-top:1px solid var(--cream-border);padding:3rem 2rem 2.5rem;margin-
   <div class="section-eyebrow">See it in action</div>
   <div class="section-head">
     <h2>The full loop. <em>In seconds.</em></h2>
-    <p>Recipient gets a text. Gifter gets the moment — and the reply, if there is one. No app, no login, no waiting.</p>
+    <p>Recipient gets a text. Gifter gets the moment — and the reply, if there is one.</p>
   </div>
 
   <div class="demo-section">
@@ -352,15 +358,24 @@ footer{border-top:1px solid var(--cream-border);padding:3rem 2rem 2.5rem;margin-
         <div class="phone-frame">
           <div class="phone-notch"><div class="phone-notch-pill"></div></div>
           <div id="rec-arrives-state" style="background:#fff">
-            <div class="gifter-convo-header">
-              <div class="gifter-avatar">ST</div>
-              <div>
-                <div class="gifter-contact-name">SendingThx</div>
-                <div class="gifter-contact-sub">text message</div>
-              </div>
+            <div class="phone-statusbar">
+              <span class="ps-time">9:41</span>
+              <span class="ps-icons">
+                <svg width="16" height="11" viewBox="0 0 16 11"><rect x="0" y="7" width="2.6" height="4" rx="0.5" fill="#1C1A14"/><rect x="4.2" y="5" width="2.6" height="6" rx="0.5" fill="#1C1A14"/><rect x="8.4" y="3" width="2.6" height="8" rx="0.5" fill="#1C1A14"/><rect x="12.6" y="0" width="2.6" height="11" rx="0.5" fill="#1C1A14"/></svg>
+                <svg width="15" height="11" viewBox="0 0 24 18" fill="none" stroke="#1C1A14" stroke-width="2.6" stroke-linecap="round"><path d="M2 7a16 16 0 0 1 20 0"/><path d="M6 11a10 10 0 0 1 12 0"/><path d="M10.5 15a4 4 0 0 1 3 0"/><circle cx="12" cy="17" r="1.4" fill="#1C1A14" stroke="none"/></svg>
+                <svg width="22" height="11" viewBox="0 0 24 12"><rect x="0.5" y="0.5" width="19" height="11" rx="2.5" fill="none" stroke="#1C1A14" stroke-width="1"/><rect x="2" y="2" width="15" height="8" rx="1.3" fill="#1C1A14"/><rect x="20.5" y="4" width="1.8" height="4" rx="0.9" fill="#1C1A14"/></svg>
+              </span>
+            </div>
+            <div class="phone-contact-header">
+              <span class="pch-back">‹</span>
+              <span class="pch-number">(855) 773-4230</span>
+              <span class="pch-fwd">›</span>
+            </div>
+            <div class="phone-meta">
+              <div>Text Message</div>
+              <div>Today, 2:23 PM</div>
             </div>
             <div class="gifter-messages">
-              <div class="gifter-timestamp">Today, 2:23 PM</div>
               <div class="gifter-bubble">Bob Smith sent you flowers from Green Garden Florist. They just arrived! One-time message sent at Bob Smith's request via SendingThx. Reply STOP to opt out.</div>
               <div class="gifter-bubble2" id="rec-bubble2" style="display:block">Made my day! Love you so much, Bob 💕</div>
               <div class="gifter-photo-bubble" id="rec-photo-bubble">
@@ -388,15 +403,24 @@ footer{border-top:1px solid var(--cream-border);padding:3rem 2rem 2.5rem;margin-
         <div class="phone-frame" style="background:#1C1A14">
           <div class="phone-notch"><div class="phone-notch-pill"></div></div>
           <div id="gif-arrives-state" style="background:#fff">
-            <div class="gifter-convo-header">
-              <div class="gifter-avatar">ST</div>
-              <div>
-                <div class="gifter-contact-name">SendingThx</div>
-                <div class="gifter-contact-sub">text message</div>
-              </div>
+            <div class="phone-statusbar">
+              <span class="ps-time">9:41</span>
+              <span class="ps-icons">
+                <svg width="16" height="11" viewBox="0 0 16 11"><rect x="0" y="7" width="2.6" height="4" rx="0.5" fill="#1C1A14"/><rect x="4.2" y="5" width="2.6" height="6" rx="0.5" fill="#1C1A14"/><rect x="8.4" y="3" width="2.6" height="8" rx="0.5" fill="#1C1A14"/><rect x="12.6" y="0" width="2.6" height="11" rx="0.5" fill="#1C1A14"/></svg>
+                <svg width="15" height="11" viewBox="0 0 24 18" fill="none" stroke="#1C1A14" stroke-width="2.6" stroke-linecap="round"><path d="M2 7a16 16 0 0 1 20 0"/><path d="M6 11a10 10 0 0 1 12 0"/><path d="M10.5 15a4 4 0 0 1 3 0"/><circle cx="12" cy="17" r="1.4" fill="#1C1A14" stroke="none"/></svg>
+                <svg width="22" height="11" viewBox="0 0 24 12"><rect x="0.5" y="0.5" width="19" height="11" rx="2.5" fill="none" stroke="#1C1A14" stroke-width="1"/><rect x="2" y="2" width="15" height="8" rx="1.3" fill="#1C1A14"/><rect x="20.5" y="4" width="1.8" height="4" rx="0.9" fill="#1C1A14"/></svg>
+              </span>
+            </div>
+            <div class="phone-contact-header">
+              <span class="pch-back">‹</span>
+              <span class="pch-number">(855) 773-4230</span>
+              <span class="pch-fwd">›</span>
+            </div>
+            <div class="phone-meta">
+              <div>Text Message</div>
+              <div>Today, 2:23 PM</div>
             </div>
             <div class="gifter-messages">
-              <div class="gifter-timestamp">Today, 2:23 PM</div>
               <div class="gifter-bubble">Your birthday flowers from Green Garden Florist were just delivered to Mom. Reply STOP to opt out.</div>
               <div class="gifter-bubble2" id="gif-bubble2" style="display:block">"Made my day! Love you so much, Bob 💕" — Mom</div>
               <div class="gifter-photo-bubble" id="gif-photo-bubble">
@@ -460,8 +484,8 @@ footer{border-top:1px solid var(--cream-border);padding:3rem 2rem 2.5rem;margin-
       </div>
       <div class="retailer-card">
         <div class="retailer-icon">🌟</div>
-        <h3>Branded thank-you moment</h3>
-        <p>Your logo on every prompt. The thank-you moment is co-branded to your store.</p>
+        <h3>A gratitude moment, with your name</h3>
+        <p>Every delivery text carries your store's name, and the thank-you reply lands right in the customer's own thread — no logo file needed, nothing to design.</p>
       </div>
     </div>
     <div class="retailer-foot">
