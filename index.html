@@ -120,41 +120,17 @@ a{color:inherit}
 .demo-state-btn.active{background:rgba(255,255,255,.12);color:#fff;border-color:rgba(255,255,255,.3)}
 .demo-state-btn:hover{color:rgba(255,255,255,.8)}
 
-.demo-phones{display:grid;grid-template-columns:1fr 1fr;gap:1.75rem;max-width:660px;margin:0 auto}
+.demo-phones{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1.5rem;max-width:940px;margin:0 auto}
 .demo-phone-wrap{display:flex;flex-direction:column;align-items:center;gap:.625rem}
 .demo-phone-label{font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.35)}
 .phone-frame{background:#fff;border-radius:32px;border:6px solid #2A2823;width:100%;max-width:280px;overflow:hidden}
 .phone-notch{background:#2A2823;height:20px;display:flex;align-items:center;justify-content:center}
 .phone-notch-pill{width:54px;height:5px;background:#1C1A14;border-radius:3px}
 
-/* recipient phone */
-.rec-via{font-size:.62rem;color:#9EA8B3;text-align:center;padding:.625rem 1rem .375rem;display:flex;align-items:center;justify-content:center}
-.rec-via::before,.rec-via::after{content:'';flex:1;height:.5px;background:#E3E8EF;margin:0 .5rem}
-.rec-rose{width:46px;height:46px;margin:.5rem auto;background:#FFF0F0;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:1.35rem}
-.rec-title{font-size:.82rem;font-weight:700;color:#1C1A14;text-align:center;padding:0 1rem;margin-bottom:.25rem;line-height:1.35}
-.rec-sender{font-size:.7rem;color:#697386;text-align:center;margin-bottom:.25rem}
-.rec-sender strong{color:#1C1A14}
-.rec-delivered{font-size:.66rem;color:#1E8C60;text-align:center;margin-bottom:.875rem;display:flex;align-items:center;justify-content:center;gap:.3rem}
-.rec-dot{width:6px;height:6px;border-radius:50%;background:#1E8C60;flex-shrink:0}
-.rec-cta-label{font-size:.6rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:#9EA8B3;text-align:center;margin-bottom:.5rem;padding:0 1rem}
-.rec-quick-btns{display:grid;grid-template-columns:1fr 1fr;gap:.4rem;padding:0 .875rem;margin-bottom:.5rem}
-.rec-quick-btn{padding:.45rem .25rem;border:1.5px solid #E3E8EF;border-radius:20px;font-size:.66rem;font-weight:500;color:#1C1A14;text-align:center;background:#fff;cursor:pointer;transition:all .15s}
-.rec-quick-btn:hover{border-color:#F5C842;background:#FFF9E0}
-.rec-custom{margin:0 .875rem .375rem;border:1.5px solid #E3E8EF;border-radius:10px;padding:.45rem .625rem;font-size:.66rem;color:#9EA8B3;font-family:'DM Sans',sans-serif;width:calc(100% - 1.75rem);resize:none;height:38px;line-height:1.4;background:#F6F8FA;display:none}
-.rec-counter{font-size:.6rem;color:#C1CDD8;text-align:right;padding:0 .875rem .375rem}
-.rec-photo-add{display:flex;align-items:center;gap:.625rem;margin:0 .875rem .5rem;padding:.5rem .625rem;border:1.5px solid #E3E8EF;border-radius:10px;cursor:pointer;transition:all .15s;background:#F6F8FA}
-.rec-photo-add:hover{border-color:#C1CDD8;background:#fff}
-.rec-photo-add.active{border-color:#1E8C60;background:#E6F5EE}
-.rec-photo-icon{width:30px;height:30px;border-radius:8px;background:#E3E8EF;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background .15s}
-.rec-photo-add.active .rec-photo-icon{background:#A8DBBF}
-.rec-photo-title{font-size:.72rem;font-weight:600;color:#0D2B3E}
-.rec-photo-sub{font-size:.62rem;color:#9EA8B3}
-.rec-photo-check{width:18px;height:18px;border-radius:50%;background:#1E8C60;color:#fff;font-size:.6rem;display:flex;align-items:center;justify-content:center;margin-left:auto;flex-shrink:0}
-.rec-send-btn{display:block;width:calc(100% - 1.75rem);margin:0 .875rem .25rem;padding:.625rem;background:#1C1A14;color:#fff;border:none;border-radius:10px;font-size:.8rem;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s;text-align:center}
-.rec-send-btn:hover{background:#2A2823}
-.rec-privacy-note{font-size:.62rem;color:#9EA8B3;text-align:center;padding:0 .875rem .625rem}
-.rec-powered{font-size:.6rem;color:#C9A200;text-align:center;font-weight:700;letter-spacing:.05em;padding:0 .875rem .75rem}
-.rec-sent-state{display:none;flex-direction:column;align-items:center;padding:1.25rem .875rem;text-align:center}
+/* typed-reply phone (recipient composing) */
+.typed-input{flex:1;padding:.375rem .625rem;border:1.5px solid #E3E8EF;border-radius:16px;font-size:.7rem;font-family:'DM Sans',sans-serif;color:#1C1A14;background:#F6F8FA;display:flex;align-items:center}
+.typing-cursor{display:inline-block;width:1.5px;height:12px;background:#1C1A14;margin-left:1px;animation:blink 1s step-start infinite}
+@keyframes blink{50%{opacity:0}}
 
 /* phone status bar + native contact header */
 .phone-statusbar{display:flex;align-items:center;justify-content:space-between;padding:.5rem .875rem 0;background:#fff}
@@ -181,13 +157,7 @@ a{color:inherit}
 
 .phone-dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.2);transition:background .2s}
 .phone-dot.active{background:var(--gold)}
-.rec-dots,.gif-dots{display:flex;gap:.3rem;justify-content:center;margin-top:.5rem}
-.sub-btns{display:flex;flex-wrap:wrap;gap:.3rem;justify-content:center;margin-top:.375rem}
-.sub-btn{padding:.25rem .75rem;border-radius:20px;font-size:.66rem;font-weight:500;cursor:pointer;border:1px solid rgba(255,255,255,.2);background:transparent;color:rgba(255,255,255,.5);transition:all .15s;font-family:'DM Sans',sans-serif}
-.sub-btn.active{background:rgba(255,255,255,.12);color:#fff;border-color:rgba(255,255,255,.3)}
-.sub-btn:hover{color:rgba(255,255,255,.8)}
-.reset-btn{color:rgba(255,255,255,.3)}
-.reset-btn:hover{color:rgba(255,255,255,.6)}
+.gif-dots{display:flex;gap:.3rem;justify-content:center;margin-top:.5rem}
 .demo-caption{font-size:.66rem;color:rgba(255,255,255,.3);text-align:center;margin-top:.375rem;line-height:1.5}
 
 /* ── COMPLIANCE BAND ─────────────────────────────────────────────── */
@@ -216,9 +186,7 @@ footer{border-top:1px solid var(--cream-border);padding:3rem 2rem 2.5rem;margin-
   .hero h1{font-size:2.8rem}
   .problem-stats,.tap-strip,.steps{grid-template-columns:1fr}
   .retailer-grid{grid-template-columns:1fr 1fr}
-  .demo-grid{grid-template-columns:1fr}
-  .demo-col{width:100%}
-  .phone{width:100%;max-width:340px}
+  .demo-phones{grid-template-columns:1fr;max-width:320px}
   .footer-top{grid-template-columns:1fr 1fr}
 }
 @media(max-width:680px){
@@ -352,12 +320,12 @@ footer{border-top:1px solid var(--cream-border);padding:3rem 2rem 2.5rem;margin-
     </div>
     <div class="demo-phones">
 
-      <!-- RECIPIENT PHONE -->
+      <!-- RECIPIENT PHONE — delivery only -->
       <div class="demo-phone-wrap">
         <div class="demo-phone-label">Recipient</div>
         <div class="phone-frame">
           <div class="phone-notch"><div class="phone-notch-pill"></div></div>
-          <div id="rec-arrives-state" style="background:#fff">
+          <div style="background:#fff">
             <div class="phone-statusbar">
               <span class="ps-time">9:41</span>
               <span class="ps-icons">
@@ -377,13 +345,6 @@ footer{border-top:1px solid var(--cream-border);padding:3rem 2rem 2.5rem;margin-
             </div>
             <div class="gifter-messages">
               <div class="gifter-bubble">Bob Smith sent you flowers from Green Garden Florist. They just arrived! One-time message sent at Bob Smith's request via SendingThx. Reply STOP to opt out.</div>
-              <div class="gifter-bubble2" id="rec-bubble2" style="display:block">Made my day! Love you so much, Bob 💕</div>
-              <div class="gifter-photo-bubble" id="rec-photo-bubble">
-                <div class="gifter-photo-inner">
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#C9A200" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21,15 16,10 5,21"/></svg>
-                </div>
-                <div class="gifter-photo-caption">Made my day! Love you so much 💕</div>
-              </div>
             </div>
             <div class="gif-powered">POWERED BY SENDINGTHX</div>
             <div class="gifter-input-bar">
@@ -394,7 +355,46 @@ footer{border-top:1px solid var(--cream-border);padding:3rem 2rem 2.5rem;margin-
             </div>
           </div>
         </div>
-        <div class="demo-caption">Recipient replies right in the thread — no link, no app.</div>
+        <div class="demo-caption">Delivery notification arrives — plain text, no link.</div>
+      </div>
+
+      <!-- RECIPIENT PHONE — typing reply -->
+      <div class="demo-phone-wrap">
+        <div class="demo-phone-label">Recipient replies</div>
+        <div class="phone-frame">
+          <div class="phone-notch"><div class="phone-notch-pill"></div></div>
+          <div style="background:#fff">
+            <div class="phone-statusbar">
+              <span class="ps-time">9:41</span>
+              <span class="ps-icons">
+                <svg width="16" height="11" viewBox="0 0 16 11"><rect x="0" y="7" width="2.6" height="4" rx="0.5" fill="#1C1A14"/><rect x="4.2" y="5" width="2.6" height="6" rx="0.5" fill="#1C1A14"/><rect x="8.4" y="3" width="2.6" height="8" rx="0.5" fill="#1C1A14"/><rect x="12.6" y="0" width="2.6" height="11" rx="0.5" fill="#1C1A14"/></svg>
+                <svg width="15" height="11" viewBox="0 0 24 18" fill="none" stroke="#1C1A14" stroke-width="2.6" stroke-linecap="round"><path d="M2 7a16 16 0 0 1 20 0"/><path d="M6 11a10 10 0 0 1 12 0"/><path d="M10.5 15a4 4 0 0 1 3 0"/><circle cx="12" cy="17" r="1.4" fill="#1C1A14" stroke="none"/></svg>
+                <svg width="22" height="11" viewBox="0 0 24 12"><rect x="0.5" y="0.5" width="19" height="11" rx="2.5" fill="none" stroke="#1C1A14" stroke-width="1"/><rect x="2" y="2" width="15" height="8" rx="1.3" fill="#1C1A14"/><rect x="20.5" y="4" width="1.8" height="4" rx="0.9" fill="#1C1A14"/></svg>
+              </span>
+            </div>
+            <div class="phone-contact-header">
+              <span class="pch-back">‹</span>
+              <span class="pch-number">(855) 773-4230</span>
+              <span class="pch-fwd">›</span>
+            </div>
+            <div class="phone-meta">
+              <div>Text Message</div>
+              <div>Today, 2:23 PM</div>
+            </div>
+            <div class="gifter-messages">
+              <div class="gifter-bubble">Bob Smith sent you flowers from Green Garden Florist. They just arrived! One-time message sent at Bob Smith's request via SendingThx. Reply STOP to opt out.</div>
+            </div>
+            <div class="gif-powered">POWERED BY SENDINGTHX</div>
+            <div class="gifter-input-bar">
+              <div class="typed-input" id="rec-typed-text">Made my day! Love you so much, Bob 💕<span class="typing-cursor"></span></div>
+              <div class="typed-input" id="rec-typed-photo" style="display:none">📷&nbsp;<em>photo attached</em><span class="typing-cursor"></span></div>
+              <div class="gifter-send-btn">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22,2 15,22 11,13 2,9 22,2"/></svg>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="demo-caption">Recipient types their reply — their own keyboard, no special app.</div>
       </div>
 
       <!-- GIFTER PHONE -->
@@ -539,16 +539,16 @@ function demoState(state, btn) {
   btn.classList.add('active');
   var gb2 = document.getElementById('gif-bubble2');
   var gpb = document.getElementById('gif-photo-bubble');
-  var rb2 = document.getElementById('rec-bubble2');
-  var rpb = document.getElementById('rec-photo-bubble');
+  var rtt = document.getElementById('rec-typed-text');
+  var rtp = document.getElementById('rec-typed-photo');
 
   if(state==='arrives'){
     gb2.style.display='block'; gpb.style.display='none';
-    rb2.style.display='block'; rpb.style.display='none';
+    rtt.style.display='flex'; rtp.style.display='none';
     setGifDot(0);
   } else if(state==='photo'){
     gb2.style.display='none'; gpb.style.display='block';
-    rb2.style.display='none'; rpb.style.display='block';
+    rtt.style.display='none'; rtp.style.display='flex';
     setGifDot(1);
   }
 }
