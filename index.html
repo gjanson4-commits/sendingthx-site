@@ -126,7 +126,7 @@ a{color:inherit}
 .demo-state-btn.active{background:rgba(255,255,255,.12);color:#fff;border-color:rgba(255,255,255,.3)}
 .demo-state-btn:hover{color:rgba(255,255,255,.8)}
 
-.demo-phones{display:grid;grid-template-columns:repeat(4,1fr);gap:1.25rem;max-width:1180px;margin:0 auto}
+.demo-phones{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1.5rem;max-width:940px;margin:0 auto}
 .demo-phone-wrap{display:flex;flex-direction:column;align-items:center;gap:.625rem}
 .demo-phone-label{font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.35)}
 .phone-frame{background:#fff;border-radius:32px;border:6px solid #2A2823;width:100%;max-width:280px;overflow:hidden}
@@ -176,8 +176,20 @@ a{color:inherit}
 .lp-chips{display:grid;grid-template-columns:1fr 1fr;gap:.35rem;margin-bottom:.65rem}
 .lp-chip{border:1px solid #D8D2BE;border-radius:12px;padding:.35rem .2rem;text-align:center;font-size:.56rem;color:#221F1A}
 .lp-chip-selected{background:#221F1A;color:#fff;border-color:#221F1A}
+.lp-textarea{width:100%;border:1px solid #D8D2BE;border-radius:8px;padding:.4rem .5rem;font-size:.6rem;font-family:'DM Sans',sans-serif;color:#8A8270;margin-bottom:.35rem;background:#fff}
+.lp-counter{text-align:right;font-size:.52rem;color:#8A8270;margin-bottom:.55rem}
+.lp-photo-row{display:flex;align-items:center;gap:.5rem;border:1px solid #ECE6D6;border-radius:8px;padding:.45rem .6rem;margin-bottom:.65rem}
+.lp-photo-row span{font-size:.85rem}
+.lp-photo-title{font-size:.56rem;font-weight:600;color:#221F1A}
+.lp-photo-sub{font-size:.5rem;color:#8A8270}
 .lp-send{width:100%;background:#221F1A;color:#fff;border:none;border-radius:8px;padding:.5rem;font-size:.62rem;font-weight:700;margin-bottom:.4rem;cursor:default}
 .lp-privacy{text-align:center;font-size:.52rem;color:#8A8270}
+
+/* ── LINK PAGE SHOWCASE (separate from the SMS-thread demo) ───────── */
+.linkpage-showcase{display:grid;grid-template-columns:1fr auto;gap:2.5rem;align-items:center;margin-top:3rem}
+.linkpage-copy h3{font-family:'Fraunces',serif;font-size:1.5rem;font-weight:900;letter-spacing:-.01em;line-height:1.25;margin-bottom:.75rem}
+.linkpage-copy p{color:var(--ink-mid);font-size:.92rem;line-height:1.7;max-width:420px}
+.linkpage-phone-wrap{display:flex;flex-direction:column;align-items:center;gap:.625rem;justify-self:center}
 
 .phone-dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.2);transition:background .2s}
 .phone-dot.active{background:var(--gold)}
@@ -211,7 +223,8 @@ footer{border-top:1px solid var(--cream-border);padding:3rem 2rem 2.5rem;margin-
   .problem-stats,.tap-strip,.steps{grid-template-columns:1fr}
   .retailer-grid{grid-template-columns:1fr 1fr}
   .channel-row{grid-template-columns:1fr 1fr}
-  .demo-phones{grid-template-columns:1fr 1fr;max-width:600px}
+  .demo-phones{grid-template-columns:1fr;max-width:320px}
+  .linkpage-showcase{grid-template-columns:1fr}
   .footer-top{grid-template-columns:1fr 1fr}
 }
 @media(max-width:680px){
@@ -246,7 +259,7 @@ footer{border-top:1px solid var(--cream-border);padding:3rem 2rem 2.5rem;margin-
 <header class="hero">
   <div class="eyebrow">● The next-gen delivery loop</div>
   <h1>Delivery notifications that <em>close the loop.</em></h1>
-  <p>SendingThx turns a carrier's "delivered" scan into a two-way moment — an instant alert to the recipient, a confirmation to the sender, and an easy way to say thank you.</p>
+  <p>SendingThx turns a carrier's "delivered" scan into a two-way moment — an instant alert to the recipient, a confirmation to the sender, and an easy way to say thank you. No app. No sign-up. Just a text.</p>
   <div class="hero-ctas">
     <a href="#demo" class="btn btn-gold">See it live →</a>
     <a href="#how" class="btn btn-outline">How it works</a>
@@ -371,7 +384,7 @@ footer{border-top:1px solid var(--cream-border);padding:3rem 2rem 2.5rem;margin-
               <div>Today, 2:23 PM</div>
             </div>
             <div class="gifter-messages">
-              <div class="gifter-bubble">Bob Smith sent Mom birthday flowers from Green Garden Florist - just delivered!<br><br>To thank Bob, text back a note or photo, or tap the link for more: <span style="text-decoration:underline">sendingthx.com/t/8fK2mQ</span><br><br>One-time msg. Reply STOP to opt out.</div>
+              <div class="gifter-bubble">Bob Smith sent Rose birthday flowers from Green Garden Florist - just delivered!<br><br>To thank Bob, text back a note or photo, or tap the link for more: <span style="text-decoration:underline">sendingthx.com/t/8fK2mQ</span><br><br>One-time msg. Reply STOP to opt out.</div>
             </div>
             <div class="gifter-input-bar">
               <input class="gifter-msg-input" type="text" placeholder="Text Message" readonly>
@@ -408,7 +421,7 @@ footer{border-top:1px solid var(--cream-border);padding:3rem 2rem 2.5rem;margin-
               <div>Today, 2:23 PM</div>
             </div>
             <div class="gifter-messages">
-              <div class="gifter-bubble">Bob Smith sent Mom birthday flowers from Green Garden Florist - just delivered!<br><br>To thank Bob, text back a note or photo, or tap the link for more: <span style="text-decoration:underline">sendingthx.com/t/8fK2mQ</span><br><br>One-time msg. Reply STOP to opt out.</div>
+              <div class="gifter-bubble">Bob Smith sent Rose birthday flowers from Green Garden Florist - just delivered!<br><br>To thank Bob, text back a note or photo, or tap the link for more: <span style="text-decoration:underline">sendingthx.com/t/8fK2mQ</span><br><br>One-time msg. Reply STOP to opt out.</div>
             </div>
             <div class="gifter-input-bar">
               <div class="typed-input" id="rec-typed-text">Made my day! Love you so much, Bob 💕<span class="typing-cursor"></span></div>
@@ -446,12 +459,12 @@ footer{border-top:1px solid var(--cream-border);padding:3rem 2rem 2.5rem;margin-
               <div>Today, 2:23 PM</div>
             </div>
             <div class="gifter-messages">
-              <div class="gifter-bubble2" id="gif-bubble2" style="display:block">Mom replied to your gift: "Made my day! Love you so much, Bob 💕" — relayed via SendingThx.</div>
+              <div class="gifter-bubble2" id="gif-bubble2" style="display:block">Rose replied to your gift: "Made my day! Love you so much, Bob 💕" — relayed via SendingThx.</div>
               <div class="gifter-photo-bubble" id="gif-photo-bubble">
                 <div class="gifter-photo-inner">
                   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#8A8270" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21,15 16,10 5,21"/></svg>
                 </div>
-                <div class="gifter-photo-caption">Mom sent a photo reply to your gift, relayed via SendingThx.</div>
+                <div class="gifter-photo-caption">Rose sent a photo reply to your gift, relayed via SendingThx.</div>
               </div>
             </div>
             <div class="gifter-input-bar">
@@ -469,34 +482,48 @@ footer{border-top:1px solid var(--cream-border);padding:3rem 2rem 2.5rem;margin-
         <div class="demo-caption">Full message in the text thread. No link, no app needed.</div>
       </div>
 
-      <!-- LINK PAGE PHONE -->
-      <div class="demo-phone-wrap">
-        <div class="demo-phone-label">Or tap the link</div>
-        <div class="phone-frame">
-          <div class="phone-notch"><div class="phone-notch-pill"></div></div>
-          <div class="lp-browser-bar"><span class="lp-url">sendingthx.com/t/8fK2mQ</span></div>
-          <div class="lp-page">
-            <div class="lp-card">
-              <p class="lp-eyebrow">via Green Garden Florist</p>
-              <div class="lp-icon">🎁</div>
-              <h4 class="lp-h1">Your birthday flowers from Green Garden Florist just arrived</h4>
-              <p class="lp-sender">Sent by <strong>Bob Smith</strong></p>
-              <div class="lp-delivered"><span class="lp-dot"></span>Delivered just now</div>
-              <p class="lp-cta-label">SEND A QUICK THANK YOU</p>
-              <div class="lp-chips">
-                <div class="lp-chip lp-chip-selected">Best birthday ever!</div>
-                <div class="lp-chip">Made my day!</div>
-                <div class="lp-chip">Can't wait to celebrate!</div>
-                <div class="lp-chip">You're the best!</div>
-              </div>
-              <button class="lp-send" disabled>Send Thx</button>
-              <p class="lp-privacy">Only Bob Smith will see your message</p>
+    </div>
+  </div>
+
+  <!-- ══ LINK PAGE SHOWCASE ═══════════════════════════════════════════ -->
+  <div class="linkpage-showcase">
+    <div class="linkpage-copy">
+      <div class="section-eyebrow" style="text-align:left;margin-bottom:.5rem">Or tap the link</div>
+      <h3>Would rather not text back? There's a page for that.</h3>
+      <p>Every delivery text also carries a link to a one-tap thank-you page — pick a quick reply, write your own, or attach a photo. Themed to the occasion, no login, no app to download.</p>
+    </div>
+    <div class="linkpage-phone-wrap">
+      <div class="phone-frame" style="max-width:300px">
+        <div class="phone-notch"><div class="phone-notch-pill"></div></div>
+        <div class="lp-browser-bar"><span class="lp-url">sendingthx.com/t/8fK2mQ</span></div>
+        <div class="lp-page">
+          <div class="lp-card">
+            <p class="lp-eyebrow">via Green Garden Florist</p>
+            <div class="lp-icon">🎁</div>
+            <h4 class="lp-h1">Your birthday flowers from Green Garden Florist just arrived</h4>
+            <p class="lp-sender">Sent by <strong>Bob Smith</strong></p>
+            <div class="lp-delivered"><span class="lp-dot"></span>Delivered just now</div>
+            <p class="lp-cta-label">SEND A QUICK THANK YOU</p>
+            <div class="lp-chips">
+              <div class="lp-chip lp-chip-selected">Best birthday ever!</div>
+              <div class="lp-chip">Made my day!</div>
+              <div class="lp-chip">Can't wait to celebrate!</div>
+              <div class="lp-chip">You're the best!</div>
             </div>
+            <div class="lp-textarea">Or write your own...</div>
+            <div class="lp-photo-row">
+              <span>📷</span>
+              <div>
+                <div class="lp-photo-title">Add a photo</div>
+                <div class="lp-photo-sub">Optional — sent via MMS</div>
+              </div>
+            </div>
+            <button class="lp-send" disabled>Send Thx</button>
+            <p class="lp-privacy">Only Bob Smith will see your message</p>
           </div>
         </div>
-        <div class="demo-caption">Tapping the link opens a themed thank-you page — chips, a note, or a photo.</div>
       </div>
-
+      <div class="demo-caption" style="color:var(--ink-light)">Birthday theme shown — sympathy, anniversary, and more each get their own colors and prompts.</div>
     </div>
   </div>
 
