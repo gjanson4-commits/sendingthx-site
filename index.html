@@ -101,7 +101,13 @@ a{color:inherit}
 .retailer-head .section-eyebrow{color:var(--gold)}
 .retailer-head h2{font-family:'Fraunces',serif;color:#fff;font-size:2.1rem;font-weight:900;letter-spacing:-.015em;margin-bottom:.875rem}
 .retailer-head p{color:rgba(255,255,255,.6);font-size:.98rem;line-height:1.7;max-width:560px;margin:0 auto}
-.retailer-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem;margin-bottom:2.5rem}
+.channel-row{display:grid;grid-template-columns:repeat(2,1fr);gap:1.25rem;margin-bottom:1.25rem}
+.channel-card{background:rgba(255,255,255,.06);border:1.5px solid rgba(245,200,66,.35);border-radius:var(--radius-lg);padding:1.75rem}
+.channel-card h3{color:#fff;font-size:1.05rem;font-weight:700;margin-bottom:.5rem}
+.channel-card p{color:rgba(255,255,255,.55);font-size:.85rem;line-height:1.6;margin-bottom:1rem}
+.channel-link{color:var(--gold);font-size:.82rem;font-weight:700;text-decoration:none}
+.channel-link:hover{color:var(--gold-dark)}
+.retailer-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1.25rem;margin-bottom:2.5rem}
 .retailer-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:var(--radius-lg);padding:1.5rem}
 .retailer-icon{font-size:1.4rem;margin-bottom:.875rem}
 .retailer-card h3{color:#fff;font-size:.95rem;font-weight:700;margin-bottom:.5rem}
@@ -146,10 +152,10 @@ a{color:inherit}
 /* gifter phone */
 .gifter-messages{padding:.75rem;min-height:130px;display:flex;flex-direction:column;gap:.5rem}
 .gifter-bubble{background:#E3E8EF;border-radius:14px 14px 14px 3px;padding:.5rem .7rem;font-size:.7rem;color:#1C1A14;line-height:1.5;max-width:88%;align-self:flex-start}
-.gifter-bubble2{background:#34C759;border-radius:14px 14px 3px 14px;padding:.5rem .7rem;font-size:.7rem;color:#fff;line-height:1.5;max-width:88%;align-self:flex-end;display:none}
-.gifter-photo-bubble{border-radius:14px 14px 3px 14px;overflow:hidden;max-width:88%;align-self:flex-end;display:none}
-.gifter-photo-inner{background:#34C759;height:64px;display:flex;align-items:center;justify-content:center;border-bottom:.5px solid #24A143}
-.gifter-photo-caption{background:#34C759;padding:.4rem .7rem;font-size:.62rem;color:#fff;font-style:italic}
+.gifter-bubble2{background:#E3E8EF;border-radius:14px 14px 14px 3px;padding:.5rem .7rem;font-size:.7rem;color:#1C1A14;line-height:1.5;max-width:88%;align-self:flex-start;display:none}
+.gifter-photo-bubble{border-radius:14px 14px 14px 3px;overflow:hidden;max-width:88%;align-self:flex-start;display:none}
+.gifter-photo-inner{background:#E3E8EF;height:64px;display:flex;align-items:center;justify-content:center;border-bottom:.5px solid #D5DAE1}
+.gifter-photo-caption{background:#E3E8EF;padding:.4rem .7rem;font-size:.62rem;color:#1C1A14;font-style:italic}
 .gifter-input-bar{border-top:.5px solid #E3E8EF;padding:.5rem .75rem;display:flex;align-items:center;gap:.5rem}
 .gifter-msg-input{flex:1;padding:.375rem .625rem;border:1.5px solid #E3E8EF;border-radius:16px;font-size:.7rem;font-family:'DM Sans',sans-serif;color:#9EA8B3;background:#F6F8FA}
 .gifter-send-btn{width:24px;height:24px;border-radius:50%;background:#34C759;display:flex;align-items:center;justify-content:center;flex-shrink:0;border:none}
@@ -185,6 +191,7 @@ footer{border-top:1px solid var(--cream-border);padding:3rem 2rem 2.5rem;margin-
   .hero h1{font-size:2.8rem}
   .problem-stats,.tap-strip,.steps{grid-template-columns:1fr}
   .retailer-grid{grid-template-columns:1fr 1fr}
+  .channel-row{grid-template-columns:1fr 1fr}
   .demo-phones{grid-template-columns:1fr;max-width:320px}
   .footer-top{grid-template-columns:1fr 1fr}
 }
@@ -193,6 +200,7 @@ footer{border-top:1px solid var(--cream-border);padding:3rem 2rem 2.5rem;margin-
   .stat-row{gap:1.75rem}
   .product-row{grid-template-columns:1fr;text-align:left;gap:.75rem}
   .retailer-grid{grid-template-columns:1fr}
+  .channel-row{grid-template-columns:1fr}
   .retailer-section{padding:2rem 1.5rem}
   .compliance-band{grid-template-columns:1fr;text-align:center;justify-items:center}
   .footer-top{grid-template-columns:1fr}
@@ -343,7 +351,7 @@ footer{border-top:1px solid var(--cream-border);padding:3rem 2rem 2.5rem;margin-
               <div>Today, 2:23 PM</div>
             </div>
             <div class="gifter-messages">
-              <div class="gifter-bubble">Bob Smith sent you flowers from Green Garden Florist. They just arrived! One-time message sent at Bob Smith's request via SendingThx. Reply STOP to opt out.</div>
+              <div class="gifter-bubble">Alex Rivera sent Nana birthday flowers from Petal &amp; Stem - just delivered!<br><br>To thank Alex, text back a note or photo, or tap the link for more: <span style="text-decoration:underline">sendingthx.com/t/8fK2mQ</span><br><br>One-time msg. Reply STOP to opt out.</div>
             </div>
             <div class="gifter-input-bar">
               <input class="gifter-msg-input" type="text" placeholder="Text Message" readonly>
@@ -353,7 +361,7 @@ footer{border-top:1px solid var(--cream-border);padding:3rem 2rem 2.5rem;margin-
             </div>
           </div>
         </div>
-        <div class="demo-caption">Delivery notification arrives — plain text, no link.</div>
+        <div class="demo-caption">Delivery notification arrives — reply by text, or tap the link.</div>
       </div>
 
       <!-- RECIPIENT PHONE — typing reply -->
@@ -380,10 +388,10 @@ footer{border-top:1px solid var(--cream-border);padding:3rem 2rem 2.5rem;margin-
               <div>Today, 2:23 PM</div>
             </div>
             <div class="gifter-messages">
-              <div class="gifter-bubble">Bob Smith sent you flowers from Green Garden Florist. They just arrived! One-time message sent at Bob Smith's request via SendingThx. Reply STOP to opt out.</div>
+              <div class="gifter-bubble">Alex Rivera sent Nana birthday flowers from Petal &amp; Stem - just delivered!<br><br>To thank Alex, text back a note or photo, or tap the link for more: <span style="text-decoration:underline">sendingthx.com/t/8fK2mQ</span><br><br>One-time msg. Reply STOP to opt out.</div>
             </div>
             <div class="gifter-input-bar">
-              <div class="typed-input" id="rec-typed-text">Made my day! Love you so much, Bob 💕<span class="typing-cursor"></span></div>
+              <div class="typed-input" id="rec-typed-text">Made my day! Love you so much, Alex 💕<span class="typing-cursor"></span></div>
               <div class="typed-input" id="rec-typed-photo" style="display:none">📷&nbsp;<em>photo attached</em><span class="typing-cursor"></span></div>
               <div class="gifter-send-btn">
                 <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22,2 15,22 11,13 2,9 22,2"/></svg>
@@ -418,13 +426,12 @@ footer{border-top:1px solid var(--cream-border);padding:3rem 2rem 2.5rem;margin-
               <div>Today, 2:23 PM</div>
             </div>
             <div class="gifter-messages">
-              <div class="gifter-bubble">Your birthday flowers from Green Garden Florist were just delivered to Mom. Reply STOP to opt out.</div>
-              <div class="gifter-bubble2" id="gif-bubble2" style="display:block">"Made my day! Love you so much, Bob 💕" — Mom</div>
+              <div class="gifter-bubble2" id="gif-bubble2" style="display:block">Nana replied to your gift: "Made my day! Love you so much, Alex 💕" — relayed via SendingThx.</div>
               <div class="gifter-photo-bubble" id="gif-photo-bubble">
                 <div class="gifter-photo-inner">
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21,15 16,10 5,21"/></svg>
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#8A8270" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21,15 16,10 5,21"/></svg>
                 </div>
-                <div class="gifter-photo-caption">"Made my day! Love you so much 💕"</div>
+                <div class="gifter-photo-caption">Nana sent a photo reply to your gift, relayed via SendingThx.</div>
               </div>
             </div>
             <div class="gifter-input-bar">
@@ -465,14 +472,23 @@ footer{border-top:1px solid var(--cream-border);padding:3rem 2rem 2.5rem;margin-
     <div class="retailer-head">
       <div class="section-eyebrow">For retailers</div>
       <h2>Add the loop. Keep the customer.</h2>
-      <p>One integration powers delivery notifications and gratitude relay across your entire order flow.</p>
+      <p>Install in minutes on Shopify, or wire up any platform with one API call. Either way: real delivery notifications, and a gratitude moment that carries your name — not ours.</p>
+    </div>
+    <div class="channel-row">
+      <div class="channel-card">
+        <div class="retailer-icon">🛍️</div>
+        <h3>Live on Shopify</h3>
+        <p>Install the SendingThx app, turn it on in your theme editor, and you're set. Usage-based pricing — you only pay per delivery notification sent.</p>
+        <a href="mailto:billing@sendingthx.com?subject=SendingThx%20for%20Shopify" class="channel-link">Get started on Shopify →</a>
+      </div>
+      <div class="channel-card">
+        <div class="retailer-icon">🔗</div>
+        <h3>Or plug in anywhere</h3>
+        <p>One POST request when the order ships. No SDK, no hardware, no platform lock-in — works with any storefront.</p>
+        <a href="mailto:billing@sendingthx.com?subject=SendingThx%20API%20integration" class="channel-link">Talk to us about the API →</a>
+      </div>
     </div>
     <div class="retailer-grid">
-      <div class="retailer-card">
-        <div class="retailer-icon">🔗</div>
-        <h3>One API call on ship</h3>
-        <p>One POST request when the order ships. That's the entire integration. No SDK, no hardware.</p>
-      </div>
       <div class="retailer-card">
         <div class="retailer-icon">📈</div>
         <h3>Real delivery notifications</h3>
@@ -521,8 +537,7 @@ footer{border-top:1px solid var(--cream-border);padding:3rem 2rem 2.5rem;margin-
     <div class="footer-bottom">
       <span>© 2026 SendingThx LLC. All rights reserved. Patent Pending.</span>
       <div class="footer-legal">
-        <a href="#">Privacy</a>
-        <a href="#">Terms</a>
+        <a href="privacy.html">Privacy</a>
         <a href="sms-terms.html">SMS Terms</a>
       </div>
     </div>
