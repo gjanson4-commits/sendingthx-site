@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stripe Checkout consent (draft) — SendingThx</title>
+<meta name="description" content="Draft integration guide: capturing SMS delivery-notification consent on Stripe Checkout for merchants without Shopify.">
+<meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&family=Fraunces:ital,wght@0,700;0,900;1,700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --gold:#F5C842; --gold-dark:#C9A200; --gold-pale:#FFF9E0;
+  --ink:#1C1A14; --ink-mid:#4A4535; --ink-light:#8A8270;
+  --cream:#FDFAF3; --cream-dark:#F5F0E4; --cream-border:#E8E0CC;
+  --green:#1E8C60; --green-light:#E6F5EE; --green-border:#A8DBBF; --green-dark:#0F6E56;
+  --amber-light:#FDF3DC; --amber-border:#F0D28A; --amber-dark:#8A5A00;
+  --radius:10px; --radius-lg:16px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--ink);-webkit-font-smoothing:antialiased;line-height:1.6}
+a{color:inherit}
+
+.nav{position:sticky;top:0;z-index:200;background:rgba(253,250,243,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--cream-border)}
+.nav-inner{max-width:1180px;margin:0 auto;padding:1rem 2rem;display:flex;align-items:center;justify-content:space-between;gap:2rem}
+.logo{font-family:'Fraunces',serif;font-size:1.4rem;font-weight:900;letter-spacing:-.02em;color:var(--ink);text-decoration:none}
+.logo span{color:var(--gold-dark)}
+.nav-back{font-size:.85rem;font-weight:600;color:var(--ink-mid);text-decoration:none}
+.nav-back:hover{color:var(--ink)}
+
+.doc-header{max-width:760px;margin:0 auto;padding:3.5rem 2rem 1rem;text-align:center}
+.doc-eyebrow{font-size:.72rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--gold-dark);margin-bottom:.875rem}
+.doc-header h1{font-family:'Fraunces',serif;font-size:2.3rem;font-weight:900;letter-spacing:-.015em;margin-bottom:.875rem}
+.doc-header p{color:var(--ink-mid);font-size:.95rem}
+.doc-updated{color:var(--ink-light);font-size:.8rem;margin-top:.5rem}
+
+.status-band{max-width:760px;margin:1.5rem auto 0;background:var(--amber-light);border:1.5px solid var(--amber-border);border-radius:var(--radius-lg);padding:1.25rem 1.75rem;font-size:.88rem;line-height:1.6;color:var(--amber-dark)}
+.status-band strong{color:var(--ink)}
+
+.doc-body{max-width:760px;margin:0 auto;padding:1.5rem 2rem 4rem}
+.doc-body h2{font-family:'Fraunces',serif;font-size:1.4rem;font-weight:900;letter-spacing:-.01em;margin:2.25rem 0 .875rem}
+.doc-body h2:first-child{margin-top:0}
+.doc-body p{margin-bottom:1rem;font-size:.92rem;color:var(--ink-mid)}
+.doc-body p strong{color:var(--ink)}
+.doc-body ul,.doc-body ol{margin:0 0 1rem 1.25rem;font-size:.92rem;color:var(--ink-mid)}
+.doc-body li{margin-bottom:.5rem}
+.doc-body a{color:var(--gold-dark);text-decoration:underline}
+
+.callout-box{background:#fff;border:1.5px solid var(--cream-border);border-radius:var(--radius-lg);padding:1.5rem 1.75rem;margin:1.25rem 0}
+.callout-box.green{background:var(--green-light);border-color:var(--green-border)}
+.callout-box.amber{background:var(--amber-light);border-color:var(--amber-border)}
+.callout-box p{margin-bottom:0;font-size:.88rem;color:var(--ink-mid)}
+.callout-box p strong{color:var(--ink)}
+.callout-box p + p{margin-top:.75rem}
+
+.code-block{background:var(--ink);border-radius:var(--radius-lg);padding:1.25rem 1.5rem;margin:1.25rem 0;overflow-x:auto}
+.code-block pre{font-family:'DM Mono',monospace;font-size:.78rem;line-height:1.6;color:#F0EAD6;white-space:pre}
+.code-label{font-family:'DM Mono',monospace;font-size:.68rem;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-light);margin:1.5rem 0 .5rem}
+
+.keyword{font-family:'DM Sans',sans-serif;font-weight:700;letter-spacing:.02em;background:var(--gold-pale);padding:.1rem .4rem;border-radius:5px;color:var(--ink)}
+.field-table{width:100%;border-collapse:collapse;margin:1.25rem 0;font-size:.85rem}
+.field-table th,.field-table td{text-align:left;padding:.6rem .75rem;border-bottom:1px solid var(--cream-border)}
+.field-table th{font-size:.68rem;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-light);font-weight:700}
+.field-table td{color:var(--ink-mid)}
+.field-table td strong{color:var(--ink)}
+
+footer{border-top:1px solid var(--cream-border);padding:2.5rem 2rem;margin-top:1rem}
+.footer-inner{max-width:1180px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;font-size:.78rem;color:var(--ink-light)}
+.footer-legal{display:flex;gap:1.5rem}
+.footer-legal a{text-decoration:none;color:var(--ink-light)}
+.footer-legal a:hover{color:var(--ink)}
+
+@media(max-width:600px){
+  .doc-header h1{font-size:1.7rem}
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="logo">Sending<span>Thx</span></a>
+    <a href="index.html" class="nav-back">← Back to home</a>
+  </div>
+</nav>
+
+<header class="doc-header">
+  <div class="doc-eyebrow">Internal draft — not yet live</div>
+  <h1>SMS consent via Stripe Checkout custom fields</h1>
+  <p>A working design for capturing gift-delivery text consent on Stripe-only checkouts — merchants who aren't on Shopify and have no cart-page extension point.</p>
+  <div class="doc-updated">Drafted July 2026</div>
+</header>
+
+<div class="status-band">
+  <strong>Status: draft, unpublished.</strong> This page is intentionally not linked from the site nav or footer and is marked <span class="keyword">noindex</span>. It exists to work out the design before anything ships. Nothing here has been reviewed against the Twilio compliance checklist yet, and no merchant should implement this until that review happens.
+</div>
+
+<div class="doc-body">
+
+  <h2>Why this exists</h2>
+  <p>On Shopify, the <strong>gift-notification Theme App Extension</strong> renders a real checkbox plus phone number field directly on the cart page — full control over layout and consent language, matching Twilio's Consumer-Initiated Viral Messaging example almost exactly.</p>
+  <p>Stripe Dashboard Apps have no equivalent extension point. A Stripe App only extends the Stripe <em>Dashboard</em> — the merchant's own admin view — not the customer-facing checkout page. For a merchant using Stripe directly (hosted Checkout or a Payment Link, no custom site), there's currently no way to collect this consent at all.</p>
+
+  <h2>The constraint</h2>
+  <p>Stripe Checkout Sessions support up to <strong>3 <code>custom_fields</code></strong>, each of type <span class="keyword">text</span>, <span class="keyword">numeric</span>, or <span class="keyword">dropdown</span>. There is no native checkbox type in <code>custom_fields</code>. Stripe does have a real checkbox mechanism — <code>consent_collection</code> — but it's purpose-built for Terms of Service acceptance and promotional-email opt-in specifically, not reusable for arbitrary consent language.</p>
+  <p>Checkout also has no conditional field logic: a field can't be set to "required only if a different field's answer is X." That means the recipient phone field can't be hard-required only when the consent dropdown says yes — it has to stay optional, with copy doing the work instead.</p>
+
+  <h2>Proposed design</h2>
+  <p>Three fields, using the full allowance:</p>
+
+  <table class="field-table">
+    <tr><th>Field</th><th>Type</th><th>Required</th><th>Purpose</th></tr>
+    <tr><td><strong>Text notification consent</strong></td><td>dropdown</td><td>Yes</td><td>The consent action itself. No option is pre-selected — the shopper must actively choose, same bar as an unchecked-by-default checkbox.</td></tr>
+    <tr><td><strong>Recipient's phone</strong></td><td>text</td><td>No</td><td>Only meaningful if consent = yes. Optional because Checkout can't make it conditionally required.</td></tr>
+    <tr><td><strong>Personal note</strong></td><td>text</td><td>No</td><td>Optional message relayed to the recipient, matching the Shopify block's note field.</td></tr>
+  </table>
+
+  <div class="code-label">Checkout Session custom_fields</div>
+  <div class="code-block"><pre>"custom_fields": [
+  {
+    "key": "gift_notify_consent",
+    "label": {
+      "type": "custom",
+      "custom": "Text a delivery notification?"
+    },
+    "type": "dropdown",
+    "dropdown": {
+      "options": [
+        { "label": "No thanks", "value": "no" },
+        { "label": "Yes — I have the recipient's consent to text them", "value": "yes" }
+      ]
+    },
+    "optional": false
+  },
+  {
+    "key": "gift_recipient_phone",
+    "label": {
+      "type": "custom",
+      "custom": "Recipient's phone (only if you said yes above)"
+    },
+    "type": "text",
+    "text": { "maximum_length": 20 },
+    "optional": true
+  },
+  {
+    "key": "gift_note",
+    "label": {
+      "type": "custom",
+      "custom": "Personal note for the recipient (optional)"
+    },
+    "type": "text",
+    "text": { "maximum_length": 160 },
+    "optional": true
+  }
+]</pre></div>
+
+  <h2>Wiring it to the existing API</h2>
+  <p>No new SendingThx infrastructure is needed for this. The merchant already has to write a handler for their own <code>checkout.session.completed</code> webhook (on their own Stripe account, with their own webhook secret — unrelated to the SendingThx-signed requests the Dashboard App itself makes). That handler reads <code>session.custom_fields</code>, and if <code>gift_notify_consent</code> is <code>"yes"</code> and a phone number was entered, calls the existing <code>POST /v1/orders</code> endpoint exactly as documented today — same payload shape, same auth, nothing new to build on our side.</p>
+
+  <div class="callout-box">
+    <p><strong>In plain terms:</strong> this is a configuration recipe plus a few lines of glue code for the merchant, not a new product surface. The only new SendingThx-side work, if any, would be documentation.</p>
+  </div>
+
+  <h2>Open items before this can ship</h2>
+  <ul>
+    <li>Full Twilio compliance review of the dropdown consent language, matching the same bar as the approved Shopify checkbox wording.</li>
+    <li>Decide what happens if a shopper selects "yes" but leaves the phone field blank — merchant-side validation, or silently skip the notification?</li>
+    <li>Test the actual rendered field order and wording in a live Stripe test Checkout Session — nothing here has been verified against the real Dashboard yet.</li>
+    <li>Decide where this guide ultimately lives once finalized — likely as a public technical-documentation page, possibly linked from the Stripe App Marketplace listing.</li>
+  </ul>
+
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <span>© 2026 SendingThx LLC. Internal draft — not for distribution.</span>
+    <div class="footer-legal">
+      <a href="index.html">Home</a>
+      <a href="sms-terms.html">SMS Terms</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
