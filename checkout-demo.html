@@ -125,7 +125,6 @@
       <h2>Sender Information</h2>
       <input type="text" class="form-input" name="sender_first_name" placeholder="Your first name" required />
       <input type="text" class="form-input" name="sender_last_name" placeholder="Your last name" required />
-      <input type="email" class="form-input" name="sender_email" placeholder="Your email" required />
     </div>
 
     <!-- SMS Consent Widget Container -->
@@ -231,7 +230,6 @@
       // From checkout form:
       senderFirstName: formData.get('sender_first_name'),
       senderLastName: formData.get('sender_last_name'),
-      senderEmail: formData.get('sender_email'),
       recipientFirstName: formData.get('recipient_first_name'),
       recipientLastName: formData.get('recipient_last_name'),
       // From SMS widget:
