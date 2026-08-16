@@ -132,6 +132,21 @@ button:hover {
   margin: 0.75rem 0 0.25rem;
 }
 .sms-preview-tag:first-of-type { margin-top: 0; }
+.confirm { text-align: center; padding: 2rem 0.5rem; display: none; }
+.confirm-icon {
+  width: 44px; height: 44px; border-radius: 50%;
+  background: #FFF9E0; color: #C9A200;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.3rem; margin: 0 auto 0.9rem;
+}
+.confirm h2 { font-size: 1.3rem; margin-bottom: 0.5rem; color: #1C1A14; }
+.confirm p { font-size: 0.9rem; color: #555; line-height: 1.55; }
+.submit-error {
+  margin-top: 0.75rem; padding: 0.75rem;
+  background: #FCE6E6; color: #A32D2D; border: 1px solid #F0999B;
+  border-radius: 6px; font-size: 0.85rem; display: none;
+}
+button:disabled { opacity: 0.6; cursor: not-allowed; }
 </style>
 </head>
 <body>
@@ -180,8 +195,16 @@ button:hover {
     <!-- SMS Consent Widget Container -->
     <div id="sendingthx-consent"></div>
 
-    <button type="submit">Start tracking</button>
+    <button type="submit" id="submit-btn">Start tracking</button>
+    <div class="submit-error" id="submit-error"></div>
   </form>
+
+  <!-- Confirmation (shown after a successful POST) -->
+  <div class="confirm" id="confirm-box">
+    <div class="confirm-icon">✓</div>
+    <h2>Tracking added</h2>
+    <p id="confirm-body"></p>
+  </div>
 
   <!-- Debug Output -->
   <div class="output" id="output"></div>
@@ -279,8 +302,14 @@ function updateSmsPreview() {
 });
 updateSmsPreview();
 
-document.getElementById('tracking-form').addEventListener('submit', (e) => {
+const MANUAL_ORDER_ENDPOINT = 'https://sendingthx-backend.vercel.app/api/v1/manual-order';
+
+document.getElementById('tracking-form').addEventListener('submit', async (e) => {
   e.preventDefault();
+
+  const submitBtn = document.getElementById('submit-btn');
+  const errorBox = document.getElementById('submit-error');
+  errorBox.style.display = 'none';
 
   log('\n[Form] Submitting tracking registration...');
 
@@ -292,37 +321,74 @@ document.getElementById('tracking-form').addEventListener('submit', (e) => {
     return;
   }
 
-  // Maps to the real POST /v1/orders payload shape (api/v1/orders.ts) —
+  const recipientFirst = formData.get('recipient_first_name');
+  const carrierLabel = e.target.carrier.selectedOptions[0].text;
+
+  // Maps to the real POST /api/v1/orders payload shape (via the
+  // manual-order proxy, which holds the DIRECT_RETAILER_API_KEY server-side).
   // gifter.name and recipient.name are built here as "First Last", never
   // first name alone, matching the full-name enforcement already used on
-  // the Shopify path (billing.first_name + billing.last_name).
+  // the Shopify path (billing.first_name + billing.last_name) — and the
+  // proxy re-validates this server-side too, since client-side checks
+  // alone are never trustworthy.
   const orderPayload = {
     tracking_number: formData.get('tracking_number'),
     carrier: formData.get('carrier'),
-    // Defaults to "a package" here client-side, rather than relying on
-    // easypost.ts's existing "a gift" fallback — that file isn't being
-    // touched, and this order has no retailer/store context implying a gift.
     gift_description: formData.get('gift_description') || 'a package',
     gifter: {
       name: `${formData.get('sender_first_name')} ${formData.get('sender_last_name')}`.trim(),
       phone: consentData.senderPhone,
     },
     recipient: {
-      name: `${formData.get('recipient_first_name')} ${formData.get('recipient_last_name')}`.trim(),
+      name: `${recipientFirst} ${formData.get('recipient_last_name')}`.trim(),
       phone: consentData.recipientPhone,
     },
     occasion: consentData.occasion,
     gift_note: consentData.giftNote,
   };
 
-  log('\n[Data] POST /v1/orders payload:');
+  log('\n[Data] POST /api/v1/manual-order payload:');
   log(JSON.stringify(orderPayload, null, 2));
 
-  if (consentData.isValid) {
-    log('\n[Success] ✓ All validations passed!');
-    log('[Next] This would POST to https://sendingthx-backend.vercel.app/v1/orders');
-  } else {
+  if (!consentData.isValid) {
     log('\n[Error] ✗ SMS consent validation failed');
+    errorBox.textContent = 'Please complete both consent checkboxes and phone numbers.';
+    errorBox.style.display = 'block';
+    return;
+  }
+
+  submitBtn.disabled = true;
+  submitBtn.textContent = 'Submitting…';
+
+  try {
+    const res = await fetch(MANUAL_ORDER_ENDPOINT, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(orderPayload),
+    });
+    const data = await res.json();
+
+    log('\n[Response] ' + res.status + ':');
+    log(JSON.stringify(data, null, 2));
+
+    if (res.ok && data.success) {
+      document.getElementById('confirm-body').textContent =
+        `We'll text ${recipientFirst || 'the recipient'} the moment ${carrierLabel} marks tracking ` +
+        `${orderPayload.tracking_number} delivered. You'll get a text too if they reply.`;
+      e.target.style.display = 'none';
+      document.getElementById('confirm-box').style.display = 'block';
+    } else {
+      errorBox.textContent = data.error || 'Something went wrong — please try again.';
+      errorBox.style.display = 'block';
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Start tracking';
+    }
+  } catch (err) {
+    log('[ERROR] Network request failed: ' + err.message);
+    errorBox.textContent = 'Could not reach the server — check your connection and try again.';
+    errorBox.style.display = 'block';
+    submitBtn.disabled = false;
+    submitBtn.textContent = 'Start tracking';
   }
 });
 
