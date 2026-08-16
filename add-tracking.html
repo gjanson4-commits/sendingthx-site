@@ -125,6 +125,39 @@ button:hover {
 }
 .confirm h2 { font-size: 1.3rem; margin-bottom: 0.5rem; color: #1C1A14; }
 .confirm p { font-size: 0.9rem; color: #555; line-height: 1.55; }
+.lead-capture {
+  margin-top: 1.75rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #eee;
+  text-align: left;
+}
+.lead-capture-prompt {
+  font-size: 0.85rem;
+  color: #555;
+  margin-bottom: 0.75rem;
+  text-align: center;
+}
+#lead-form {
+  display: flex;
+  gap: 0.5rem;
+}
+#lead-form .form-input {
+  margin-bottom: 0;
+  flex: 1;
+}
+#lead-form button {
+  margin-top: 0;
+  padding: 0.75rem 1.25rem;
+  white-space: nowrap;
+}
+.lead-capture-thanks {
+  display: none;
+  font-size: 0.85rem;
+  color: #1E8C60;
+  text-align: center;
+  margin-top: 0.75rem;
+}
+.lead-capture-thanks.visible { display: block; }
 .submit-error {
   margin-top: 0.75rem; padding: 0.75rem;
   background: #FCE6E6; color: #A32D2D; border: 1px solid #F0999B;
@@ -188,6 +221,15 @@ button:disabled { opacity: 0.6; cursor: not-allowed; }
     <div class="confirm-icon">✓</div>
     <h2>Tracking added</h2>
     <p id="confirm-body"></p>
+
+    <div class="lead-capture" id="lead-capture">
+      <p class="lead-capture-prompt">Want this running automatically for every order? Leave your email and we'll follow up — no spam.</p>
+      <form id="lead-form">
+        <input type="email" class="form-input" id="lead-email" placeholder="you@yourstore.com" />
+        <button type="submit" id="lead-submit">Keep me posted</button>
+      </form>
+      <p class="lead-capture-thanks" id="lead-thanks">Thanks — we'll be in touch.</p>
+    </div>
   </div>
 
   <div class="status" id="status"></div>
@@ -280,7 +322,9 @@ function updateSmsPreview() {
 });
 updateSmsPreview();
 
-const MANUAL_ORDER_ENDPOINT = 'https://sendingthx-backend.vercel.app/api/v1/manual-order';
+const MANUAL_ORDER_ENDPOINT = 'https://go.sendingthx.com/api/v1/manual-order';
+const LEAD_ENDPOINT = 'https://go.sendingthx.com/api/v1/lead';
+let lastTrackingNumber = null;
 
 document.getElementById('tracking-form').addEventListener('submit', async (e) => {
   e.preventDefault();
@@ -353,6 +397,7 @@ document.getElementById('tracking-form').addEventListener('submit', async (e) =>
       document.getElementById('confirm-body').textContent =
         `We'll text ${recipientFirst || 'the recipient'} the moment ${carrierLabel} marks tracking ` +
         `${orderPayload.tracking_number} delivered. You'll get a text too if they reply.`;
+      lastTrackingNumber = orderPayload.tracking_number;
       e.target.style.display = 'none';
       document.getElementById('confirm-box').style.display = 'block';
     } else {
@@ -368,6 +413,35 @@ document.getElementById('tracking-form').addEventListener('submit', async (e) =>
     submitBtn.disabled = false;
     submitBtn.textContent = 'Start tracking';
   }
+});
+
+document.getElementById('lead-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+
+  const emailInput = document.getElementById('lead-email');
+  const submitBtn = document.getElementById('lead-submit');
+  const email = emailInput.value.trim();
+  if (!email) return;
+
+  submitBtn.disabled = true;
+  submitBtn.textContent = 'Sending…';
+
+  try {
+    await fetch(LEAD_ENDPOINT, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, source: 'manual-portal', tracking_number: lastTrackingNumber }),
+    });
+  } catch (err) {
+    // Fail silently -- this is an optional nice-to-have shown after the
+    // real task (tracking a package) already succeeded. A network hiccup
+    // here shouldn't read as an error to someone who just got what they
+    // came for.
+    log('[lead] Failed to record lead: ' + err.message);
+  }
+
+  document.getElementById('lead-form').style.display = 'none';
+  document.getElementById('lead-thanks').classList.add('visible');
 });
 
 log('[Ready] Tracking form ready — fill in the form to test');
