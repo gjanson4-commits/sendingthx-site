@@ -357,16 +357,18 @@ const CARRIER_PATTERNS = {
   },
 };
 
-function validateTracking() {
+// showError=false computes validity silently (used while actively typing,
+// so a half-finished number never flashes red) -- showError=true is for
+// completed actions: leaving the field, switching carriers, or submitting.
+function validateTracking(showError) {
   const form = document.getElementById('tracking-form');
   const carrier = form.carrier.value;
   const trackingInput = form.tracking_number;
   const tracking = trackingInput.value.trim().toUpperCase();
   const hint = document.getElementById('tracking-hint');
 
-  // Don't nag before there's enough to judge -- no error on an empty or
-  // barely-started field, and no carrier-specific check until a carrier
-  // is actually selected.
+  // Don't nag before there's enough to judge -- no error on an empty
+  // field, and no carrier-specific check until a carrier is selected.
   if (!carrier || !tracking) {
     trackingInput.classList.remove('invalid');
     hint.classList.remove('visible');
@@ -376,7 +378,7 @@ function validateTracking() {
   const pattern = CARRIER_PATTERNS[carrier];
   const isValid = !pattern || pattern.test(tracking);
 
-  if (isValid) {
+  if (isValid || !showError) {
     trackingInput.classList.remove('invalid');
     hint.classList.remove('visible');
   } else {
@@ -387,8 +389,9 @@ function validateTracking() {
   return isValid;
 }
 
-document.querySelector('[name="carrier"]').addEventListener('change', validateTracking);
-document.querySelector('[name="tracking_number"]').addEventListener('input', validateTracking);
+document.querySelector('[name="carrier"]').addEventListener('change', () => validateTracking(true));
+document.querySelector('[name="tracking_number"]').addEventListener('input', () => validateTracking(false));
+document.querySelector('[name="tracking_number"]').addEventListener('blur', () => validateTracking(true));
 
 const MANUAL_ORDER_ENDPOINT = 'https://go.sendingthx.com/api/v1/manual-order';
 const LEAD_ENDPOINT = 'https://go.sendingthx.com/api/v1/lead';
@@ -401,7 +404,7 @@ document.getElementById('tracking-form').addEventListener('submit', async (e) =>
   const errorBox = document.getElementById('submit-error');
   errorBox.style.display = 'none';
 
-  if (!validateTracking()) {
+  if (!validateTracking(true)) {
     errorBox.textContent = "That tracking number doesn't match the selected carrier's format — please double-check it.";
     errorBox.style.display = 'block';
     return;
