@@ -164,6 +164,15 @@ button:hover {
   border-radius: 6px; font-size: 0.85rem; display: none;
 }
 button:disabled { opacity: 0.6; cursor: not-allowed; }
+.brand-link {
+  display: inline-block;
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: #1C1A14;
+  text-decoration: none;
+  margin-bottom: 1.5rem;
+}
+.brand-link span { color: #C9A200; }
 .form-input.invalid { border-color: #A32D2D; }
 .tracking-hint {
   font-size: 0.78rem;
@@ -173,11 +182,20 @@ button:disabled { opacity: 0.6; cursor: not-allowed; }
   line-height: 1.4;
 }
 .tracking-hint.visible { display: block; }
+.field-hint {
+  font-size: 0.78rem;
+  color: #A32D2D;
+  margin: -0.5rem 0 0.75rem;
+  display: none;
+  line-height: 1.4;
+}
+.field-hint.visible { display: block; }
 </style>
 </head>
 <body>
 
 <div class="container">
+  <a href="index.html" class="brand-link">Sending<span>Thx</span></a>
   <h1>Add a tracking number</h1>
   <p class="subtitle">Already shipped this outside Shopify? Register the tracking number and we'll text the recipient when it's delivered — same SMS consent widget used at checkout.</p>
 
@@ -210,6 +228,7 @@ button:disabled { opacity: 0.6; cursor: not-allowed; }
       <h2>Sender Information</h2>
       <input type="text" class="form-input" name="sender_first_name" placeholder="Your first name" required />
       <input type="text" class="form-input" name="sender_last_name" placeholder="Your last name" required />
+      <p class="field-hint" id="sender-name-hint"></p>
     </div>
 
     <!-- Recipient Info (unchanged from checkout-demo.html) -->
@@ -217,6 +236,7 @@ button:disabled { opacity: 0.6; cursor: not-allowed; }
       <h2>Recipient Information</h2>
       <input type="text" class="form-input" name="recipient_first_name" placeholder="Recipient first name" required />
       <input type="text" class="form-input" name="recipient_last_name" placeholder="Recipient last name" required />
+      <p class="field-hint" id="recipient-name-hint"></p>
     </div>
 
     <!-- SMS Consent Widget Container -->
@@ -393,6 +413,49 @@ document.querySelector('[name="carrier"]').addEventListener('change', () => vali
 document.querySelector('[name="tracking_number"]').addEventListener('input', () => validateTracking(false));
 document.querySelector('[name="tracking_number"]').addEventListener('blur', () => validateTracking(true));
 
+// Full-name gating for sender and recipient -- Twilio's Consumer-Initiated
+// Viral Messaging policy requires the sender to be clearly identified by
+// full name in the message body, not first name alone. manual-order.ts
+// re-validates this server-side too (hasFullName()), since client-side
+// checks alone are never trustworthy -- this is just the same rule
+// surfaced early, with the same blur/submit-only error timing as the
+// tracking field so it doesn't nag mid-keystroke.
+function validateNamePair(firstField, lastField, hintId, showError, label) {
+  const form = document.getElementById('tracking-form');
+  const first = form[firstField];
+  const last = form[lastField];
+  const hint = document.getElementById(hintId);
+  const bothFilled = first.value.trim().length > 0 && last.value.trim().length > 0;
+
+  if (bothFilled || !showError) {
+    first.classList.remove('invalid');
+    last.classList.remove('invalid');
+    hint.classList.remove('visible');
+  } else {
+    if (!first.value.trim()) first.classList.add('invalid');
+    if (!last.value.trim()) last.classList.add('invalid');
+    hint.textContent = `${label}'s first and last name are both required.`;
+    hint.classList.add('visible');
+  }
+  return bothFilled;
+}
+
+const validateSenderName = (showError) =>
+  validateNamePair('sender_first_name', 'sender_last_name', 'sender-name-hint', showError, 'Your');
+const validateRecipientName = (showError) =>
+  validateNamePair('recipient_first_name', 'recipient_last_name', 'recipient-name-hint', showError, "Recipient's");
+
+['sender_first_name', 'sender_last_name'].forEach((name) => {
+  const el = document.querySelector(`[name="${name}"]`);
+  el.addEventListener('input', () => validateSenderName(false));
+  el.addEventListener('blur', () => validateSenderName(true));
+});
+['recipient_first_name', 'recipient_last_name'].forEach((name) => {
+  const el = document.querySelector(`[name="${name}"]`);
+  el.addEventListener('input', () => validateRecipientName(false));
+  el.addEventListener('blur', () => validateRecipientName(true));
+});
+
 const MANUAL_ORDER_ENDPOINT = 'https://go.sendingthx.com/api/v1/manual-order';
 const LEAD_ENDPOINT = 'https://go.sendingthx.com/api/v1/lead';
 let lastTrackingNumber = null;
@@ -406,6 +469,16 @@ document.getElementById('tracking-form').addEventListener('submit', async (e) =>
 
   if (!validateTracking(true)) {
     errorBox.textContent = "That tracking number doesn't match the selected carrier's format — please double-check it.";
+    errorBox.style.display = 'block';
+    return;
+  }
+  if (!validateSenderName(true)) {
+    errorBox.textContent = 'Please enter your first and last name.';
+    errorBox.style.display = 'block';
+    return;
+  }
+  if (!validateRecipientName(true)) {
+    errorBox.textContent = "Please enter the recipient's first and last name.";
     errorBox.style.display = 'block';
     return;
   }
