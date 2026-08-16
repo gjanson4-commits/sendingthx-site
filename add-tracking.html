@@ -67,22 +67,6 @@ button {
 button:hover {
   background: #C9A200;
 }
-.output {
-  margin-top: 2rem;
-  padding: 1rem;
-  background: #f9f9f9;
-  border: 1px solid #ddd;
-  border-radius: 6px;
-  font-family: 'Courier New', monospace;
-  font-size: 0.85rem;
-  color: #333;
-  white-space: pre-wrap;
-  word-break: break-all;
-  max-height: 300px;
-  overflow-y: auto;
-  display: none;
-}
-.output.visible { display: block; }
 .status {
   margin-top: 1rem;
   padding: 0.75rem;
@@ -206,8 +190,6 @@ button:disabled { opacity: 0.6; cursor: not-allowed; }
     <p id="confirm-body"></p>
   </div>
 
-  <!-- Debug Output -->
-  <div class="output" id="output"></div>
   <div class="status" id="status"></div>
 </div>
 
@@ -217,18 +199,10 @@ button:disabled { opacity: 0.6; cursor: not-allowed; }
 </script>
 
 <script>
-const testLog = [];
-
+// Console-only logging — kept for our own debugging, never rendered
+// to the page. End users shouldn't see raw widget/consent payload dumps.
 function log(msg) {
   console.log(msg);
-  testLog.push(msg);
-  updateOutput();
-}
-
-function updateOutput() {
-  const output = document.getElementById('output');
-  output.textContent = testLog.join('\n');
-  output.classList.add('visible');
 }
 
 log('[Widget] Initializing SendingThx Consent Widget...');
@@ -288,7 +262,11 @@ function updateSmsPreview() {
   const senderFirstOnly = senderFirst || 'you';
   const addressee = recipientFirst || 'them';
   const giftDesc = giftDescRaw || 'a package';
-  const link = 'https://sendingthx-backend.vercel.app/t/••••••••••••••••';
+  // Recipient-facing link — kept as the public sendingthx.com domain in
+  // this preview rather than the sendingthx-backend.vercel.app hostname
+  // the API actually issues, since the latter is an internal deployment
+  // detail end users have no reason to see.
+  const link = 'sendingthx.com/t/••••••••••••••••';
 
   const recipientBody = `${senderName} sent ${addressee} ${giftDesc} - just delivered!\n\nTo thank ${senderFirstOnly}, text back a note or photo, or tap the link for more: ${link}\n\nOne-time msg sent at ${senderFirstOnly}'s request. Reply STOP to opt out.`;
   const senderBody = `Your ${giftDesc} just arrived at ${addressee}'s door. We'll text you if they reply — no guarantee they will. Reply STOP to opt out.`;
