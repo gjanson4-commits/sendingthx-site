@@ -196,8 +196,10 @@ button:disabled { opacity: 0.6; cursor: not-allowed; }
 
 <div class="container">
   <a href="index.html" class="brand-link">Sending<span>Thx</span></a>
-  <h1>Add a tracking number</h1>
-  <p class="subtitle">Already shipped this outside Shopify? Register the tracking number and we'll text the recipient when it's delivered — same SMS consent widget used at checkout.</p>
+  <div id="form-intro">
+    <h1>Add a tracking number</h1>
+    <p class="subtitle">Already shipped? Register the tracking number and we'll text the recipient when it's delivered — same SMS consent widget used at checkout.</p>
+  </div>
 
   <form id="tracking-form">
     <!-- Shipment Info (replaces Order Details from checkout-demo.html) -->
@@ -558,6 +560,7 @@ document.getElementById('tracking-form').addEventListener('submit', async (e) =>
         `${orderPayload.tracking_number} delivered. You'll get a text too if they reply.`;
       lastTrackingNumber = orderPayload.tracking_number;
       e.target.style.display = 'none';
+      document.getElementById('form-intro').style.display = 'none';
       document.getElementById('confirm-box').style.display = 'block';
     } else {
       errorBox.textContent = data.error || 'Something went wrong — please try again.';
