@@ -164,6 +164,15 @@ button:hover {
   border-radius: 6px; font-size: 0.85rem; display: none;
 }
 button:disabled { opacity: 0.6; cursor: not-allowed; }
+.form-input.invalid { border-color: #A32D2D; }
+.tracking-hint {
+  font-size: 0.78rem;
+  color: #A32D2D;
+  margin: -0.5rem 0 0.75rem;
+  display: none;
+  line-height: 1.4;
+}
+.tracking-hint.visible { display: block; }
 </style>
 </head>
 <body>
@@ -184,6 +193,7 @@ button:disabled { opacity: 0.6; cursor: not-allowed; }
         <option value="dhl">DHL</option>
       </select>
       <input type="text" class="form-input" name="tracking_number" placeholder="Tracking number" required />
+      <p class="tracking-hint" id="tracking-hint"></p>
       <input type="text" class="form-input" name="gift_description" placeholder="Gift or package description (optional) — e.g. Birthday flowers" />
     </div>
 
@@ -322,6 +332,64 @@ function updateSmsPreview() {
 });
 updateSmsPreview();
 
+// Carrier-format validation -- catches an obviously wrong tracking number
+// (wrong carrier selected, or a typo) before submission. Without this,
+// a bad number gets silently accepted, EasyPost never resolves a status
+// for it, and the recipient just never gets a text -- which reads as
+// "SendingThx is broken" rather than "the tracking number was wrong,"
+// since nothing ever tells anyone what happened.
+const CARRIER_PATTERNS = {
+  usps: {
+    test: (v) => /^\d{20,22}$/.test(v) || /^[A-Z]{2}\d{9}[A-Z]{2}$/.test(v),
+    hint: 'USPS numbers are usually 20-22 digits (or a 2-letter/9-digit/2-letter international format, like EC123456785US).',
+  },
+  ups: {
+    test: (v) => /^1Z[0-9A-Z]{16}$/.test(v),
+    hint: 'UPS numbers start with "1Z" followed by 16 more characters.',
+  },
+  fedex: {
+    test: (v) => /^\d{12}$|^\d{15}$|^\d{20}$/.test(v),
+    hint: 'FedEx numbers are usually 12, 15, or 20 digits.',
+  },
+  dhl: {
+    test: (v) => /^[0-9A-Z]{10,39}$/.test(v),
+    hint: 'DHL numbers are usually at least 10 characters.',
+  },
+};
+
+function validateTracking() {
+  const form = document.getElementById('tracking-form');
+  const carrier = form.carrier.value;
+  const trackingInput = form.tracking_number;
+  const tracking = trackingInput.value.trim().toUpperCase();
+  const hint = document.getElementById('tracking-hint');
+
+  // Don't nag before there's enough to judge -- no error on an empty or
+  // barely-started field, and no carrier-specific check until a carrier
+  // is actually selected.
+  if (!carrier || !tracking) {
+    trackingInput.classList.remove('invalid');
+    hint.classList.remove('visible');
+    return true;
+  }
+
+  const pattern = CARRIER_PATTERNS[carrier];
+  const isValid = !pattern || pattern.test(tracking);
+
+  if (isValid) {
+    trackingInput.classList.remove('invalid');
+    hint.classList.remove('visible');
+  } else {
+    trackingInput.classList.add('invalid');
+    hint.textContent = `That doesn't look like a ${carrier.toUpperCase()} tracking number. ${pattern.hint}`;
+    hint.classList.add('visible');
+  }
+  return isValid;
+}
+
+document.querySelector('[name="carrier"]').addEventListener('change', validateTracking);
+document.querySelector('[name="tracking_number"]').addEventListener('input', validateTracking);
+
 const MANUAL_ORDER_ENDPOINT = 'https://go.sendingthx.com/api/v1/manual-order';
 const LEAD_ENDPOINT = 'https://go.sendingthx.com/api/v1/lead';
 let lastTrackingNumber = null;
@@ -332,6 +400,12 @@ document.getElementById('tracking-form').addEventListener('submit', async (e) =>
   const submitBtn = document.getElementById('submit-btn');
   const errorBox = document.getElementById('submit-error');
   errorBox.style.display = 'none';
+
+  if (!validateTracking()) {
+    errorBox.textContent = "That tracking number doesn't match the selected carrier's format — please double-check it.";
+    errorBox.style.display = 'block';
+    return;
+  }
 
   log('\n[Form] Submitting tracking registration...');
 
