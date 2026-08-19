@@ -371,8 +371,13 @@ updateSmsPreview();
 // since nothing ever tells anyone what happened.
 const CARRIER_PATTERNS = {
   usps: {
-    test: (v) => /^\d{20,22}$/.test(v) || /^[A-Z]{2}\d{9}[A-Z]{2}$/.test(v),
-    hint: 'USPS numbers are usually 20-22 digits (or a 2-letter/9-digit/2-letter international format, like EC123456785US).',
+    // USPS tracking numbers aren't a single fixed length -- 20 and 22
+    // digits are most common (Certified Mail / Priority Mail), but
+    // Click-N-Ship and other commercial formats legitimately run to 26
+    // or even 34 digits. A real delivered package (26 digits) was
+    // getting falsely rejected by the old 20-22 range.
+    test: (v) => /^\d{20,34}$/.test(v) || /^[A-Z]{2}\d{9}[A-Z]{2}$/.test(v),
+    hint: 'USPS numbers are usually 20-26 digits (or a 2-letter/9-digit/2-letter international format, like EC123456785US).',
   },
   ups: {
     test: (v) => /^1Z[0-9A-Z]{16}$/.test(v),
