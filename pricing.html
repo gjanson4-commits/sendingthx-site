@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pricing — SendingThx</title>
+<meta name="description" content="SendingThx merchant pricing: $0.50 per gift or package, usage-based, no setup fee.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=Fraunces:ital,wght@0,700;0,900;1,700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --gold:#F5C842; --gold-dark:#C9A200; --gold-pale:#FFF9E0;
+  --ink:#1C1A14; --ink-mid:#4A4535; --ink-light:#8A8270;
+  --cream:#FDFAF3; --cream-dark:#F5F0E4; --cream-border:#E8E0CC;
+  --green:#1E8C60; --green-light:#E6F5EE; --green-border:#A8DBBF; --green-dark:#0F6E56;
+  --radius:10px; --radius-lg:16px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--ink);-webkit-font-smoothing:antialiased;line-height:1.6}
+a{color:inherit}
+
+.nav{position:sticky;top:0;z-index:200;background:rgba(253,250,243,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--cream-border)}
+.nav-inner{max-width:1180px;margin:0 auto;padding:1rem 2rem;display:flex;align-items:center;justify-content:space-between;gap:2rem}
+.logo{font-family:'Fraunces',serif;font-size:1.4rem;font-weight:900;letter-spacing:-.02em;color:var(--ink);text-decoration:none}
+.logo span{color:var(--gold-dark)}
+.nav-back{font-size:.85rem;font-weight:600;color:var(--ink-mid);text-decoration:none}
+.nav-back:hover{color:var(--ink)}
+
+.doc-header{max-width:760px;margin:0 auto;padding:3.5rem 2rem 1rem;text-align:center}
+.doc-eyebrow{font-size:.72rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--gold-dark);margin-bottom:.875rem}
+.doc-header h1{font-family:'Fraunces',serif;font-size:2.6rem;font-weight:900;letter-spacing:-.015em;margin-bottom:.875rem}
+.doc-header p{color:var(--ink-mid);font-size:.95rem}
+.doc-updated{color:var(--ink-light);font-size:.8rem;margin-top:.5rem}
+
+.entity-band{max-width:760px;margin:1.5rem auto 0;background:#fff;border:1.5px solid var(--cream-border);border-radius:var(--radius-lg);padding:1.25rem 1.75rem;font-size:.92rem;line-height:1.6}
+.entity-band strong{color:var(--gold-dark)}
+
+.doc-body{max-width:760px;margin:0 auto;padding:1.5rem 2rem 4rem}
+.doc-body h2{font-family:'Fraunces',serif;font-size:1.4rem;font-weight:900;letter-spacing:-.01em;margin:2.25rem 0 .875rem}
+.doc-body h2:first-child{margin-top:0}
+.doc-body p{margin-bottom:1rem;font-size:.92rem;color:var(--ink-mid)}
+.doc-body p strong{color:var(--ink)}
+.doc-body ul{margin:0 0 1rem 1.25rem;font-size:.92rem;color:var(--ink-mid)}
+.doc-body li{margin-bottom:.5rem}
+.doc-body a{color:var(--gold-dark);text-decoration:underline}
+
+.price-tag{max-width:760px;margin:1.75rem auto 0;background:var(--ink);color:var(--cream);border-radius:var(--radius-lg);padding:2rem 1.75rem;text-align:center}
+.price-tag .amount{font-family:'Fraunces',serif;font-size:2.75rem;font-weight:900;letter-spacing:-.01em}
+.price-tag .unit{font-size:.95rem;color:rgba(253,250,243,.7);margin-top:.25rem}
+
+.callout-box{background:#fff;border:1.5px solid var(--cream-border);border-radius:var(--radius-lg);padding:1.5rem 1.75rem;margin:1.25rem 0}
+.callout-box.gold{background:var(--gold-pale);border-color:#EAD98C}
+.callout-box p{margin-bottom:0;font-size:.88rem;color:var(--ink-mid)}
+.callout-box p + p{margin-top:.75rem}
+.callout-box p strong{color:var(--ink)}
+
+.check-list{list-style:none;margin:0 0 1rem;font-size:.92rem;color:var(--ink-mid)}
+.check-list li{padding-left:1.6rem;position:relative;margin-bottom:.6rem}
+.check-list li::before{content:"✓";position:absolute;left:0;color:var(--green-dark);font-weight:700}
+
+.cta-band{max-width:760px;margin:2.5rem auto 0;text-align:center;display:flex;gap:1rem;justify-content:center;flex-wrap:wrap}
+.btn-gold{display:inline-block;background:var(--gold);color:var(--ink);font-weight:700;font-size:.92rem;padding:.85rem 1.75rem;border-radius:999px;text-decoration:none;transition:background .15s}
+.btn-gold:hover{background:var(--gold-dark)}
+.btn-outline{display:inline-block;background:transparent;color:var(--ink);font-weight:700;font-size:.92rem;padding:.85rem 1.75rem;border-radius:999px;text-decoration:none;border:1.5px solid var(--ink);transition:background .15s}
+.btn-outline:hover{background:rgba(0,0,0,.05)}
+
+footer{border-top:1px solid var(--cream-border);padding:2.5rem 2rem;margin-top:1rem}
+.footer-inner{max-width:1180px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;font-size:.78rem;color:var(--ink-light)}
+.footer-legal{display:flex;gap:1.5rem}
+.footer-legal a{text-decoration:none;color:var(--ink-light)}
+.footer-legal a:hover{color:var(--ink)}
+
+@media(max-width:600px){
+  .doc-header h1{font-size:2rem}
+  .price-tag .amount{font-size:2.2rem}
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="logo">Sending<span>Thx</span></a>
+    <a href="index.html" class="nav-back">← Back to home</a>
+  </div>
+</nav>
+
+<header class="doc-header">
+  <div class="doc-eyebrow">Pricing</div>
+  <h1>Simple, usage-based pricing</h1>
+  <p>What SendingThx charges you as a merchant. What you charge your own customers, if anything, is entirely up to you.</p>
+</header>
+
+<div class="entity-band">
+  <strong>This is merchant pricing.</strong> SendingThx bills the retailer — not the shopper. How you handle that cost on your end is your call: absorb it as a cost of doing business, fold it into your shipping &amp; handling fee, or pass it through to your customer at checkout. We have no visibility into, and don't set, what — if anything — you charge your own customers.
+</div>
+
+<div class="price-tag">
+  <div class="amount">$0.50</div>
+  <div class="unit">per gift or package</div>
+</div>
+
+<div class="doc-body">
+
+  <h2>What's included</h2>
+  <p>One flat rate covers the entire loop for that gift — there's no per-message or per-reply add-on:</p>
+  <ul class="check-list">
+    <li>The delivery notification sent to the recipient</li>
+    <li>The confirmation sent back to the sender</li>
+    <li>Unlimited back-and-forth if the recipient replies — no cap on the conversation, no extra cost</li>
+  </ul>
+
+  <h2>How you're billed</h2>
+  <p>Usage-based, billed monthly — you're only ever charged for gifts actually sent, never a flat subscription regardless of volume. If you're on the Shopify App Store, charges run through your normal Shopify billing. If you're integrated directly via the API, charges appear as a Stripe invoice on your regular billing cycle.</p>
+
+  <h2>What you charge your customers is up to you</h2>
+  <p>SendingThx doesn't see, set, or take a cut of anything you charge your own shoppers. Retailers we work with handle this a few different ways, and none of them require any special setup on our end:</p>
+  <ul>
+    <li><strong>Absorb it</strong> — treat it as a normal cost of doing business, the same as packaging or postage insurance.</li>
+    <li><strong>Fold it in</strong> — bake it into an existing shipping &amp; handling line at checkout.</li>
+    <li><strong>Pass it through</strong> — itemize or mark it up as its own line item to the customer.</li>
+  </ul>
+  <p>Whichever you choose, it happens entirely on your storefront and your invoice to your customer. SendingThx's $0.50 charge to you stays the same either way.</p>
+
+  <div class="callout-box gold">
+    <p><strong>No hidden fees.</strong> No setup fee, no monthly minimum, and no long-term contract. Cancel anytime by uninstalling the app or simply stopping API calls.</p>
+  </div>
+
+</div>
+
+<div class="cta-band">
+  <a href="mailto:billing@sendingthx.com?subject=SendingThx%20pricing%20question" class="btn-gold">Talk to us about pricing →</a>
+  <a href="add-tracking.html" class="btn-outline">Try it for yourself →</a>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <span>© 2026 SendingThx LLC. All rights reserved. Patent Pending.</span>
+    <div class="footer-legal">
+      <a href="integrate.html">Integration guide</a>
+      <a href="sms-terms.html">SMS Terms</a>
+      <a href="index.html">Home</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
