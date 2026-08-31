@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Integration Guide — SendingThx</title>
+<meta name="description" content="How to integrate SendingThx SMS delivery notifications into a custom Stripe Payment Intents checkout.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=Fraunces:ital,wght@0,700;0,900;1,700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --gold:#F5C842; --gold-dark:#C9A200; --gold-pale:#FFF9E0;
+  --ink:#1C1A14; --ink-mid:#4A4535; --ink-light:#8A8270;
+  --cream:#FDFAF3; --cream-dark:#F5F0E4; --cream-border:#E8E0CC;
+  --green:#1E8C60; --green-light:#E6F5EE; --green-border:#A8DBBF; --green-dark:#0F6E56;
+  --radius:10px; --radius-lg:16px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--ink);-webkit-font-smoothing:antialiased;line-height:1.6}
+a{color:inherit}
+
+.nav{position:sticky;top:0;z-index:200;background:rgba(253,250,243,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--cream-border)}
+.nav-inner{max-width:1180px;margin:0 auto;padding:1rem 2rem;display:flex;align-items:center;justify-content:space-between;gap:2rem}
+.logo{font-family:'Fraunces',serif;font-size:1.4rem;font-weight:900;letter-spacing:-.02em;color:var(--ink);text-decoration:none}
+.logo span{color:var(--gold-dark)}
+.nav-back{font-size:.85rem;font-weight:600;color:var(--ink-mid);text-decoration:none}
+.nav-back:hover{color:var(--ink)}
+
+.doc-header{max-width:760px;margin:0 auto;padding:3.5rem 2rem 1rem;text-align:center}
+.doc-eyebrow{font-size:.72rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--gold-dark);margin-bottom:.875rem}
+.doc-header h1{font-family:'Fraunces',serif;font-size:2.6rem;font-weight:900;letter-spacing:-.015em;margin-bottom:.875rem}
+.doc-header p{color:var(--ink-mid);font-size:.95rem}
+.doc-updated{color:var(--ink-light);font-size:.8rem;margin-top:.5rem}
+
+.entity-band{max-width:760px;margin:1.5rem auto 0;background:#fff;border:1.5px solid var(--cream-border);border-radius:var(--radius-lg);padding:1.25rem 1.75rem;font-size:.92rem;line-height:1.6}
+.entity-band strong{color:var(--gold-dark)}
+
+.doc-body{max-width:760px;margin:0 auto;padding:1.5rem 2rem 4rem}
+.doc-body h2{font-family:'Fraunces',serif;font-size:1.4rem;font-weight:900;letter-spacing:-.01em;margin:2.25rem 0 .875rem}
+.doc-body h2:first-child{margin-top:0}
+.doc-body h3{font-size:1rem;font-weight:700;margin:1.5rem 0 .625rem;color:var(--ink)}
+.doc-body p{margin-bottom:1rem;font-size:.92rem;color:var(--ink-mid)}
+.doc-body p strong{color:var(--ink)}
+.doc-body ul,.doc-body ol{margin:0 0 1rem 1.25rem;font-size:.92rem;color:var(--ink-mid)}
+.doc-body li{margin-bottom:.5rem}
+.doc-body a{color:var(--gold-dark);text-decoration:underline}
+
+.callout-box{background:#fff;border:1.5px solid var(--cream-border);border-radius:var(--radius-lg);padding:1.5rem 1.75rem;margin:1.25rem 0}
+.callout-box.green{background:var(--green-light);border-color:var(--green-border)}
+.callout-box.gold{background:var(--gold-pale);border-color:#EAD98C}
+.callout-box p{margin-bottom:0;font-size:.88rem;color:var(--ink-mid)}
+.callout-box p + p{margin-top:.75rem}
+.callout-box p strong{color:var(--ink)}
+
+.step-badge{display:inline-flex;align-items:center;justify-content:center;width:1.6rem;height:1.6rem;border-radius:50%;background:var(--ink);color:var(--cream);font-size:.78rem;font-weight:700;margin-right:.5rem;flex-shrink:0}
+
+pre{background:#1C1A14;color:#F5F0E4;border-radius:var(--radius);padding:1.1rem 1.25rem;overflow-x:auto;margin:0 0 1rem;font-size:.8rem;line-height:1.65}
+pre code{font-family:'JetBrains Mono',monospace;white-space:pre}
+code.inline{font-family:'JetBrains Mono',monospace;background:var(--cream-dark);border:1px solid var(--cream-border);padding:.1rem .35rem;border-radius:5px;font-size:.85em;color:var(--ink)}
+
+.keyword{font-family:'DM Sans',sans-serif;font-weight:700;letter-spacing:.02em;background:var(--gold-pale);padding:.1rem .4rem;border-radius:5px;color:var(--ink)}
+
+.cta-band{max-width:760px;margin:2.5rem auto 0;text-align:center}
+.btn-gold{display:inline-block;background:var(--gold);color:var(--ink);font-weight:700;font-size:.92rem;padding:.85rem 1.75rem;border-radius:999px;text-decoration:none;transition:background .15s}
+.btn-gold:hover{background:var(--gold-dark)}
+
+footer{border-top:1px solid var(--cream-border);padding:2.5rem 2rem;margin-top:1rem}
+.footer-inner{max-width:1180px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;font-size:.78rem;color:var(--ink-light)}
+.footer-legal{display:flex;gap:1.5rem}
+.footer-legal a{text-decoration:none;color:var(--ink-light)}
+.footer-legal a:hover{color:var(--ink)}
+
+@media(max-width:600px){
+  .doc-header h1{font-size:2rem}
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="logo">Sending<span>Thx</span></a>
+    <a href="index.html" class="nav-back">← Back to home</a>
+  </div>
+</nav>
+
+<header class="doc-header">
+  <div class="doc-eyebrow">For Developers</div>
+  <h1>SendingThx Integration Guide for Merchants</h1>
+  <p>How to add SendingThx delivery notifications and thank-you relays to a custom checkout.</p>
+</header>
+
+<div class="entity-band">
+  <strong>This guide is for a custom checkout built directly on Stripe Payment Intents</strong> — where you write your own backend and frontend code and call the SendingThx API yourself. On Shopify? Skip all of this and <a href="https://apps.shopify.com/sendingthx" target="_blank" rel="noopener">install the SendingThx Shopify App</a> instead — no code required.
+</div>
+
+<div class="doc-body">
+
+  <h2>Overview</h2>
+  <p>SendingThx enables you to send delivery notifications and capture thank-you replies via SMS. When a customer purchases a gift, they can opt in to receive SMS notifications when the package arrives — and recipients can reply with a message of gratitude that's relayed straight back to the purchaser.</p>
+  <p><strong>Cost:</strong> $0.50 per gift or package sent. Flat rate covers all SMS — delivery notification to recipient, confirmation to sender, and the recipient's reply if they send one. No monthly fees.</p>
+
+  <h2>Prerequisites</h2>
+  <ul>
+    <li>A Stripe account with Payment Intents integration</li>
+    <li>A custom checkout using Stripe Elements or similar</li>
+    <li>HTTPS enabled on your checkout page (required by Stripe)</li>
+    <li>A backend server to process payments and call SendingThx</li>
+  </ul>
+
+  <h2><span class="step-badge">1</span>Connect Your Stripe Account to SendingThx</h2>
+  <ol>
+    <li>Visit <a href="https://sendingthx.com/connect">sendingthx.com/connect</a></li>
+    <li>Click <strong>"Connect with Stripe"</strong></li>
+    <li>Log in to your Stripe account and authorize SendingThx to charge for SMS delivery events</li>
+    <li>You'll be redirected back to SendingThx — your account is now connected</li>
+  </ol>
+  <p>That's it. SendingThx will charge $0.50 per gift or package sent.</p>
+
+  <h2><span class="step-badge">2</span>Add the SMS Consent Widget to Your Checkout</h2>
+  <p>The SMS consent widget collects permission from customers before SendingThx sends them notifications. It's optimized for mobile with a space-efficient design, while keeping all compliance text fully visible.</p>
+
+  <h3>Add the script tag</h3>
+  <p>In your checkout HTML, add this to the <code class="inline">&lt;head&gt;</code> section:</p>
+<pre><code>&lt;script src="https://www.sendingthx.com/consent-widget.umd.min.js"&gt;&lt;/script&gt;</code></pre>
+  <p>This is hosted directly on sendingthx.com, so it always serves the current version — no separate CDN account or repo access required.</p>
+
+  <h3>Add the widget container</h3>
+  <p>In your checkout form, add this where you want the consent section to appear:</p>
+<pre><code>&lt;div id="sendingthx-consent"&gt;&lt;/div&gt;</code></pre>
+
+  <h3>Initialize the widget</h3>
+  <p>After your Stripe Elements initialization, mount the widget:</p>
+<pre><code>SendingThxConsent.mount('#sendingthx-consent', {
+  onConsent: (data) => {
+    // Save consent data to your form
+    window.sendingthxConsent = data;
+  },
+});</code></pre>
+  <p>The default checkbox text includes full Twilio compliance language (SMS &amp; data rates, HELP/STOP) — no customization needed unless you want shorter labels.</p>
+
+  <h2><span class="step-badge">3</span>Wire the Widget into Your Checkout Form</h2>
+  <p>The consent widget is the only additional field you need to add — names are extracted automatically from Stripe's payment data.</p>
+  <p><strong>Stripe's Payment Element collects:</strong> billing name (sender), shipping name and address (recipient).</p>
+  <p><strong>The consent widget collects:</strong> SMS consent checkboxes, phone numbers for sender and recipient, and an optional occasion and gift note.</p>
+<pre><code>&lt;form id="checkout-form"&gt;
+  &lt;!-- Stripe Payment Element (collects payment + shipping details) --&gt;
+  &lt;div id="payment-element"&gt;&lt;/div&gt;
+
+  &lt;!-- SendingThx SMS Consent Widget --&gt;
+  &lt;details open&gt;
+    &lt;summary&gt;🎁 Add delivery text notifications&lt;/summary&gt;
+    &lt;div id="sendingthx-consent"&gt;&lt;/div&gt;
+  &lt;/details&gt;
+
+  &lt;button type="submit"&gt;Complete Purchase&lt;/button&gt;
+&lt;/form&gt;</code></pre>
+
+  <h2><span class="step-badge">4</span>Process Payment and Notify SendingThx</h2>
+  <p>When the customer submits the form: confirm the PaymentIntent with Stripe, extract names from Stripe's billing and shipping details, call the SendingThx API with order details and consent data, then redirect to your success page.</p>
+
+  <h3>Backend example (Node.js)</h3>
+<pre><code>app.post('/api/checkout', async (req, res) => {
+  const {
+    paymentIntentId,
+    senderConsent, senderPhone,
+    recipientConsent, recipientPhone,
+    occasion, giftNote,
+  } = req.body;
+
+  const paymentIntent = await stripe.paymentIntents.retrieve(paymentIntentId);
+  if (paymentIntent.status !== 'succeeded') {
+    return res.status(400).json({ error: 'Payment not completed' });
+  }
+
+  // Names come from Stripe's billing_details / shipping — see full guide
+  // for the parseFullName() helper.
+
+  if (senderConsent && recipientConsent) {
+    await fetch('https://api.sendingthx.com/api/v1/orders', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${process.env.SENDINGTHX_API_KEY}`,
+      },
+      body: JSON.stringify({
+        stripe_payment_intent_id: paymentIntentId,
+        sender_phone: senderPhone, sender_consent: senderConsent,
+        recipient_phone: recipientPhone, recipient_consent: recipientConsent,
+        occasion, gift_note: giftNote,
+      }),
+    });
+  }
+
+  res.json({ success: true, redirectUrl: '/success' });
+});</code></pre>
+
+  <h3>Frontend example</h3>
+<pre><code>document.getElementById('checkout-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+
+  const result = await stripe.confirmPayment({
+    elements,
+    confirmParams: { return_url: `${window.location.origin}/success` },
+    redirect: 'if_required',
+  });
+  if (result.error) return console.error(result.error);
+
+  const consentData = window.SendingThxConsentData?.() || {};
+
+  const response = await fetch('/api/checkout', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      paymentIntentId: result.paymentIntent.id,
+      senderConsent: consentData.senderConsent || false,
+      senderPhone: consentData.senderPhone,
+      recipientConsent: consentData.recipientConsent || false,
+      recipientPhone: consentData.recipientPhone,
+      occasion: consentData.occasion,
+      giftNote: consentData.giftNote,
+    }),
+  });
+
+  if (response.ok) window.location.href = '/success';
+});</code></pre>
+
+  <h2><span class="step-badge">5</span>Verify Your Integration</h2>
+  <h3>Test SMS delivery</h3>
+  <ol>
+    <li>Complete a test purchase through your checkout</li>
+    <li>Use a test phone number (SendingThx allows Twilio test numbers)</li>
+    <li>Wait 1–3 minutes for the SMS to arrive in test mode</li>
+    <li>Confirm the message content matches your recipient's phone</li>
+  </ol>
+  <h3>Check usage and billing</h3>
+  <p>Log in to <a href="https://sendingthx.com/dashboard">sendingthx.com/dashboard</a> → <strong>Usage &amp; Billing</strong> to confirm the test event is listed. The $0.50 charge appears as a Stripe invoice on your next billing cycle — check <strong>Invoices</strong> in your Stripe Dashboard.</p>
+
+  <h2>Configuration</h2>
+  <p>From <a href="https://sendingthx.com/dashboard">sendingthx.com/dashboard</a>, under <strong>Settings</strong>, you can enable or disable the gifter-reply relay and view the Twilio compliance language included in every message. Under <strong>Integrations</strong>, you'll find your SendingThx API key — treat it like a password, keep it out of client-side code, and rotate it if it's ever exposed.</p>
+
+  <h2>Troubleshooting</h2>
+  <div class="callout-box">
+    <p><strong>SMS not received</strong> — verify the recipient phone is in E.164 format (<code class="inline">+1</code> country code plus 10 digits), confirm the order shows up in your SendingThx dashboard.</p>
+    <p><strong>Stripe Connect authorization failed</strong> — make sure you completed the OAuth flow at sendingthx.com/connect and that your Stripe account is in live mode, then try disconnecting and reconnecting.</p>
+    <p><strong>API key error</strong> — copy the full key from the dashboard with no extra spaces, and check your <code class="inline">Authorization</code> header reads <code class="inline">Bearer {key}</code>.</p>
+    <p><strong>Consent widget not showing</strong> — make sure the script tag is in <code class="inline">&lt;head&gt;</code> before your checkout code runs, check the browser console for errors, and confirm the <code class="inline">#sendingthx-consent</code> div exists in your HTML.</p>
+  </div>
+
+  <h2>Support</h2>
+  <p>Questions about your integration can go to <a href="mailto:support@sendingthx.com">support@sendingthx.com</a>.</p>
+
+</div>
+
+<div class="cta-band">
+  <a href="https://sendingthx.com/connect" class="btn-gold">Connect your Stripe account →</a>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <span>© 2026 SendingThx LLC. All rights reserved.</span>
+    <div class="footer-legal">
+      <a href="sms-terms.html">SMS Terms</a>
+      <a href="privacy.html">Privacy</a>
+      <a href="index.html">Home</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
