@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>SendingThx — Internal QA Demo</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'DM Sans', sans-serif;
+  background: #f5f5f5;
+  padding: 2rem;
+}
+.container {
+  max-width: 600px;
+  margin: 0 auto;
+  background: white;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+h1 {
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+  color: #1C1A14;
+}
+.subtitle {
+  color: #666;
+  margin-bottom: 1rem;
+  font-size: 0.95rem;
+}
+.internal-banner {
+  background: #1C1A14;
+  border-radius: 8px;
+  padding: 0.85rem 1rem;
+  font-size: 0.85rem;
+  color: #F5D98B;
+  margin-bottom: 1.25rem;
+  line-height: 1.5;
+}
+.internal-banner strong { color: #fff; }
+.test-tip {
+  background: #FFF9E0;
+  border: 1px solid #F5D98B;
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  font-size: 0.85rem;
+  color: #6B5900;
+  margin-bottom: 2rem;
+}
+.form-section {
+  margin-bottom: 1.5rem;
+}
+.form-section h2 {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: #333;
+}
+.form-input, .form-select {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  margin-bottom: 0.75rem;
+  font-family: inherit;
+  background: #fff;
+}
+.form-input:focus, .form-select:focus {
+  outline: none;
+  border-color: #C9A200;
+  box-shadow: 0 0 0 3px rgba(201, 162, 0, 0.1);
+}
+.form-hint {
+  font-size: 0.78rem;
+  color: #777;
+  margin: -0.5rem 0 0.75rem;
+  line-height: 1.4;
+}
+button {
+  background: #F5C842;
+  color: #1C1A14;
+  border: none;
+  padding: 0.75rem 2rem;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 1rem;
+}
+button:hover {
+  background: #C9A200;
+}
+.status {
+  margin-top: 1rem;
+  padding: 0.75rem;
+  border-radius: 6px;
+  font-weight: 500;
+  display: none;
+}
+.status.visible { display: block; }
+.status.valid {
+  background: #E6F5EE;
+  color: #1E8C60;
+  border: 1px solid #A8DBBF;
+}
+.status.invalid {
+  background: #FCE6E6;
+  color: #A32D2D;
+  border: 1px solid #F0999B;
+}
+.sms-preview {
+  margin-top: 0.75rem;
+  padding: 0.875rem 1rem;
+  background: #1C1A14;
+  border-radius: 10px;
+}
+.sms-preview-label {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #F5D98B;
+  margin-bottom: 0.5rem;
+}
+.sms-preview-body {
+  font-size: 0.82rem;
+  line-height: 1.5;
+  color: #fff;
+  white-space: pre-wrap;
+  margin-bottom: 0.75rem;
+}
+.sms-preview-body:last-child { margin-bottom: 0; }
+.sms-preview-tag {
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #999;
+  margin: 0.75rem 0 0.25rem;
+}
+.sms-preview-tag:first-of-type { margin-top: 0; }
+.confirm { text-align: center; padding: 2rem 0.5rem; display: none; }
+.confirm-icon {
+  width: 44px; height: 44px; border-radius: 50%;
+  background: #FFF9E0; color: #C9A200;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.3rem; margin: 0 auto 0.9rem;
+}
+.confirm h2 { font-size: 1.3rem; margin-bottom: 0.5rem; color: #1C1A14; }
+.confirm p { font-size: 0.9rem; color: #555; line-height: 1.55; }
+.confirm-again {
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #eee;
+}
+.confirm-again button { background: #eee; color: #1C1A14; }
+.confirm-again button:hover { background: #ddd; }
+.submit-error {
+  margin-top: 0.75rem; padding: 0.75rem;
+  background: #FCE6E6; color: #A32D2D; border: 1px solid #F0999B;
+  border-radius: 6px; font-size: 0.85rem; display: none;
+}
+button:disabled { opacity: 0.6; cursor: not-allowed; }
+.brand-link {
+  display: inline-block;
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: #1C1A14;
+  text-decoration: none;
+  margin-bottom: 1.5rem;
+}
+.brand-link span { color: #C9A200; }
+.form-input.invalid { border-color: #A32D2D; }
+.tracking-hint {
+  font-size: 0.78rem;
+  color: #A32D2D;
+  margin: -0.5rem 0 0.75rem;
+  display: none;
+  line-height: 1.4;
+}
+.tracking-hint.visible { display: block; }
+.field-hint {
+  font-size: 0.78rem;
+  color: #A32D2D;
+  margin: -0.5rem 0 0.75rem;
+  display: none;
+  line-height: 1.4;
+}
+.field-hint.visible { display: block; }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <a href="../index.html" class="brand-link">Sending<span>Thx</span></a>
+  <div id="form-intro">
+    <h1>Internal QA demo</h1>
+    <p class="subtitle">Fires the real delivery-notification SMS through the real send path — for live demos and ad hoc testing, not for customers.</p>
+    <p class="internal-banner"><strong>Internal tool.</strong> Every order created here is flagged <code>is_test</code> — excluded from retailer stats and billing — and registered against EasyPost's test mode, so the seven codes below simulate a status instantly instead of waiting on a real carrier. This page isn't linked from the site and isn't indexed; please don't share the link outside the team.</p>
+    <p class="test-tip">💡 Enter your own name and phone number for both the sender and recipient below — you'll get both texts yourself.</p>
+  </div>
+
+  <form id="tracking-form">
+    <div class="form-section">
+      <h2>Shipment</h2>
+      <select class="form-select" name="carrier" id="carrier-select" required>
+        <option value="easypost_test" selected>EasyPost Test Mode (simulate any status)</option>
+        <option value="usps">USPS</option>
+        <option value="ups">UPS</option>
+        <option value="fedex">FedEx</option>
+        <option value="dhl">DHL</option>
+      </select>
+
+      <select class="form-select" name="test_code" id="test-code-select">
+        <option value="EZ1000000001">EZ1000000001 — pre_transit</option>
+        <option value="EZ2000000002">EZ2000000002 — in_transit</option>
+        <option value="EZ3000000003">EZ3000000003 — out_for_delivery</option>
+        <option value="EZ4000000004" selected>EZ4000000004 — delivered</option>
+        <option value="EZ5000000005">EZ5000000005 — return_to_sender</option>
+        <option value="EZ6000000006">EZ6000000006 — failure</option>
+        <option value="EZ7000000007">EZ7000000007 — unknown</option>
+      </select>
+      <p class="form-hint" id="test-code-hint">Only "delivered" fires the SMS — the others are useful for checking the tracker registers without expecting a text.</p>
+
+      <input type="text" class="form-input" name="tracking_number" id="tracking-number-input" placeholder="Tracking number" required />
+      <p class="tracking-hint" id="tracking-hint"></p>
+      <input type="text" class="form-input" name="gift_description" placeholder="Gift or package description (optional) — e.g. Birthday flowers" />
+    </div>
+
+    <div class="sms-preview" id="sms-preview">
+      <div class="sms-preview-label">Message preview</div>
+      <div class="sms-preview-tag">To the recipient</div>
+      <div class="sms-preview-body" id="preview-recipient">Fill in the form to preview.</div>
+      <div class="sms-preview-tag">To you (confirmation)</div>
+      <div class="sms-preview-body" id="preview-sender">Fill in the form to preview.</div>
+    </div>
+
+    <div class="form-section">
+      <h2>Sender Information</h2>
+      <input type="text" class="form-input" name="sender_first_name" placeholder="Your first name" required />
+      <input type="text" class="form-input" name="sender_last_name" placeholder="Your last name" required />
+      <p class="field-hint" id="sender-name-hint"></p>
+    </div>
+
+    <div class="form-section">
+      <h2>Recipient Information</h2>
+      <input type="text" class="form-input" name="recipient_first_name" placeholder="Recipient first name" required />
+      <input type="text" class="form-input" name="recipient_last_name" placeholder="Recipient last name" required />
+      <p class="field-hint" id="recipient-name-hint"></p>
+    </div>
+
+    <!-- SMS Consent Widget Container -->
+    <div id="sendingthx-consent"></div>
+
+    <button type="submit" id="submit-btn">Fire demo order</button>
+    <div class="submit-error" id="submit-error"></div>
+  </form>
+
+  <!-- Confirmation (shown after a successful POST) -->
+  <div class="confirm" id="confirm-box">
+    <div class="confirm-icon">✓</div>
+    <h2>Test order registered</h2>
+    <p id="confirm-body"></p>
+    <div class="confirm-again">
+      <button type="button" id="again-btn">Fire another</button>
+    </div>
+  </div>
+
+  <div class="status" id="status"></div>
+</div>
+
+<footer style="max-width:600px;margin:1.5rem auto 0;padding-top:1.5rem;border-top:1px solid #E8E0CC;text-align:center;font-size:0.78rem;color:#8A8270;">
+  <div style="font-weight:800;color:#1C1A14;margin-bottom:0.5rem;font-size:1rem;">Sending<span style="color:#C9A200">Thx</span> · internal</div>
+  <div>Not for external distribution.</div>
+</footer>
+
+<!-- SMS Consent Widget — copied verbatim from sendingthx-site/checkout-demo.html, unmodified -->
+<script>
+!function(n){"use strict";const e={mount:function(n,e={}){const t=document.querySelector(n);if(!t)return void console.error(`[SendingThx] Container not found: ${n}`);const i={senderLabel:e.senderLabel||"I agree to receive SMS notifications from SendingThx about this order at the number I provide below, including a one-time message if the recipient responds to you. Msg & data rates may apply. Reply HELP for help, STOP to opt out.",recipientLabel:e.recipientLabel||"I confirm I have the recipient's consent to receive this one-time delivery notification via text message from SendingThx at the number I provide below. Msg & data rates may apply. Reply HELP for help and STOP to opt out.",onConsent:e.onConsent||(()=>{}),theme:e.theme||"light"},o=this._createWidget(i);return t.appendChild(o),this._attachListeners(o,i),o},_createWidget:function(n){const e=document.createElement("div");return e.className="sendingthx-consent-wrapper",e.setAttribute("data-theme",n.theme),e.innerHTML=`<style>.sendingthx-consent-wrapper{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','DM Sans',sans-serif;color:#1C1A14;--gold:#F5C842;--gold-dark:#C9A200;--cream:#FDFAF3;--cream-border:#E8E0CC;--ink:#1C1A14;--ink-mid:#4A4535;--radius:10px}.sendingthx-consent-wrapper[data-theme=dark]{color:#fff;--ink:#fff;--ink-mid:#e0e0e0}.sendingthx-section{margin:1.5rem 0;padding:1.25rem;background:var(--cream);border:1.5px solid var(--cream-border);border-radius:var(--radius)}.sendingthx-section h3{font-family:'Fraunces',serif;font-size:1rem;font-weight:900;margin:0 0 .875rem 0;color:var(--ink)}.sendingthx-field{margin-bottom:.75rem}.sendingthx-field:last-child{margin-bottom:0}.sendingthx-label{display:flex;align-items:flex-start;gap:.625rem;cursor:pointer;font-size:.85rem;line-height:1.4}.sendingthx-checkbox{width:16px;height:16px;margin-top:2px;cursor:pointer;accent-color:var(--gold-dark);flex-shrink:0}.sendingthx-input{width:100%;padding:.5rem .625rem;font-family:inherit;font-size:.85rem;border:1px solid var(--cream-border);border-radius:6px;background:#fff;color:var(--ink);box-sizing:border-box;transition:border-color .2s}.sendingthx-input:focus{outline:0;border-color:var(--gold-dark);box-shadow:0 0 0 3px rgba(201,162,0,.1)}.sendingthx-input:disabled{background-color:#f9f9f9;color:#ccc;cursor:not-allowed;border-color:#e0e0e0}.sendingthx-input-label{display:block;font-size:.8rem;font-weight:500;margin-bottom:.25rem;color:var(--ink-mid)}.sendingthx-input-wrapper{margin-bottom:.75rem}.sendingthx-input-wrapper:last-child{margin-bottom:0}.sendingthx-consent-block{padding:.875rem;background:#fff;border:1px solid var(--cream-border);border-radius:6px;margin-bottom:.75rem}.sendingthx-consent-block:last-child{margin-bottom:0}.sendingthx-hint{font-size:.8rem;color:#888;margin-top:.25rem}</style><div class="sendingthx-section"><h3>SMS Notifications & Replies</h3><div class="sendingthx-consent-block"><div class="sendingthx-field"><label class="sendingthx-label"><input type="checkbox" class="sendingthx-checkbox" name="sendingthx_sender_consent" value="true"><span>${n.senderLabel}</span></label></div><div class="sendingthx-input-wrapper"><label class="sendingthx-input-label">Your phone number <span style="color:#d03b3b">*</span></label><input type="tel" class="sendingthx-input sendingthx-phone-input" name="sendingthx_sender_phone" placeholder="(555) 123-4567" disabled maxlength="14" inputmode="numeric"></div></div><div class="sendingthx-consent-block"><div class="sendingthx-field"><label class="sendingthx-label"><input type="checkbox" class="sendingthx-checkbox" name="sendingthx_recipient_consent" value="true" disabled><span>${n.recipientLabel}</span></label></div><div class="sendingthx-input-wrapper"><label class="sendingthx-input-label">Recipient's phone number <span style="color:#d03b3b">*</span></label><input type="tel" class="sendingthx-input sendingthx-phone-input" name="sendingthx_recipient_phone" placeholder="(555) 123-4567" disabled maxlength="14" inputmode="numeric"></div></div><div class="sendingthx-consent-block"><div class="sendingthx-input-wrapper"><label class="sendingthx-input-label">Occasion (optional)</label><select class="sendingthx-input" name="sendingthx_occasion" disabled style="appearance:none;background-image:url(data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%234A4535' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e);background-repeat:no-repeat;background-position:right .75rem center;background-size:1.5em 1.5em;padding-right:2.5rem;cursor:pointer"><option value="">No occasion</option><option value="birthday">Birthday</option><option value="sympathy">Sympathy</option><option value="anniversary">Anniversary</option><option value="get-well">Get Well</option><option value="congratulations">Congratulations</option><option value="thank-you">Thank You</option></select></div></div><div class="sendingthx-consent-block"><div class="sendingthx-input-wrapper"><label class="sendingthx-input-label">Personal Note (optional)</label><textarea class="sendingthx-input" name="sendingthx_gift_note" placeholder="Optional note here." maxlength="160" disabled style="resize:vertical;min-height:80px"></textarea><div class="sendingthx-hint">Shown to the recipient on their thank-you page only. Never sent by text, never used for marketing.</div></div></div></div>`,e},_attachListeners:function(n,e){const t=n.querySelector('[name="sendingthx_sender_consent"]'),i=n.querySelector('[name="sendingthx_sender_phone"]'),o=n.querySelector('[name="sendingthx_recipient_consent"]'),r=n.querySelector('[name="sendingthx_recipient_phone"]'),a=n.querySelector('[name="sendingthx_occasion"]'),s=n.querySelector('[name="sendingthx_gift_note"]'),l=()=>{const n=t.checked;i.disabled=!n,n||(i.value="");const e=n&&this._isValidPhone(i.value);o.disabled=!e,e||(o.checked=!1,r.value="");const l=e&&o.checked;r.disabled=!l,l||(r.value="");const d=l&&this._isValidPhone(r.value);a.disabled=!d,s.disabled=!d,d||(a.value="")},d=()=>{l.call(this);const t=this.getConsentData(n);e.onConsent(t)};t.addEventListener("change",()=>d.call(this)),i.addEventListener("input",()=>d.call(this)),o.addEventListener("change",()=>d.call(this)),r.addEventListener("input",()=>d.call(this)),a.addEventListener("change",()=>d.call(this)),s.addEventListener("input",()=>d.call(this)),i.addEventListener("blur",()=>{const n=i.value;n&&!this._isValidPhone(n)?i.style.borderColor="#d03b3b":i.style.borderColor="var(--cream-border)",d.call(this)}),r.addEventListener("blur",()=>{const n=r.value;n&&!this._isValidPhone(n)?r.style.borderColor="#d03b3b":r.style.borderColor="var(--cream-border)",d.call(this)});const c=n=>{let e=n.value.replace(/\D/g,"");e=e.substring(0,10),0===e.length?n.value="":e.length<=3?n.value=e:e.length<=6?n.value=`(${e.substring(0,3)}) ${e.substring(3)}`:n.value=`(${e.substring(0,3)}) ${e.substring(3,6)}-${e.substring(6)}`};i.addEventListener("input",n=>{c(n.target),d.call(this)}),r.addEventListener("input",n=>{c(n.target),d.call(this)}),l.call(this),window.SendingThxConsentData=()=>this.getConsentData(n)},getConsentData:function(n){const e=n.querySelector('[name="sendingthx_sender_consent"]'),t=n.querySelector('[name="sendingthx_sender_phone"]'),i=n.querySelector('[name="sendingthx_recipient_consent"]'),o=n.querySelector('[name="sendingthx_recipient_phone"]'),r=n.querySelector('[name="sendingthx_occasion"]'),a=n.querySelector('[name="sendingthx_gift_note"]'),s=this._isValidPhone(t.value),l=this._isValidPhone(o.value),d=e.checked&&s&&i.checked&&l;return{senderConsent:e.checked,senderPhone:this._normalizePhone(t.value),recipientConsent:i.checked,recipientPhone:this._normalizePhone(o.value),occasion:r.value,giftNote:a.value.trim(),isValid:d}},_isValidPhone:function(n){const e=n.replace(/[\s\-().]/g,"");return/^(\+1)?[0-9]{10,}$/.test(e)},_normalizePhone:function(n){let e=n.replace(/\D/g,"");return 10!==e.length?"":"+1"+e}};n.SendingThxConsent=e,"undefined"!=typeof module&&module.exports&&(module.exports=e)}("undefined"!=typeof window?window:global);
+</script>
+
+<script>
+// Console-only logging — kept for our own debugging, never rendered
+// to the page. End users shouldn't see raw widget/consent payload dumps.
+function log(msg) {
+  console.log(msg);
+}
+
+log('[Widget] Initializing SendingThx Consent Widget...');
+
+if (typeof SendingThxConsent === 'undefined') {
+  log('[ERROR] SendingThxConsent not found in window');
+} else {
+  log('[Widget] SendingThxConsent loaded ✓');
+
+  SendingThxConsent.mount('#sendingthx-consent', {
+    onConsent: (data) => {
+      log(`[Consent] Data updated:`);
+      log(`  - Sender consent: ${data.senderConsent}`);
+      log(`  - Sender phone: ${data.senderPhone}`);
+      log(`  - Recipient consent: ${data.recipientConsent}`);
+      log(`  - Recipient phone: ${data.recipientPhone}`);
+      log(`  - Occasion: ${data.occasion || '(none)'}`);
+      log(`  - Gift note: ${data.giftNote || '(empty)'}`);
+      log(`  - Valid: ${data.isValid}`);
+      updateStatus(data);
+    },
+  });
+
+  log('[Widget] Mounted to #sendingthx-consent ✓');
+}
+
+function updateStatus(data) {
+  const status = document.getElementById('status');
+  if (data.isValid) {
+    status.className = 'status valid visible';
+    status.textContent = '✓ All required SMS fields complete';
+  } else {
+    const missing = [];
+    if (!data.senderConsent) missing.push('sender consent');
+    if (!data.senderPhone) missing.push('sender phone');
+    if (!data.recipientConsent) missing.push('recipient consent');
+    if (!data.recipientPhone) missing.push('recipient phone');
+    status.className = 'status invalid visible';
+    status.textContent = `✗ Missing: ${missing.join(', ')}`;
+  }
+}
+
+// Live message preview — mirrors api/webhooks/easypost.ts's composition,
+// but adapted for a manually-registered order with no retailer on file:
+// no "from {retailer_name}" clause (nothing to attribute it to), and the
+// blank-description fallback is "a package" rather than "a gift" — this
+// isn't necessarily a gift, and unlike Shopify orders there's no store
+// context implying one.
+function updateSmsPreview() {
+  const form = document.getElementById('tracking-form');
+  const senderFirst = form.sender_first_name.value.trim();
+  const senderLast = form.sender_last_name.value.trim();
+  const recipientFirst = form.recipient_first_name.value.trim();
+  const giftDescRaw = form.gift_description.value.trim();
+
+  const senderName = (senderFirst || senderLast) ? `${senderFirst} ${senderLast}`.trim() : 'Your name';
+  const senderFirstOnly = senderFirst || 'you';
+  const addressee = recipientFirst || 'them';
+  const giftDesc = giftDescRaw || 'a package';
+  // Recipient-facing link — kept as the public sendingthx.com domain in
+  // this preview rather than the sendingthx-backend.vercel.app hostname
+  // the API actually issues, since the latter is an internal deployment
+  // detail end users have no reason to see.
+  const link = 'sendingthx.com/t/••••••••••••••••';
+
+  const recipientBody = `${senderName} sent ${addressee} ${giftDesc} - just delivered!\n\nTo thank ${senderFirstOnly}, text back a note or photo, or tap the link for more: ${link}\n\nOne-time msg sent at ${senderFirstOnly}'s request. Reply STOP to opt out.`;
+  const senderBody = `Your ${giftDesc} just arrived at ${addressee}'s door. We'll text you if they reply — no guarantee they will. Reply STOP to opt out.`;
+
+  document.getElementById('preview-recipient').textContent = recipientBody;
+  document.getElementById('preview-sender').textContent = senderBody;
+}
+
+['sender_first_name', 'sender_last_name', 'recipient_first_name', 'gift_description'].forEach((name) => {
+  document.querySelector(`[name="${name}"]`).addEventListener('input', updateSmsPreview);
+});
+updateSmsPreview();
+
+// Carrier-format validation -- catches an obviously wrong tracking number
+// (wrong carrier selected, or a typo) before submission. Without this,
+// a bad number gets silently accepted, EasyPost never resolves a status
+// for it, and the recipient just never gets a text -- which reads as
+// "SendingThx is broken" rather than "the tracking number was wrong,"
+// since nothing ever tells anyone what happened.
+//
+// easypost_test is added here (not present on the public add-tracking.html
+// this page is derived from) -- it validates against EasyPost's seven
+// documented simulated-status codes exactly, since anything else typed
+// into that "carrier" is guaranteed not to resolve at all.
+const CARRIER_PATTERNS = {
+  easypost_test: {
+    test: (v) => /^EZ[0-9]{10}$/.test(v),
+    hint: 'EasyPost test codes are EZ followed by 10 digits — pick one from the dropdown above rather than typing it.',
+  },
+  usps: {
+    // USPS tracking numbers aren't a single fixed length -- 20 and 22
+    // digits are most common (Certified Mail / Priority Mail), but
+    // Click-N-Ship and other commercial formats legitimately run to 26
+    // or even 34 digits. A real delivered package (26 digits) was
+    // getting falsely rejected by the old 20-22 range.
+    test: (v) => /^\d{20,34}$/.test(v) || /^[A-Z]{2}\d{9}[A-Z]{2}$/.test(v),
+    hint: 'USPS numbers are usually 20-26 digits (or a 2-letter/9-digit/2-letter international format, like EC123456785US).',
+  },
+  ups: {
+    test: (v) => /^1Z[0-9A-Z]{16}$/.test(v),
+    hint: 'UPS numbers start with "1Z" followed by 16 more characters.',
+  },
+  fedex: {
+    test: (v) => /^\d{12}$|^\d{15}$|^\d{20}$/.test(v),
+    hint: 'FedEx numbers are usually 12, 15, or 20 digits.',
+  },
+  dhl: {
+    test: (v) => /^[0-9A-Z]{10,39}$/.test(v),
+    hint: 'DHL numbers are usually at least 10 characters.',
+  },
+};
+
+// showError=false computes validity silently (used while actively typing,
+// so a half-finished number never flashes red) -- showError=true is for
+// completed actions: leaving the field, switching carriers, or submitting.
+function validateTracking(showError) {
+  const form = document.getElementById('tracking-form');
+  const carrier = form.carrier.value;
+  const trackingInput = form.tracking_number;
+  const tracking = trackingInput.value.trim().toUpperCase();
+  const hint = document.getElementById('tracking-hint');
+
+  // Don't nag before there's enough to judge -- no error on an empty
+  // field, and no carrier-specific check until a carrier is selected.
+  if (!carrier || !tracking) {
+    trackingInput.classList.remove('invalid');
+    hint.classList.remove('visible');
+    return true;
+  }
+
+  const pattern = CARRIER_PATTERNS[carrier];
+  const isValid = !pattern || pattern.test(tracking);
+
+  if (isValid || !showError) {
+    trackingInput.classList.remove('invalid');
+    hint.classList.remove('visible');
+  } else {
+    trackingInput.classList.add('invalid');
+    hint.textContent = `That doesn't look like a ${carrier.toUpperCase()} tracking number. ${pattern.hint}`;
+    hint.classList.add('visible');
+  }
+  return isValid;
+}
+
+document.querySelector('[name="carrier"]').addEventListener('change', () => validateTracking(true));
+document.querySelector('[name="tracking_number"]').addEventListener('input', () => validateTracking(false));
+document.querySelector('[name="tracking_number"]').addEventListener('blur', () => validateTracking(true));
+
+// EasyPost Test Mode toggle -- swaps the free-text tracking_number input
+// for a dropdown of the seven known simulated-status codes (so nobody has
+// to remember EZ4000000004), and syncs the hidden/readonly input's value
+// so the rest of the form (validateTracking, the submit handler) doesn't
+// need to know the difference.
+const carrierSelect = document.getElementById('carrier-select');
+const testCodeSelect = document.getElementById('test-code-select');
+const testCodeHint = document.getElementById('test-code-hint');
+const trackingInput = document.getElementById('tracking-number-input');
+
+function syncTestMode() {
+  const isTestMode = carrierSelect.value === 'easypost_test';
+  testCodeSelect.style.display = isTestMode ? '' : 'none';
+  testCodeHint.style.display = isTestMode ? '' : 'none';
+  if (isTestMode) {
+    trackingInput.value = testCodeSelect.value;
+    trackingInput.readOnly = true;
+    trackingInput.style.background = '#f5f5f5';
+  } else {
+    trackingInput.readOnly = false;
+    trackingInput.style.background = '#fff';
+    if (CARRIER_PATTERNS.easypost_test.test(trackingInput.value.trim().toUpperCase())) {
+      trackingInput.value = '';
+    }
+  }
+  validateTracking(false);
+}
+carrierSelect.addEventListener('change', syncTestMode);
+testCodeSelect.addEventListener('change', () => {
+  trackingInput.value = testCodeSelect.value;
+  validateTracking(false);
+});
+syncTestMode();
+
+// Full-name gating for sender and recipient -- Twilio's Consumer-Initiated
+// Viral Messaging policy requires the sender to be clearly identified by
+// full name in the message body, not first name alone. The backend
+// re-validates this server-side too, since client-side checks alone are
+// never trustworthy -- this is just the same rule surfaced early, with
+// the same blur/submit-only error timing as the tracking field so it
+// doesn't nag mid-keystroke.
+function validateNamePair(firstField, lastField, hintId, showError, label) {
+  const form = document.getElementById('tracking-form');
+  const first = form[firstField];
+  const last = form[lastField];
+  const hint = document.getElementById(hintId);
+  const bothFilled = first.value.trim().length > 0 && last.value.trim().length > 0;
+
+  if (bothFilled || !showError) {
+    first.classList.remove('invalid');
+    last.classList.remove('invalid');
+    hint.classList.remove('visible');
+  } else {
+    if (!first.value.trim()) first.classList.add('invalid');
+    if (!last.value.trim()) last.classList.add('invalid');
+    hint.textContent = `${label}'s first and last name are both required.`;
+    hint.classList.add('visible');
+  }
+  return bothFilled;
+}
+
+const validateSenderName = (showError) =>
+  validateNamePair('sender_first_name', 'sender_last_name', 'sender-name-hint', showError, 'Your');
+const validateRecipientName = (showError) =>
+  validateNamePair('recipient_first_name', 'recipient_last_name', 'recipient-name-hint', showError, "Recipient's");
+
+['sender_first_name', 'sender_last_name'].forEach((name) => {
+  const el = document.querySelector(`[name="${name}"]`);
+  el.addEventListener('input', () => validateSenderName(false));
+  el.addEventListener('blur', () => validateSenderName(true));
+});
+['recipient_first_name', 'recipient_last_name'].forEach((name) => {
+  const el = document.querySelector(`[name="${name}"]`);
+  el.addEventListener('input', () => validateRecipientName(false));
+  el.addEventListener('blur', () => validateRecipientName(true));
+});
+
+// Internal demo endpoint (not the public manual-order.ts path) -- always
+// creates an is_test order and registers the EasyPost tracker against
+// EASYPOST_API_KEY_TEST. See api/v1/internal-demo-order.ts.
+const INTERNAL_DEMO_ENDPOINT = 'https://go.sendingthx.com/api/v1/internal-demo-order';
+let lastTrackingNumber = null;
+
+document.getElementById('tracking-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+
+  const submitBtn = document.getElementById('submit-btn');
+  const errorBox = document.getElementById('submit-error');
+  errorBox.style.display = 'none';
+
+  if (!validateTracking(true)) {
+    errorBox.textContent = "That tracking number doesn't match the selected carrier's format — please double-check it.";
+    errorBox.style.display = 'block';
+    return;
+  }
+  if (!validateSenderName(true)) {
+    errorBox.textContent = 'Please enter your first and last name.';
+    errorBox.style.display = 'block';
+    return;
+  }
+  if (!validateRecipientName(true)) {
+    errorBox.textContent = "Please enter the recipient's first and last name.";
+    errorBox.style.display = 'block';
+    return;
+  }
+
+  log('\n[Form] Submitting demo order...');
+
+  const formData = new FormData(e.target);
+  const consentData = window.SendingThxConsentData ? window.SendingThxConsentData() : null;
+
+  if (!consentData) {
+    log('[ERROR] SendingThxConsentData() not available');
+    return;
+  }
+
+  const recipientFirst = formData.get('recipient_first_name');
+  const carrierForPayload = carrierSelect.value === 'easypost_test' ? 'usps' : carrierSelect.value;
+
+  // carrier sent to the backend is a real carrier value even in test mode
+  // -- EasyPost's simulated codes resolve by tracking_code, not carrier,
+  // and "easypost_test" itself isn't a carrier EasyPost recognizes.
+  const orderPayload = {
+    tracking_number: formData.get('tracking_number'),
+    carrier: carrierForPayload,
+    gift_description: formData.get('gift_description') || 'a package',
+    gifter: {
+      name: `${formData.get('sender_first_name')} ${formData.get('sender_last_name')}`.trim(),
+      phone: consentData.senderPhone,
+    },
+    recipient: {
+      name: `${recipientFirst} ${formData.get('recipient_last_name')}`.trim(),
+      phone: consentData.recipientPhone,
+    },
+    occasion: consentData.occasion,
+    gift_note: consentData.giftNote,
+  };
+
+  log('\n[Data] POST /api/v1/internal-demo-order payload:');
+  log(JSON.stringify(orderPayload, null, 2));
+
+  if (!consentData.isValid) {
+    log('\n[Error] ✗ SMS consent validation failed');
+    errorBox.textContent = 'Please complete both consent checkboxes and phone numbers.';
+    errorBox.style.display = 'block';
+    return;
+  }
+
+  submitBtn.disabled = true;
+  submitBtn.textContent = 'Submitting…';
+
+  try {
+    const res = await fetch(INTERNAL_DEMO_ENDPOINT, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(orderPayload),
+    });
+    const data = await res.json();
+
+    log('\n[Response] ' + res.status + ':');
+    log(JSON.stringify(data, null, 2));
+
+    if (res.ok && data.success) {
+      const isDelivered = orderPayload.tracking_number === 'EZ4000000004';
+      document.getElementById('confirm-body').textContent = isDelivered
+        ? `Registered as a test order. EasyPost's test mode fires the delivered webhook almost immediately — ${recipientFirst || 'the recipient'} and you should both get a text within a few seconds.`
+        : `Registered as a test order (tracking ${orderPayload.tracking_number}). This code doesn't simulate "delivered", so no SMS is expected — use this to confirm the tracker itself registers cleanly.`;
+      lastTrackingNumber = orderPayload.tracking_number;
+      e.target.style.display = 'none';
+      document.getElementById('form-intro').style.display = 'none';
+      document.getElementById('confirm-box').style.display = 'block';
+    } else {
+      errorBox.textContent = data.error || 'Something went wrong — please try again.';
+      errorBox.style.display = 'block';
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Fire demo order';
+    }
+  } catch (err) {
+    log('[ERROR] Network request failed: ' + err.message);
+    errorBox.textContent = 'Could not reach the server — check your connection and try again.';
+    errorBox.style.display = 'block';
+    submitBtn.disabled = false;
+    submitBtn.textContent = 'Fire demo order';
+  }
+});
+
+document.getElementById('again-btn').addEventListener('click', () => {
+  document.getElementById('confirm-box').style.display = 'none';
+  document.getElementById('form-intro').style.display = '';
+  document.getElementById('tracking-form').style.display = '';
+  document.getElementById('tracking-form').reset();
+  syncTestMode();
+  const submitBtn = document.getElementById('submit-btn');
+  submitBtn.disabled = false;
+  submitBtn.textContent = 'Fire demo order';
+});
+
+log('[Ready] Internal QA demo ready — fill in the form to test');
+</script>
+
+</body>
+</html>
