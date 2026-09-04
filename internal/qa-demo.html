@@ -199,7 +199,7 @@ button:disabled { opacity: 0.6; cursor: not-allowed; }
   <div id="form-intro">
     <h1>Internal QA demo</h1>
     <p class="subtitle">Fires the real delivery-notification SMS through the real send path — for live demos and ad hoc testing, not for customers.</p>
-    <p class="internal-banner"><strong>Internal tool.</strong> Every order created here is flagged <code>is_test</code> — excluded from retailer stats and billing — and registered against EasyPost's test mode, so the seven codes below simulate a status instantly instead of waiting on a real carrier. This page isn't linked from the site and isn't indexed; please don't share the link outside the team.</p>
+    <p class="internal-banner"><strong>Internal tool.</strong> Every order created here is flagged <code>is_test</code> — excluded from retailer stats and billing — and registered in test mode, so the seven codes below simulate a status instantly instead of waiting on a real carrier. This page isn't linked from the site and isn't indexed; please don't share the link outside the team.</p>
     <p class="test-tip">💡 Enter your own name and phone number for both the sender and recipient below — you'll get both texts yourself.</p>
   </div>
 
@@ -207,7 +207,7 @@ button:disabled { opacity: 0.6; cursor: not-allowed; }
     <div class="form-section">
       <h2>Shipment</h2>
       <select class="form-select" name="carrier" id="carrier-select" required>
-        <option value="easypost_test" selected>EasyPost Test Mode (simulate any status)</option>
+        <option value="easypost_test" selected>Test Mode (simulate any status)</option>
         <option value="usps">USPS</option>
         <option value="ups">UPS</option>
         <option value="fedex">FedEx</option>
@@ -372,13 +372,13 @@ updateSmsPreview();
 // since nothing ever tells anyone what happened.
 //
 // easypost_test is added here (not present on the public add-tracking.html
-// this page is derived from) -- it validates against EasyPost's seven
-// documented simulated-status codes exactly, since anything else typed
-// into that "carrier" is guaranteed not to resolve at all.
+// this page is derived from) -- it validates against the seven documented
+// simulated-status test codes exactly, since anything else typed into that
+// "carrier" is guaranteed not to resolve at all.
 const CARRIER_PATTERNS = {
   easypost_test: {
     test: (v) => /^EZ[0-9]{10}$/.test(v),
-    hint: 'EasyPost test codes are EZ followed by 10 digits — pick one from the dropdown above rather than typing it.',
+    hint: 'Test codes are EZ followed by 10 digits — pick one from the dropdown above rather than typing it.',
   },
   usps: {
     // USPS tracking numbers aren't a single fixed length -- 20 and 22
@@ -604,7 +604,7 @@ document.getElementById('tracking-form').addEventListener('submit', async (e) =>
     if (res.ok && data.success) {
       const isDelivered = orderPayload.tracking_number === 'EZ4000000004';
       document.getElementById('confirm-body').textContent = isDelivered
-        ? `Registered as a test order. EasyPost's test mode fires the delivered webhook almost immediately — ${recipientFirst || 'the recipient'} and you should both get a text within a few seconds.`
+        ? `Registered as a test order. Test mode fires almost immediately — ${recipientFirst || 'the recipient'} and you should both get a text within a few seconds.`
         : `Registered as a test order (tracking ${orderPayload.tracking_number}). This code doesn't simulate "delivered", so no SMS is expected — use this to confirm the tracker itself registers cleanly.`;
       lastTrackingNumber = orderPayload.tracking_number;
       e.target.style.display = 'none';
