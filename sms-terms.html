@@ -101,7 +101,7 @@ footer{border-top:1px solid var(--cream-border);padding:2.5rem 2rem;margin-top:1
   <div class="doc-eyebrow">SMS Terms &amp; Conditions</div>
   <h1>Transactional only. Always.</h1>
   <p>This page explains the text messages SendingThx sends, who sends them, and how to stop them at any time.</p>
-  <div class="doc-updated">Last updated July 2026</div>
+  <div class="doc-updated">Last updated October 2026</div>
 </header>
 
 <div class="entity-band">
@@ -115,11 +115,12 @@ footer{border-top:1px solid var(--cream-border);padding:2.5rem 2rem;margin-top:1
   <p>SendingThx does not send marketing, promotional, or advertising messages of any kind under this program. No message contains discount codes, promotions, or unrelated offers.</p>
 
   <h2>How you came to receive a message</h2>
-  <p>There are two ways someone ends up receiving a SendingThx text, and both require an explicit, affirmative opt-in captured at checkout — nobody is texted automatically.</p>
+  <p>There are three ways someone ends up receiving a SendingThx text, and every one requires an explicit, affirmative opt-in — nobody is texted automatically.</p>
   <p><strong>If you're the purchaser:</strong> you opted in yourself. At checkout, you were shown your own phone number alongside an unchecked-by-default consent box, and you only receive a message — for example, if the recipient responds to your gift — because you personally checked that box for your own number.</p>
   <p><strong>If you're the gift recipient:</strong> this is a <strong>Consumer-Initiated Viral Message</strong>. A purchaser made a real purchase from one of our retail partners and chose, themselves, to send you a one-time delivery notification. The purchaser — not SendingThx — manually enters your phone number and must affirmatively confirm they have your consent before it can be sent. That recipient confirmation is only available to check at all after the purchaser has separately opted themselves in first. SendingThx does not import contact lists, buy phone numbers, or message anyone the purchaser hasn't specifically identified and personally vouched for.</p>
+  <p><strong>If you scanned a SendingThx QR code:</strong> some retailers print a SendingThx QR code on the packing slip or gift card inside the package. Scanning it opens a private page where you can send the purchaser a thank-you. Adding your phone number on that page is optional. If you add it and check the unchecked-by-default consent box, you receive <strong>one</strong> text confirming your thank-you was delivered — nothing else.</p>
   <div class="callout-box">
-    <p>In plain terms: <strong>SendingThx doesn't collect phone numbers or build a contact list.</strong> The purchaser's number is entered and confirmed by the purchaser, for themselves. The recipient's number is entered by hand by the purchaser, for one specific delivery, with the purchaser's affirmative confirmation of the recipient's consent — and that confirmation can't even be reached until the purchaser has opted in for their own number first.</p>
+    <p>In plain terms: <strong>SendingThx doesn't collect phone numbers or build a contact list.</strong> The purchaser's number is entered and confirmed by the purchaser, for themselves. The recipient's number is entered by hand by the purchaser, for one specific delivery, with the purchaser's affirmative confirmation of the recipient's consent — and that confirmation can't even be reached until the purchaser has opted in for their own number first. A recipient who scans a QR code enters their own number, for that one thank-you receipt, only if they choose to.</p>
   </div>
 
   <h2 id="consent-flow">How consent is collected</h2>
@@ -141,6 +142,30 @@ footer{border-top:1px solid var(--cream-border);padding:2.5rem 2rem;margin-top:1
   </div>
   <p>This cart-time consent flow is powered by <strong>SendingThx Gift Notifications</strong>, the SendingThx feature that handles delivery notifications and consent collection at checkout.</p>
 
+  <h2 id="qr-receipt">Thank-you receipts from a QR code</h2>
+  <p>When a retailer includes a SendingThx QR code in the package, the recipient can scan it to open the same private thank-you page described above. The page shows an optional section reading <strong>"Want a text when your thank-you is delivered?"</strong> with a phone number field and this unchecked-by-default box:</p>
+  <div class="callout-box">
+    <p>"I agree to receive one text message from SendingThx at this number confirming my thank-you was delivered. Msg &amp; data rates may apply. Reply STOP to opt out, HELP for help. Your number is not shared with third parties for marketing."</p>
+  </div>
+  <p>Sending a thank-you never requires a phone number or consent. A number entered without the box checked is discarded, not stored. When the box is checked, SendingThx sends exactly one message, after the carrier confirms the thank-you reached the purchaser.</p>
+  <div class="callout-box">
+    <p><strong>QR thank-you page</strong> — opened by scanning the code in the package</p>
+    <div class="pair-row" style="display:flex;gap:1rem;margin-top:.75rem;flex-wrap:wrap">
+      <div style="flex:1;min-width:220px">
+        <img src="screenshots/qr-receipt-unchecked.png" class="zoomable" onclick="openLightbox(this.src, this.alt)" alt="Thank-you page with the optional receipt section: phone number field empty and the consent checkbox unchecked" style="width:100%;border-radius:8px;border:1px solid var(--cream-border)">
+        <p style="text-align:center;font-size:.78rem;color:var(--ink-light);margin-top:.4rem;margin-bottom:0">Default state — phone optional, box unchecked</p>
+      </div>
+      <div style="flex:1;min-width:220px">
+        <img src="screenshots/qr-receipt-checked.png" class="zoomable" onclick="openLightbox(this.src, this.alt)" alt="Thank-you page with a phone number entered and the receipt consent checkbox checked" style="width:100%;border-radius:8px;border:1px solid var(--cream-border)">
+        <p style="text-align:center;font-size:.78rem;color:var(--ink-light);margin-top:.4rem;margin-bottom:0">After the recipient opts in for one receipt</p>
+      </div>
+    </div>
+  </div>
+  <div class="callout-box green">
+    <p style="margin-bottom:.75rem"><strong>Recipient receives (one time only):</strong></p>
+    <p>"SendingThx: your thank-you for the flowers from Green Garden Florist was delivered to Bob. This is a one-time message. Reply HELP for help, STOP to opt out."</p>
+  </div>
+
   <h2>Example message</h2>
   <p>Here's what a SendingThx notification looks like — both on the recipient's side and the purchaser's side. Every message carries the sender name <strong>SendingThx</strong>, shown below as it appears in a live text thread.</p>
   <div class="callout-box green">
@@ -155,19 +180,19 @@ footer{border-top:1px solid var(--cream-border);padding:2.5rem 2rem;margin-top:1
   </div>
 
   <h2>Message frequency</h2>
-  <p>Message frequency depends entirely on your delivery activity. A typical order generates one to three messages: a delivery alert, and — if you choose to respond — a confirmation that your reply was relayed. SendingThx does not send recurring, scheduled, or unprompted messages outside of an actual delivery event.</p>
+  <p>Message frequency depends entirely on your delivery activity. A typical order generates one to three messages: a delivery alert, and — if you choose to respond — a confirmation that your reply was relayed. A QR thank-you receipt is a single message, sent once. SendingThx does not send recurring, scheduled, or unprompted messages outside of an actual delivery event.</p>
 
   <h2>Message and data rates</h2>
   <p>Message and data rates may apply, depending on your mobile carrier and plan.</p>
 
   <h2>Opt-out and help</h2>
-  <p>Reply <span class="keyword">STOP</span> to any message at any time to stop receiving further messages tied to that delivery. For help with a message you received, email us directly at <a href="mailto:support@sendingthx.com">support@sendingthx.com</a> rather than replying to the text.</p>
+  <p>Reply <span class="keyword">STOP</span> to any message at any time to stop receiving further messages tied to that delivery. Reply <span class="keyword">HELP</span> for help, or email us at <a href="mailto:support@sendingthx.com">support@sendingthx.com</a>.</p>
   <div class="callout-box green">
     <p><strong>Note:</strong> because each message is tied to a single delivery rather than a standing subscription, there's generally no ongoing list to opt back into — a new delivery from a participating retailer would generate a new, independent notification.</p>
   </div>
 
   <h2>Privacy</h2>
-  <p>The purchaser's phone number is entered directly by the purchaser at checkout and used only to deliver the notifications described above. The recipient's phone number is entered by the purchaser, by hand, for that specific order. Where a reply is relayed from the recipient back to the purchaser, SendingThx acts as a privacy-preserving intermediary — the recipient and purchaser are not shown each other's personal phone numbers.</p>
+  <p>The purchaser's phone number is entered directly by the purchaser at checkout and used only to deliver the notifications described above. The recipient's phone number is entered by the purchaser, by hand, for that specific order — or, for a QR thank-you receipt, by the recipient themselves, optionally. Phone numbers and opt-in consent are not shared with third parties for marketing or promotional purposes. Where a reply is relayed from the recipient back to the purchaser, SendingThx acts as a privacy-preserving intermediary — the recipient and purchaser are not shown each other's personal phone numbers.</p>
 
   <h2>Carriers</h2>
   <p>Carriers are not liable for delayed or undelivered messages. SendingThx works to ensure timely delivery but cannot guarantee message delivery in all circumstances.</p>
