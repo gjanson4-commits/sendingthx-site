@@ -67,6 +67,10 @@ td{padding:.6rem .4rem;border-bottom:1px solid var(--cream-border);vertical-alig
 td a{color:var(--ink-mid);font-weight:600;margin-right:.6rem}
 .recent{margin-top:1.25rem}
 .key-panel{max-width:480px}
+.share{margin-bottom:1.25rem;display:none}
+.share p{font-size:.88rem;color:var(--ink-mid);margin-bottom:.6rem}
+.pill-blue{background:#E8EEF9;color:#2D4C8A}
+tr.needs td{background:var(--gold-pale)}
 </style>
 </head>
 <body>
@@ -91,6 +95,12 @@ td a{color:var(--ink-mid);font-weight:600;margin-right:.6rem}
   </section>
 
   <div id="app" style="display:none">
+    <section class="panel share" id="sharePanel">
+      <h2>Online orders: your thank-you card link</h2>
+      <p>Add this link to your website or order confirmation email. Customers add their own card and opt in for the text. Their cards show up below marked <strong>Needs printing</strong>.</p>
+      <div class="copy-box"><input id="shareUrl" readonly><button class="btn btn-light" id="copyShare">Copy</button></div>
+      <div class="sample">Suggested wording: Want a thank-you from your recipient? Add a thank-you card to your order: <span id="shareInline"></span></div>
+    </section>
     <div class="grid">
       <section class="panel">
         <h2>New card</h2>
@@ -108,7 +118,10 @@ td a{color:var(--ink-mid);font-weight:600;margin-right:.6rem}
               <option value="thank-you">Thank you</option>
             </select></div>
         </div>
-        <div class="field"><label for="item">Arrangement</label><input id="item" placeholder="Spring tulip bouquet" autocomplete="off"></div>
+        <div class="row">
+          <div class="field"><label for="item">Arrangement</label><input id="item" placeholder="Spring tulip bouquet" autocomplete="off"></div>
+          <div class="field"><label for="orderNo">Order #</label><input id="orderNo" autocomplete="off"></div>
+        </div>
         <div class="field"><label for="msg">Card message</label><textarea id="msg" maxlength="300" placeholder="Happy birthday, Mom! Love you."></textarea>
           <p class="hint">Shown to the recipient on the thank-you page.</p></div>
         <button class="btn btn-dark" id="create">Create card</button>
@@ -145,7 +158,7 @@ td a{color:var(--ink-mid);font-weight:600;margin-right:.6rem}
     <section class="panel recent">
       <h2>Recent cards</h2>
       <div class="table-wrap">
-        <table><thead><tr><th>Sender</th><th>Recipient</th><th>Created</th><th>Sender texts</th><th>Thank-you</th><th>Card</th></tr></thead>
+        <table><thead><tr><th>Sender</th><th>Recipient</th><th>Order #</th><th>Created</th><th>Sender texts</th><th>Thank-you</th><th>Card</th></tr></thead>
         <tbody id="orders"></tbody></table>
       </div>
       <div class="empty" id="ordersEmpty" style="display:none">No cards yet.</div>
@@ -200,7 +213,7 @@ $('create').onclick = async () => {
   const body = {
     sender: { first_name: $('sFirst').value.trim(), last_name: $('sLast').value.trim() },
     recipient: { first_name: $('rFirst').value.trim() },
-    occasion: $('occasion').value, item_description: $('item').value.trim(), card_message: $('msg').value.trim(),
+    occasion: $('occasion').value, item_description: $('item').value.trim(), card_message: $('msg').value.trim(), order_number: $('orderNo').value.trim(),
   };
   if (!body.sender.first_name || !body.sender.last_name) return showErr(err, "Enter the sender's first and last name.");
   if (!body.recipient.first_name) return showErr(err, "Enter the recipient's first name.");
@@ -215,12 +228,18 @@ $('create').onclick = async () => {
     $('sampleText').innerHTML = '<strong>Suggested text:</strong> Hi ' + esc(body.sender.first_name) +
       ', want ' + esc(body.recipient.first_name) + "'s thank-you texted to you when they get your flowers? Tap here: " + esc(d.sender_optin_url);
     $('resultEmpty').style.display = 'none'; $('resultBody').style.display = 'block';
-    ['sFirst','sLast','rFirst','item','msg'].forEach(id => $(id).value = ''); $('occasion').value = '';
+    ['sFirst','sLast','rFirst','item','msg','orderNo'].forEach(id => $(id).value = ''); $('occasion').value = '';
     loadOrders();
   } catch (e) {
     if (e.status === 401) return showKeyPanel();
     showErr(err, e.message);
   } finally { $('create').disabled = false; $('create').textContent = 'Create card'; }
+};
+
+$('copyShare').onclick = async () => {
+  try { await navigator.clipboard.writeText($('shareUrl').value); $('copyShare').textContent = 'Copied'; }
+  catch (e) { $('shareUrl').select(); }
+  setTimeout(() => { $('copyShare').textContent = 'Copy'; }, 1500);
 };
 
 $('copyLink').onclick = async () => {
@@ -232,6 +251,10 @@ $('copyLink').onclick = async () => {
 async function loadOrders() {
   try {
     const d = await api('GET');
+    if (d.self_serve_url) {
+      $('sharePanel').style.display = 'block';
+      $('shareUrl').value = d.self_serve_url; $('shareInline').textContent = d.self_serve_url;
+    }
     const tb = $('orders');
     $('ordersEmpty').style.display = d.orders.length ? 'none' : 'block';
     tb.innerHTML = d.orders.map(o => {
@@ -240,8 +263,12 @@ async function loadOrders() {
         : '<span class="pill pill-grey">Not yet</span> <a href="' + esc(o.sender_optin_url) + '" target="_blank" rel="noopener">Link</a>';
       const thanks = o.thanks_waiting ? '<span class="pill pill-gold">Waiting on sender</span>'
         : o.thanked ? '<span class="pill pill-green">Sent</span>' : '<span class="pill pill-grey">Not yet</span>';
-      return '<tr><td>' + esc(o.sender_name) + '</td><td>' + esc(o.recipient_name) + '</td><td>' + created +
-        '</td><td>' + sender + '</td><td>' + thanks + '</td><td><a href="' + esc(o.card_url) + '" target="_blank" rel="noopener">Print</a></td></tr>';
+      const online = o.entry_channel === 'self_serve';
+      const needs = online && !o.card_opened;
+      const who = esc(o.sender_name) + (online ? ' <span class="pill pill-blue">Online</span>' : '');
+      const print = needs ? '<span class="pill pill-gold">Needs printing</span> ' : '';
+      return '<tr' + (needs ? ' class="needs"' : '') + '><td>' + who + '</td><td>' + esc(o.recipient_name) + '</td><td>' + esc(o.order_number || '—') + '</td><td>' + created +
+        '</td><td>' + sender + '</td><td>' + thanks + '</td><td>' + print + '<a href="' + esc(o.card_url) + '" target="_blank" rel="noopener" onclick="setTimeout(loadOrders, 1500)">Print</a></td></tr>';
     }).join('');
   } catch (e) { if (e.status === 401) showKeyPanel(); }
 }
