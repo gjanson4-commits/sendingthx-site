@@ -179,8 +179,8 @@ const $ = (id) => document.getElementById(id);
 function esc(s) { return String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 function showErr(el, msg) { el.textContent = msg; el.style.display = 'block'; }
 
-async function api(method, body) {
-  const res = await fetch(API, {
+async function api(method, body, query) {
+  const res = await fetch(API + (query || ''), {
     method,
     headers: { 'Authorization': 'Bearer ' + apiKey, ...(body ? { 'Content-Type': 'application/json' } : {}) },
     body: body ? JSON.stringify(body) : undefined,
@@ -274,9 +274,18 @@ async function loadOrders() {
       const who = esc(o.sender_name) + (online ? ' <span class="pill pill-blue">Online</span>' : '');
       const print = needs ? '<span class="pill pill-gold">Needs printing</span> ' : '';
       return '<tr' + (needs ? ' class="needs"' : '') + '><td>' + who + '</td><td>' + esc(o.recipient_name) + '</td><td>' + esc(o.order_number || '—') + '</td><td>' + created +
-        '</td><td>' + sender + '</td><td>' + thanks + '</td><td>' + print + '<a href="' + esc(o.card_url) + '" target="_blank" rel="noopener" onclick="setTimeout(loadOrders, 1500)">Print</a></td></tr>';
+        '</td><td>' + sender + '</td><td>' + thanks + '</td><td>' + print + '<a href="' + esc(o.card_url) + '" target="_blank" rel="noopener" onclick="setTimeout(loadOrders, 1500)">Print</a>' +
+        (o.cancellable ? ' <a href="#" onclick="cancelCard(' + JSON.stringify(String(o.order_id)).replace(/"/g, '&quot;') + ');return false">Cancel</a>' : '') + '</td></tr>';
     }).join('');
   } catch (e) { if (e.status === 401) showKeyPanel(); }
+}
+
+// Same-day cancel: the card stops working and isn't billed.
+async function cancelCard(id) {
+  if (!window.confirm('Cancel this card? Its QR code will stop working and it will not be billed.')) return;
+  try { await api('DELETE', null, '?order_id=' + encodeURIComponent(id)); }
+  catch (e) { if (e.status === 401) return showKeyPanel(); window.alert(e.message); }
+  loadOrders();
 }
 
 if (apiKey) showApp(); else showKeyPanel();
