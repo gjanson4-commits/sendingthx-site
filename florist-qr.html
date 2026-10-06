@@ -110,6 +110,9 @@ tr.needs td{background:var(--gold-pale)}
         </div>
         <div class="row">
           <div class="field"><label for="rFirst">Recipient first name <span class="req">*</span></label><input id="rFirst" autocomplete="off"></div>
+          <div class="field"><label for="rLast">Recipient last name <span class="req">*</span></label><input id="rLast" autocomplete="off"></div>
+        </div>
+        <div class="row">
           <div class="field"><label for="occasion">Occasion</label>
             <select id="occasion">
               <option value="">General</option><option value="birthday">Birthday</option>
@@ -117,11 +120,9 @@ tr.needs td{background:var(--gold-pale)}
               <option value="get-well">Get well</option><option value="sympathy">Sympathy</option>
               <option value="thank-you">Thank you</option>
             </select></div>
-        </div>
-        <div class="row">
-          <div class="field"><label for="item">Arrangement</label><input id="item" placeholder="Spring tulip bouquet" autocomplete="off"></div>
           <div class="field"><label for="orderNo">Order #</label><input id="orderNo" autocomplete="off"></div>
         </div>
+        <div class="field"><label for="item">Arrangement</label><input id="item" placeholder="Spring tulip bouquet" autocomplete="off"></div>
         <div class="field"><label for="msg">Card message</label><textarea id="msg" maxlength="300" placeholder="Happy birthday, Mom! Love you."></textarea>
           <p class="hint">Shown to the recipient on the thank-you page.</p></div>
         <button class="btn btn-dark" id="create">Create card</button>
@@ -215,11 +216,11 @@ $('create').onclick = async () => {
   const err = $('createErr'); err.style.display = 'none';
   const body = {
     sender: { first_name: $('sFirst').value.trim(), last_name: $('sLast').value.trim() },
-    recipient: { first_name: $('rFirst').value.trim() },
+    recipient: { first_name: $('rFirst').value.trim(), last_name: $('rLast').value.trim() },
     occasion: $('occasion').value, item_description: $('item').value.trim(), card_message: $('msg').value.trim(), order_number: $('orderNo').value.trim(),
   };
   if (!body.sender.first_name || !body.sender.last_name) return showErr(err, "Enter the sender's first and last name.");
-  if (!body.recipient.first_name) return showErr(err, "Enter the recipient's first name.");
+  if (!body.recipient.first_name || !body.recipient.last_name) return showErr(err, "Enter the recipient's first and last name.");
   $('create').disabled = true; $('create').textContent = 'Creating...';
   try {
     const d = await api('POST', body);
@@ -231,7 +232,7 @@ $('create').onclick = async () => {
     $('sampleText').innerHTML = '<strong>Suggested text:</strong> Hi ' + esc(body.sender.first_name) +
       ', want ' + esc(body.recipient.first_name) + "'s thank-you texted to you when they get your flowers? Tap here: " + esc(d.sender_optin_url);
     $('resultEmpty').style.display = 'none'; $('resultBody').style.display = 'block';
-    ['sFirst','sLast','rFirst','item','msg','orderNo'].forEach(id => $(id).value = ''); $('occasion').value = '';
+    ['sFirst','sLast','rFirst','rLast','item','msg','orderNo'].forEach(id => $(id).value = ''); $('occasion').value = '';
     loadOrders();
   } catch (e) {
     if (e.status === 401) return showKeyPanel();
