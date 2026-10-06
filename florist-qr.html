@@ -96,10 +96,10 @@ tr.needs td{background:var(--gold-pale)}
 
   <div id="app" style="display:none">
     <section class="panel share" id="sharePanel">
-      <h2>Online orders: your thank-you card link</h2>
-      <p>Add this link to your website or order confirmation email. Customers add their own card and opt in for the text. Their cards show up below marked <strong>Needs printing</strong>.</p>
+      <h2>Online orders: your thank-you option link</h2>
+      <p>Add this link to your website or order confirmation email. Customers add the thank-you option to their order and opt in for the text. Their cards show up below marked <strong>Needs printing</strong>.</p>
       <div class="copy-box"><input id="shareUrl" readonly><button class="btn btn-light" id="copyShare">Copy</button></div>
-      <div class="sample">Suggested wording: Want a thank-you from your recipient? Add a thank-you card to your order: <span id="shareInline"></span></div>
+      <div class="sample">Suggested wording: Want a thank-you from your recipient? Add the thank-you option to your order: <span id="shareInline"></span></div>
     </section>
     <div class="grid">
       <section class="panel">
@@ -156,7 +156,10 @@ tr.needs td{background:var(--gold-pale)}
     </div>
 
     <section class="panel recent">
-      <h2>Recent cards</h2>
+      <div style="display:flex;justify-content:space-between;align-items:baseline;gap:1rem;flex-wrap:wrap;margin-bottom:1rem">
+        <h2 style="margin:0">Recent cards</h2>
+        <span class="hint" style="margin:0" id="monthCount"></span>
+      </div>
       <div class="table-wrap">
         <table><thead><tr><th>Sender</th><th>Recipient</th><th>Order #</th><th>Created</th><th>Sender texts</th><th>Thank-you</th><th>Card</th></tr></thead>
         <tbody id="orders"></tbody></table>
@@ -254,6 +257,9 @@ async function loadOrders() {
     if (d.self_serve_url) {
       $('sharePanel').style.display = 'block';
       $('shareUrl').value = d.self_serve_url; $('shareInline').textContent = d.self_serve_url;
+    }
+    if (typeof d.cards_this_month === 'number') {
+      $('monthCount').textContent = 'Cards created this month: ' + d.cards_this_month + ' (billed per card)';
     }
     const tb = $('orders');
     $('ordersEmpty').style.display = d.orders.length ? 'none' : 'block';
