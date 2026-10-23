@@ -361,8 +361,12 @@ function updateSmsPreview() {
   // detail end users have no reason to see.
   const link = 'sendingthx.com/t/••••••••••••••••';
 
-  const recipientBody = `${senderName} sent ${addressee} ${giftDesc} - just delivered!\n\nTo thank ${senderFirstOnly}, text back a note or photo, or tap the link for more: ${link}\n\nOne-time msg sent at ${senderFirstOnly}'s request. Reply STOP to opt out.`;
-  const senderBody = `Your ${giftDesc} just arrived at ${addressee}'s door. We'll text you if they reply — no guarantee they will. Reply STOP to opt out.`;
+  const recipientBody = `${senderName} sent ${addressee} ${giftDesc} - just delivered!\n\nTo thank ${senderFirstOnly}, reply to this text with a note or photo, or tap the link for more: ${link}\n\nOne-time msg sent at ${senderFirstOnly}'s request. Reply STOP to opt out.`;
+  // Matches the backend's gifter confirmation: "{Recipient}'s {item} just
+  // arrived!" with any leading "a"/"an" dropped from the item, so it never
+  // reads "Your a ..." or "Jim's a ...".
+  const giftDescNoArticle = giftDesc.replace(/^(a|an)\s+/i, '');
+  const senderBody = `${addressee}'s ${giftDescNoArticle} just arrived! We'll text you if they reply — no guarantee they will. Reply STOP to opt out.`;
 
   document.getElementById('preview-recipient').textContent = recipientBody;
   document.getElementById('preview-sender').textContent = senderBody;
