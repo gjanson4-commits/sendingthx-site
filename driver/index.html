@@ -55,7 +55,9 @@ h2{font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--in
 .photo{border:2px dashed var(--gold-dark);border-radius:14px;background:#fff;min-height:150px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:.35rem;cursor:pointer;color:var(--ink-mid);font-weight:600;position:relative;overflow:hidden;margin-top:1.25rem}
 .photo small{font-weight:400;color:var(--ink-light);font-size:.8rem}
 .photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-.photo .clear{position:absolute;top:.5rem;right:.5rem;z-index:2;background:rgba(28,26,20,.75);color:#fff;border:none;border-radius:99px;padding:.35rem .8rem;font:inherit;font-size:.85rem}
+.photo .clear{position:absolute;bottom:.5rem;right:.5rem;z-index:2;background:rgba(255,255,255,.85);color:var(--ink-mid);border:none;border-radius:99px;padding:.3rem .7rem;font:inherit;font-size:.78rem}
+.locbar{display:flex;align-items:center;justify-content:space-between;gap:.75rem;background:#fff;border:1.5px dashed var(--cream-border);border-radius:12px;padding:.6rem .8rem;margin:.6rem 0 .2rem;font-size:.85rem;color:var(--ink-mid)}
+.locbar button{background:var(--ink);color:#fff;border:none;border-radius:99px;padding:.4rem .85rem;font:inherit;font-size:.82rem;white-space:nowrap}
 .spacer{flex:1;min-height:1.5rem}
 .note{font-size:.82rem;color:var(--ink-light);text-align:center;margin-top:.6rem}
 .confirm{display:none;background:#fff;border:1.5px solid var(--cream-border);border-radius:16px;padding:1.1rem;text-align:center}
@@ -100,6 +102,7 @@ h2{font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--in
   <main>
     <h1 class="fr" id="count"></h1>
     <p class="sub">Tap a delivery at the door, take a photo, mark it delivered.</p>
+    <div class="locbar" id="locbar" style="display:none"><span id="locmsg">Sort by nearest delivery</span><button type="button" id="locbtn">📍 Use my location</button></div>
     <div class="list" id="open"></div>
     <div id="doneWrap" style="display:none"><h2>Delivered today</h2><div class="dlist" id="done"></div></div>
     <div class="spacer"></div>
@@ -257,7 +260,8 @@ h2{font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--in
   var here = null;
   function sortByDistance(list) {
     if (!list.some(function (o) { return o.dest_lat != null; })) return;
-    if (!here) { locate().then(function (loc) { if (loc) { here = loc; if (lastList) renderAgain(); } }); return; }
+    if (!here) { $('locbar').style.display = 'flex'; return; }
+    $('locbar').style.display = 'none';
     list.forEach(function (o, i) {
       o._i = i;
       if (o.dest_lat == null || o.dest_lng == null) { o._m = Infinity; o._mi = null; return; }
@@ -268,6 +272,15 @@ h2{font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--in
     list.sort(function (a, b) { return a._m - b._m || a._i - b._i; });
   }
   function renderAgain() { loadList().catch(function () {}); }
+  // iPhones often won't show the location prompt unless it follows a tap.
+  $('locbtn').onclick = function () {
+    var b = $('locbtn'); b.disabled = true; b.textContent = 'Locating…';
+    locate(30000).then(function (loc) {
+      b.disabled = false; b.textContent = '📍 Use my location';
+      if (loc) { here = loc; renderAgain(); return; }
+      $('locmsg').textContent = 'Location is off. iPhone: Settings → Privacy & Security → Location Services → Safari Websites → While Using.';
+    });
+  };
   $('refresh').onclick = function () { here = null; loadList().catch(function () {}); };
   $('open').onclick = function (e) {
     var b = e.target.closest('.stop'); if (!b || !lastList) return;
@@ -305,7 +318,7 @@ h2{font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--in
       c.getContext('2d').drawImage(img, 0, 0, c.width, c.height); URL.revokeObjectURL(url);
       photoData = c.toDataURL('image/jpeg', 0.8);
       var box = $('photoBox'), pv = document.createElement('img'); pv.src = photoData; pv.alt = 'Delivery photo'; box.appendChild(pv);
-      var x = document.createElement('button'); x.type = 'button'; x.className = 'clear'; x.textContent = 'Retake';
+      var x = document.createElement('button'); x.type = 'button'; x.className = 'clear'; x.textContent = 'Use a different photo';
       x.onclick = function (ev) { ev.preventDefault(); resetPhoto(); }; box.appendChild(x);
       setReady();
     };
@@ -315,12 +328,14 @@ h2{font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--in
   $('go').onclick = function () { if (!photoData) return; err($('stopErr'), ''); $('go').style.display = 'none'; $('gate').style.display = 'none'; $('confirm').style.display = 'block'; };
   $('no').onclick = function () { $('confirm').style.display = 'none'; $('go').style.display = 'block'; };
 
-  function locate() {
+  // ms: how long to wait (the first call may sit on the permission prompt)
+  function locate(ms) {
+    ms = ms || 6000;
     return new Promise(function (resolve) {
       if (!navigator.geolocation) return resolve(null);
-      var done = false, t = setTimeout(function () { if (!done) { done = true; resolve(null); } }, 6000);
+      var done = false, t = setTimeout(function () { if (!done) { done = true; resolve(null); } }, ms);
       navigator.geolocation.getCurrentPosition(function (p) { if (done) return; done = true; clearTimeout(t); resolve({ lat: p.coords.latitude, lng: p.coords.longitude, accuracy: p.coords.accuracy }); },
-        function () { if (!done) { done = true; clearTimeout(t); resolve(null); } }, { enableHighAccuracy: true, timeout: 6000, maximumAge: 60000 });
+        function () { if (!done) { done = true; clearTimeout(t); resolve(null); } }, { enableHighAccuracy: true, timeout: ms, maximumAge: 60000 });
     });
   }
   $('yes').onclick = function () {
