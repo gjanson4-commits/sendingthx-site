@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<meta name="referrer" content="no-referrer">
+<meta name="theme-color" content="#FDFAF3">
+<title>Driver · SendingThx</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fraunces:wght@900&display=swap" rel="stylesheet">
+<style>
+:root{--gold:#F5C842;--gold-dark:#C9A200;--ink:#1C1A14;--ink-mid:#4A4535;--ink-light:#8A8270;--cream:#FDFAF3;--cream-border:#E8E0CC;--green:#1E8C60;--red:#B3261E}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{font-family:'DM Sans',system-ui,sans-serif;background:var(--cream);color:var(--ink);-webkit-font-smoothing:antialiased;line-height:1.4}
+.fr{font-family:'Fraunces',Georgia,serif;font-weight:900}
+.view{display:none;min-height:100vh;min-height:100dvh;flex-direction:column}
+.view.on{display:flex}
+header{padding:1rem 1.25rem;display:flex;justify-content:space-between;align-items:center;gap:1rem;border-bottom:1px solid var(--cream-border);position:sticky;top:0;background:var(--cream);z-index:2}
+header .t{font-weight:700}
+header .s{font-size:.78rem;color:var(--ink-light)}
+.link{background:none;border:none;font:inherit;font-weight:600;color:var(--ink-mid);cursor:pointer;padding:.3rem 0}
+main{flex:1;width:100%;max-width:520px;margin:0 auto;padding:1.25rem 1.25rem 2rem;display:flex;flex-direction:column}
+.logo{font-family:'Fraunces',Georgia,serif;font-weight:900;font-size:1.3rem}.logo span{color:var(--gold-dark)}
+h1{font-size:1.9rem;letter-spacing:-.01em;line-height:1.1}
+.sub{color:var(--ink-mid);margin:.35rem 0 1.2rem;font-size:.95rem}
+label{display:block;font-size:.8rem;font-weight:600;margin:0 0 .35rem}
+input{width:100%;border:1.5px solid var(--cream-border);border-radius:12px;padding:.9rem 1rem;font:inherit;font-size:1.15rem;background:#fff;color:var(--ink);margin-bottom:1rem}
+input:focus{outline:none;border-color:var(--gold-dark)}
+#code{letter-spacing:.4em;font-variant-numeric:tabular-nums}
+.link:disabled{opacity:.4}
+.btn{display:block;width:100%;border:none;border-radius:14px;padding:1.1rem;font:inherit;font-size:1.1rem;font-weight:700;cursor:pointer;text-align:center;background:var(--ink);color:#fff}
+.btn:disabled{opacity:.35}
+.btn-ghost{background:transparent;color:var(--ink-mid);font-size:.95rem;padding:.8rem}
+.err{color:var(--red);font-size:.9rem;margin:.2rem 0 .8rem;display:none}
+.hint{font-size:.8rem;color:var(--ink-light);margin-top:1rem;text-align:center}
+.list{display:flex;flex-direction:column;gap:.7rem}
+.stop{display:flex;align-items:center;justify-content:space-between;gap:1rem;background:#fff;border:1.5px solid var(--cream-border);border-radius:16px;padding:1rem 1.1rem;min-height:84px;cursor:pointer;text-align:left;font:inherit;color:inherit;width:100%}
+.stop:active{background:#FFF9E0}
+.who{font-size:1.3rem;line-height:1.15}
+.what{color:var(--ink-mid);font-size:.92rem;margin-top:.15rem}
+.ref{color:var(--ink-light);font-size:.75rem;margin-top:.3rem;letter-spacing:.03em}
+.where{color:var(--ink);font-size:.95rem;font-weight:600;margin-top:.2rem}
+.dist{color:var(--ink-light);font-weight:500}
+.go{font-size:2rem;color:var(--gold-dark);line-height:1}
+h2{font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-light);margin:1.8rem 0 .6rem}
+.dlist{background:#fff;border:1.5px solid var(--cream-border);border-radius:14px;overflow:hidden}
+.done{display:flex;align-items:center;gap:.7rem;padding:.75rem 1rem;border-top:1px solid var(--cream-border)}
+.done:first-child{border-top:none}
+.tick{width:24px;height:24px;border-radius:50%;background:var(--green);color:#fff;display:flex;align-items:center;justify-content:center;font-size:.8rem;flex-shrink:0}
+.dn{flex:1;font-weight:600}.dt{color:var(--ink-light);font-size:.85rem}
+.empty{background:#fff;border:1.5px dashed var(--cream-border);border-radius:16px;padding:2rem 1rem;text-align:center;color:var(--ink-light)}
+.eyebrow{font-size:.7rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-light);margin-bottom:.3rem}
+.photo{border:2px dashed var(--gold-dark);border-radius:14px;background:#fff;min-height:150px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:.35rem;cursor:pointer;color:var(--ink-mid);font-weight:600;position:relative;overflow:hidden;margin-top:1.25rem}
+.photo small{font-weight:400;color:var(--ink-light);font-size:.8rem}
+.photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.photo .clear{position:absolute;top:.5rem;right:.5rem;z-index:2;background:rgba(28,26,20,.75);color:#fff;border:none;border-radius:99px;padding:.35rem .8rem;font:inherit;font-size:.85rem}
+.spacer{flex:1;min-height:1.5rem}
+.note{font-size:.82rem;color:var(--ink-light);text-align:center;margin-top:.6rem}
+.confirm{display:none;background:#fff;border:1.5px solid var(--cream-border);border-radius:16px;padding:1.1rem;text-align:center}
+.confirm p{margin-bottom:.9rem;font-weight:600}
+.check{width:84px;height:84px;border-radius:50%;background:var(--green);color:#fff;display:flex;align-items:center;justify-content:center;margin:2rem auto 1rem;font-size:2.6rem}
+.center{text-align:center}
+</style>
+</head>
+<body>
+
+<!-- Sign in -->
+<section class="view" id="vLogin">
+  <main>
+    <div class="logo" style="margin:1rem 0 2rem">Sending<span>Thx</span></div>
+    <div id="stepPhone">
+      <h1 class="fr">Driver sign in</h1>
+      <p class="sub">Enter the mobile number your shop added. We'll text you a code. You'll stay signed in on this phone.</p>
+      <label for="phone">Mobile number</label>
+      <input id="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="(555) 123-4567">
+      <p class="err" id="phoneErr"></p>
+      <button class="btn" id="sendBtn">Text me a code</button>
+      <p class="hint">Not added yet? Ask your shop to add you as a driver.</p>
+    </div>
+    <div id="stepCode" style="display:none">
+      <h1 class="fr">Enter the code</h1>
+      <p class="sub">We texted a code to <strong id="sentTo"></strong>.</p>
+      <label for="code">Code</label>
+      <input id="code" inputmode="numeric" pattern="[0-9]*" maxlength="10" autocomplete="one-time-code" placeholder="••••••">
+      <p class="err" id="codeErr"></p>
+      <button class="btn" id="verifyBtn">Sign in</button>
+      <div style="display:flex;justify-content:space-between;margin-top:1rem">
+        <button class="link" id="changeNum">Use a different number</button>
+        <button class="link" id="resend" disabled>Resend code</button>
+      </div>
+    </div>
+  </main>
+</section>
+
+<!-- Deliveries -->
+<section class="view" id="vList">
+  <header><div><div class="t" id="shopName"></div><div class="s" id="driverName"></div></div><button class="link" id="refresh">Refresh</button></header>
+  <main>
+    <h1 class="fr" id="count"></h1>
+    <p class="sub">Tap a delivery at the door, take a photo, mark it delivered.</p>
+    <div class="list" id="open"></div>
+    <div id="doneWrap" style="display:none"><h2>Delivered today</h2><div class="dlist" id="done"></div></div>
+    <div class="spacer"></div>
+    <button class="btn btn-ghost" id="logout">Sign out</button>
+  </main>
+</section>
+
+<!-- One delivery -->
+<section class="view" id="vStop">
+  <header><button class="link" id="back">‹ All deliveries</button><span class="s" id="stopRef"></span></header>
+  <main>
+    <div class="eyebrow">Deliver to</div>
+    <div class="who fr" id="stopWho" style="font-size:2rem"></div>
+    <div class="what" id="stopWhat"></div>
+    <div class="where" id="stopWhere"></div>
+    <label class="photo" id="photoBox">
+      <input type="file" id="photo" accept="image/*" capture="environment" hidden>
+      <span id="photoLabel">📷 Take a delivery photo</span>
+      <small>Required · get the whole arrangement in frame</small>
+    </label>
+    <div class="spacer"></div>
+    <p class="err center" id="stopErr"></p>
+    <button class="btn" id="go" disabled>Mark delivered</button>
+    <p class="note" id="gate">Take a photo of the arrangement at the door to continue.</p>
+    <div class="confirm" id="confirm">
+      <p>Delivered to <span id="confirmWho"></span>?<br><span style="font-weight:400;color:var(--ink-light);font-size:.85rem">They'll get a text right away.</span></p>
+      <button class="btn" id="yes">Yes, delivered</button>
+      <button class="btn btn-ghost" id="no">Not yet</button>
+    </div>
+  </main>
+</section>
+
+<!-- Done -->
+<section class="view" id="vDone">
+  <main class="center">
+    <div class="check">✓</div>
+    <h1 class="fr">Delivered</h1>
+    <p class="sub" id="doneWho"></p>
+    <div class="spacer"></div>
+    <button class="btn" id="next">Next delivery</button>
+  </main>
+</section>
+
+<script>
+(function () {
+  // ?api=https://sendingthx-backend-git-<branch>-....vercel.app points this page at a
+  // preview backend for testing (Vercel backend hosts only; kept for the tab session).
+  var API = (function () {
+    var ok = /^https:\/\/sendingthx-backend[a-z0-9-]*\.vercel\.app$/, q = null;
+    try { q = new URLSearchParams(location.search).get('api'); } catch (e) {}
+    try { if (q && ok.test(q)) sessionStorage.setItem('sendingthx_driver_api', q); q = sessionStorage.getItem('sendingthx_driver_api'); } catch (e) {}
+    return (q && ok.test(q) ? q : 'https://sendingthx-backend.vercel.app') + '/api';
+  })();
+  var KEY = 'sendingthx_driver_session', PHONE_KEY = 'sendingthx_driver_phone';
+  var $ = function (id) { return document.getElementById(id); };
+  var store = {
+    get: function (k) { try { return localStorage.getItem(k); } catch (e) { return null; } },
+    set: function (k, v) { try { localStorage.setItem(k, v); } catch (e) {} },
+    del: function (k) { try { localStorage.removeItem(k); } catch (e) {} }
+  };
+  var session = store.get(KEY), current = null, photoData = null, timer = null;
+
+  function show(id) {
+    ['vLogin','vList','vStop','vDone'].forEach(function (v) { $(v).classList.toggle('on', v === id); });
+    window.scrollTo(0, 0);
+  }
+  function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
+  function err(el, m) { el.textContent = m; el.style.display = m ? 'block' : 'none'; }
+  function call(path, opts) {
+    opts = opts || {}; opts.headers = opts.headers || {};
+    if (session) opts.headers.Authorization = 'Bearer ' + session;
+    if (opts.body) opts.headers['Content-Type'] = 'application/json';
+    return fetch(API + path, opts).then(function (r) {
+      return r.json().catch(function () { return {}; }).then(function (d) {
+        if (r.status === 401 && path.indexOf('/v1/driver') === 0 && opts.method !== 'POST') { signOut(true); throw new Error('Signed out'); }
+        if (!r.ok || d.success === false) throw new Error(d.error || 'Something went wrong.');
+        return d;
+      });
+    });
+  }
+
+  // ---- sign in: phone -> text code
+  var phone = '', resendTimer = null;
+  $('phone').value = store.get(PHONE_KEY) || '';
+  function prettyPhone(p) { var d = p.replace(/\D/g, '').slice(-10); return d.length === 10 ? '(' + d.slice(0,3) + ') ' + d.slice(3,6) + '-' + d.slice(6) : p; }
+  function stepCode(on) {
+    $('stepPhone').style.display = on ? 'none' : 'block'; $('stepCode').style.display = on ? 'block' : 'none';
+    err($('phoneErr'), ''); err($('codeErr'), '');
+    if (on) { $('sentTo').textContent = prettyPhone(phone); $('code').value = ''; setTimeout(function () { $('code').focus(); }, 50); }
+  }
+  function startResendTimer() {
+    var left = 30; $('resend').disabled = true; clearInterval(resendTimer);
+    $('resend').textContent = 'Resend in ' + left + 's';
+    resendTimer = setInterval(function () { left--; if (left <= 0) { clearInterval(resendTimer); $('resend').disabled = false; $('resend').textContent = 'Resend code'; } else $('resend').textContent = 'Resend in ' + left + 's'; }, 1000);
+  }
+  function sendCode(btn) {
+    var digits = $('phone').value.replace(/\D/g, '');
+    if (digits.length < 10) return err($('phoneErr'), 'Enter your 10-digit mobile number.');
+    phone = $('phone').value.trim();
+    var label = btn.textContent; btn.disabled = true; btn.textContent = 'Sending…';
+    return call('/v1/driver', { method: 'POST', body: JSON.stringify({ action: 'send_code', phone: phone }) })
+      .then(function () { store.set(PHONE_KEY, phone); stepCode(true); startResendTimer(); })
+      .catch(function (e) { err($('stepCode').style.display === 'block' ? $('codeErr') : $('phoneErr'), e.message === 'Failed to fetch' ? 'No connection. Try again.' : e.message); })
+      .then(function () { btn.disabled = false; btn.textContent = label; });
+  }
+  $('sendBtn').onclick = function () { sendCode($('sendBtn')); };
+  $('phone').addEventListener('keydown', function (e) { if (e.key === 'Enter') $('sendBtn').click(); });
+  $('resend').onclick = function () { sendCode($('resend')); };
+  $('changeNum').onclick = function () { clearInterval(resendTimer); stepCode(false); };
+  $('verifyBtn').onclick = function () {
+    err($('codeErr'), '');
+    var code = $('code').value.replace(/\D/g, '');
+    if (code.length < 4) return err($('codeErr'), 'Enter the code from the text.');
+    $('verifyBtn').disabled = true; $('verifyBtn').textContent = 'Checking…';
+    call('/v1/driver', { method: 'POST', body: JSON.stringify({ action: 'verify', phone: phone, code: code }) })
+      .then(function (d) { session = d.token; store.set(KEY, session); clearInterval(resendTimer); stepCode(false); loadList(); })
+      .catch(function (e) { err($('codeErr'), e.message === 'Failed to fetch' ? 'No connection. Try again.' : e.message); })
+      .then(function () { $('verifyBtn').disabled = false; $('verifyBtn').textContent = 'Sign in'; });
+  };
+  $('code').addEventListener('input', function () { if ($('code').value.replace(/\D/g, '').length === 6) $('verifyBtn').click(); });
+
+  function signOut(silent) {
+    if (!silent && session) call('/v1/driver', { method: 'POST', body: JSON.stringify({ action: 'logout' }) }).catch(function () {});
+    session = null; store.del(KEY); clearInterval(timer); show('vLogin');
+  }
+  $('logout').onclick = function () { if (window.confirm('Sign out on this phone?')) signOut(false); };
+
+  // ---- list
+  var lastList = null;
+  function loadList() {
+    return call('/v1/driver').then(function (d) {
+      lastList = d;
+      $('shopName').textContent = (d.shops || []).join(' · ') || 'Deliveries'; $('driverName').textContent = 'Signed in as ' + d.driver_name;
+      var multi = (d.shops || []).length > 1;
+      $('count').textContent = d.open.length ? d.open.length + ' to deliver' : 'All delivered';
+      sortByDistance(d.open);
+      $('open').innerHTML = d.open.length ? d.open.map(function (o, i) {
+        return '<button class="stop" data-i="' + i + '"><div><div class="who fr">' + esc(o.recipient_name || 'Recipient') + '</div>' +
+          (o.street ? '<div class="where">' + esc(o.street) + (o._mi != null ? ' <span class="dist">· ' + o._mi + ' mi</span>' : '') + '</div>' : '') +
+          '<div class="what">' +
+          esc(o.gift_description || 'Floral delivery') + '</div><div class="ref">' + (multi && o.shop_name ? esc(o.shop_name) + ' · ' : '') + (o.order_number ? '#' + esc(o.order_number) + ' · ' : '') + esc(o.reference) +
+          '</div></div><span class="go">›</span></button>';
+      }).join('') : '<div class="empty">Nothing waiting. New orders show up here automatically.</div>';
+      $('doneWrap').style.display = d.done_today.length ? 'block' : 'none';
+      $('done').innerHTML = d.done_today.map(function (o) {
+        return '<div class="done"><span class="tick">✓</span><span class="dn">' + esc(o.recipient_name || 'Recipient') + '</span><span class="dt">' +
+          new Date(o.delivered_at).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }) + '</span></div>';
+      }).join('');
+      if (!$('vStop').classList.contains('on') && !$('vDone').classList.contains('on')) show('vList');
+      clearInterval(timer); timer = setInterval(function () { if ($('vList').classList.contains('on')) loadList().catch(function () {}); }, 60000);
+    });
+  }
+  // Nearest first, when we know both where the driver is and where each
+  // delivery is going (orders without coordinates keep their order, last).
+  var here = null;
+  function sortByDistance(list) {
+    if (!list.some(function (o) { return o.dest_lat != null; })) return;
+    if (!here) { locate().then(function (loc) { if (loc) { here = loc; if (lastList) renderAgain(); } }); return; }
+    list.forEach(function (o, i) {
+      o._i = i;
+      if (o.dest_lat == null || o.dest_lng == null) { o._m = Infinity; o._mi = null; return; }
+      var R = 6371000, rad = Math.PI / 180, dLa = (o.dest_lat - here.lat) * rad, dLo = (o.dest_lng - here.lng) * rad;
+      var a = Math.sin(dLa / 2) * Math.sin(dLa / 2) + Math.cos(here.lat * rad) * Math.cos(o.dest_lat * rad) * Math.sin(dLo / 2) * Math.sin(dLo / 2);
+      o._m = 2 * R * Math.asin(Math.sqrt(a)); o._mi = (o._m / 1609.34).toFixed(1);
+    });
+    list.sort(function (a, b) { return a._m - b._m || a._i - b._i; });
+  }
+  function renderAgain() { loadList().catch(function () {}); }
+  $('refresh').onclick = function () { here = null; loadList().catch(function () {}); };
+  $('open').onclick = function (e) {
+    var b = e.target.closest('.stop'); if (!b || !lastList) return;
+    openStop(lastList.open[+b.dataset.i]);
+  };
+
+  // ---- one delivery
+  function resetPhoto() {
+    photoData = null; $('photo').value = '';
+    $('photoBox').querySelectorAll('img,.clear').forEach(function (n) { n.remove(); });
+    $('photoLabel').textContent = '📷 Take a delivery photo'; setReady();
+  }
+  function setReady() {
+    var ok = !!photoData; $('go').disabled = !ok; $('gate').style.display = ok ? 'none' : 'block';
+    if (!ok) { $('confirm').style.display = 'none'; $('go').style.display = 'block'; }
+  }
+  function openStop(o) {
+    current = o; err($('stopErr'), '');
+    $('stopWho').textContent = o.recipient_name || 'Recipient';
+    $('confirmWho').textContent = (o.recipient_name || 'the recipient') + (o.street ? ' at ' + o.street : '');
+    $('stopWhere').textContent = o.street ? o.street + (o.city ? ', ' + o.city : '') : '';
+    $('stopWhat').textContent = o.gift_description || 'Floral delivery';
+    $('stopRef').textContent = (o.order_number ? '#' + o.order_number + ' · ' : '') + o.reference;
+    resetPhoto(); $('yes').disabled = false; $('yes').textContent = 'Yes, delivered'; $('no').style.display = 'block';
+    show('vStop');
+  }
+  $('back').onclick = function () { show('vList'); loadList().catch(function () {}); };
+  $('photo').addEventListener('change', function (e) {
+    var f = e.target.files && e.target.files[0]; if (!f) return;
+    $('photoLabel').textContent = 'Processing…';
+    var img = new Image(), url = URL.createObjectURL(f);
+    img.onload = function () {
+      var s = Math.min(1, 1600 / Math.max(img.width, img.height)), c = document.createElement('canvas');
+      c.width = Math.round(img.width * s); c.height = Math.round(img.height * s);
+      c.getContext('2d').drawImage(img, 0, 0, c.width, c.height); URL.revokeObjectURL(url);
+      photoData = c.toDataURL('image/jpeg', 0.8);
+      var box = $('photoBox'), pv = document.createElement('img'); pv.src = photoData; pv.alt = 'Delivery photo'; box.appendChild(pv);
+      var x = document.createElement('button'); x.type = 'button'; x.className = 'clear'; x.textContent = 'Retake';
+      x.onclick = function (ev) { ev.preventDefault(); resetPhoto(); }; box.appendChild(x);
+      setReady();
+    };
+    img.onerror = function () { URL.revokeObjectURL(url); resetPhoto(); err($('stopErr'), "Couldn't read that photo. Try again."); };
+    img.src = url;
+  });
+  $('go').onclick = function () { if (!photoData) return; err($('stopErr'), ''); $('go').style.display = 'none'; $('gate').style.display = 'none'; $('confirm').style.display = 'block'; };
+  $('no').onclick = function () { $('confirm').style.display = 'none'; $('go').style.display = 'block'; };
+
+  function locate() {
+    return new Promise(function (resolve) {
+      if (!navigator.geolocation) return resolve(null);
+      var done = false, t = setTimeout(function () { if (!done) { done = true; resolve(null); } }, 6000);
+      navigator.geolocation.getCurrentPosition(function (p) { if (done) return; done = true; clearTimeout(t); resolve({ lat: p.coords.latitude, lng: p.coords.longitude, accuracy: p.coords.accuracy }); },
+        function () { if (!done) { done = true; clearTimeout(t); resolve(null); } }, { enableHighAccuracy: true, timeout: 6000, maximumAge: 60000 });
+    });
+  }
+  $('yes').onclick = function () {
+    var btn = $('yes'); btn.disabled = true; btn.textContent = 'Sending… (a few seconds)'; $('no').style.display = 'none';
+    locate().then(function (loc) {
+      var p = { photo: photoData }; if (loc) { p.lat = loc.lat; p.lng = loc.lng; p.accuracy = loc.accuracy; }
+      return call('/d/' + encodeURIComponent(current.driver_token), { method: 'POST', body: JSON.stringify(p) });
+    }).then(function () {
+      $('doneWho').textContent = (current.recipient_name || 'Recipient') + ' · ' + new Date().toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
+      show('vDone');
+    }).catch(function (e) {
+      btn.disabled = false; btn.textContent = 'Yes, delivered'; $('no').style.display = 'block';
+      err($('stopErr'), e.message === 'Failed to fetch' ? 'No connection. Check signal and tap again.' : e.message);
+    });
+  };
+  $('next').onclick = function () { show('vList'); loadList().catch(function () {}); };
+
+  // ---- start
+  if (session) { loadList().catch(function () { if (!session) return; show('vLogin'); }); } else show('vLogin');
+})();
+</script>
+</body>
+</html>
