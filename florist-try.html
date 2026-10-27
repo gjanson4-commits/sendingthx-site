@@ -471,11 +471,11 @@ document.getElementById('tracking-form').addEventListener('submit', async (e) =>
   const orderPayload = {
     gift_description: formData.get('gift_description') || 'a bouquet of flowers',
     gifter: {
-      name: `${formData.get('sender_first_name')} ${formData.get('sender_last_name')}`.trim(),
+      name: `${String(formData.get('sender_first_name')).trim()} ${String(formData.get('sender_last_name')).trim()}`,
       phone: consentData.senderPhone,
     },
     recipient: {
-      name: `${recipientFirst} ${formData.get('recipient_last_name')}`.trim(),
+      name: `${String(recipientFirst).trim()} ${String(formData.get('recipient_last_name')).trim()}`,
       phone: consentData.recipientPhone,
     },
     occasion: consentData.occasion,
@@ -509,7 +509,7 @@ document.getElementById('tracking-form').addEventListener('submit', async (e) =>
     if (res.ok && data.success) {
       document.getElementById('confirm-body').textContent =
         `You're set up as the driver. Open the driver website on your phone, tap the delivery to ` +
-        `${recipientFirst || 'the recipient'}, take a photo of any flowers, and tap Delivered. ` +
+        `${String(recipientFirst || '').trim() || 'the recipient'}, take a photo of any flowers, and tap Delivered. ` +
         `The texts go out the second you do.`;
       const d = (consentData.senderPhone || '').replace(/\D/g, '').slice(-10);
       document.getElementById('confirm-phone').textContent = d.length === 10 ? `(${d.slice(0,3)}) ${d.slice(3,6)}-${d.slice(6)}` : 'your mobile number';
@@ -517,6 +517,7 @@ document.getElementById('tracking-form').addEventListener('submit', async (e) =>
       e.target.style.display = 'none';
       document.getElementById('form-intro').style.display = 'none';
       document.getElementById('confirm-box').style.display = 'block';
+      document.getElementById('status').style.display = 'none';
     } else {
       errorBox.textContent = data.error || 'Something went wrong — please try again.';
       errorBox.style.display = 'block';
