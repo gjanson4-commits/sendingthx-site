@@ -182,6 +182,7 @@ button:disabled { opacity: 0.6; cursor: not-allowed; }
   margin-bottom: 1.5rem;
 }
 .brand-link span { color: #C9A200; }
+.section-note { font-size: 0.85rem; color: #666; margin: -0.5rem 0 0.75rem; line-height: 1.45; }
 .steps { margin: 0 0 1rem 1.2rem; color: #333; font-size: 0.92rem; line-height: 1.55; }
 .steps li { margin-bottom: 0.35rem; }
 .steps a { color: #7A5F0E; }
@@ -220,7 +221,7 @@ button:disabled { opacity: 0.6; cursor: not-allowed; }
       <li><b>Tap the delivery</b>, take a photo of any flowers or plant, and tap Delivered.</li>
       <li><b>Watch the texts arrive</b> — the sender gets the photo, the recipient gets it with a way to say thanks. Reply to see the thank-you come back.</li>
     </ol>
-    <p class="test-tip">💡 Use a different number for the recipient (a second phone or a coworker who agrees) to see both sides.</p>
+    <p class="test-tip">💡 Testing alone? Use your own name and number for the recipient too — both texts come to your phone.</p>
   </div>
 
   <form id="tracking-form">
@@ -239,7 +240,8 @@ button:disabled { opacity: 0.6; cursor: not-allowed; }
 
     <!-- Sender Info (unchanged from checkout-demo.html) -->
     <div class="form-section">
-      <h2>You (sender and driver)</h2>
+      <h2>Your details</h2>
+      <p class="section-note">You'll play the customer who sends the flowers, then the driver who delivers them.</p>
       <input type="text" class="form-input" name="sender_first_name" placeholder="Your first name" required />
       <input type="text" class="form-input" name="sender_last_name" placeholder="Your last name" required />
       <p class="field-hint" id="sender-name-hint"></p>
@@ -247,7 +249,8 @@ button:disabled { opacity: 0.6; cursor: not-allowed; }
 
     <!-- Recipient Info (unchanged from checkout-demo.html) -->
     <div class="form-section">
-      <h2>Recipient Information</h2>
+      <h2>Who receives the flowers</h2>
+      <p class="section-note">Easiest: put yourself here too and use your own number for both — you'll get both texts. Or use a coworker who agrees.</p>
       <input type="text" class="form-input" name="recipient_first_name" placeholder="Recipient first name" required />
       <input type="text" class="form-input" name="recipient_last_name" placeholder="Recipient last name" required />
       <p class="field-hint" id="recipient-name-hint"></p>
