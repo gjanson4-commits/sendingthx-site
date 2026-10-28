@@ -82,6 +82,12 @@ body{font-family:'DM Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-seri
 .stat{border:1.5px solid var(--line);border-radius:12px;padding:12px;background:#FFFDF7}
 .stat b{font-family:'Fraunces',Georgia,serif;font-size:26px;display:block}
 .stat span{font-size:13px;color:var(--muted)}
+.stat.s-del{background:var(--green-soft);border-color:#B9DCC8}.stat.s-del b,.stat.s-del span{color:var(--green)}
+.stat.s-wait{background:#F1EAD6;border-color:#DDD1B0}.stat.s-wait b,.stat.s-wait span{color:var(--ink-2)}
+.stat.s-thx{background:var(--blue-soft);border-color:#C3D4E6}.stat.s-thx b,.stat.s-thx span{color:var(--blue)}
+th button.sort{all:unset;cursor:pointer;display:inline-flex;align-items:center;gap:6px;font:inherit;letter-spacing:inherit;text-transform:inherit;color:var(--ink)}
+th button.sort:focus-visible{outline:2px solid var(--ink);outline-offset:2px;border-radius:4px}
+th button.sort .ar{font-size:11px;color:var(--gold-dark)}
 .tbl-wrap{overflow-x:auto;border:1.5px solid var(--line);border-radius:12px}
 table{width:100%;border-collapse:collapse;font-size:14px;min-width:760px}
 th{text-align:left;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);padding:10px 12px;background:#FAF7EE;border-bottom:1.5px solid var(--line)}
@@ -258,21 +264,21 @@ tr:last-child td{border-bottom:none}
           <div>
             <div class="stats">
               <div class="stat"><b>8</b><span>Orders today</span></div>
-              <div class="stat"><b>3</b><span>To deliver</span></div>
-              <div class="stat"><b>5</b><span>Delivered</span></div>
-              <div class="stat"><b>3</b><span>Thank-yous sent back</span></div>
+              <div class="stat s-del"><b>5</b><span>Delivered</span></div>
+              <div class="stat s-wait"><b>3</b><span>Left to deliver</span></div>
+              <div class="stat s-thx"><b>3</b><span>Thank-yous sent back</span></div>
             </div>
             <div class="tbl-wrap"><table>
-              <thead><tr><th>Order</th><th>Recipient</th><th>Street</th><th>Item</th><th>Driver</th><th>Status</th></tr></thead>
-              <tbody>
-                <tr class="hl"><td><b>1800-48213</b></td><td><b>Sam Lee</b></td><td>214 Elm St</td><td>Dozen Red Roses</td><td>Marcus</td><td><svg class="mini" aria-hidden="true"><use href="#roses"/></svg> <span class="pill thx">Delivered 2:14 PM · Thanked</span></td></tr>
-                <tr><td>1800-48207</td><td>Maria Gomez</td><td>9 Bay Ave</td><td>Sunflower Bouquet</td><td>Marcus</td><td><span class="pill del">Delivered 1:48 PM</span></td></tr>
-                <tr><td>1800-48199</td><td>Ruth Klein</td><td>55 Park Pl</td><td>Get Well Tulips</td><td>Tasha</td><td><span class="pill thx">Delivered 1:02 PM · Thanked</span></td></tr>
-                <tr><td>1800-48188</td><td>J. Okafor</td><td>120 Main St</td><td>Orchid Plant</td><td>Tasha</td><td><span class="pill del">Delivered 12:20 PM</span></td></tr>
-                <tr><td>1800-48180</td><td>Linda Park</td><td>7 Ridge Rd</td><td>Birthday Mix</td><td>Marcus</td><td><span class="pill thx">Delivered 11:41 AM · Thanked</span></td></tr>
-                <tr><td>1800-48221</td><td>Tom Reyes</td><td>31 Shore Dr</td><td>Pink Roses</td><td style="color:var(--muted)">—</td><td><span class="pill wait">To deliver</span></td></tr>
-                <tr><td>1800-48224</td><td>Ava Chen</td><td>88 Oak Ln</td><td>Sympathy Lilies</td><td style="color:var(--muted)">—</td><td><span class="pill wait">To deliver</span></td></tr>
-                <tr><td>1800-48230</td><td>Ben Ortiz</td><td>16 Mill St</td><td>Anniversary Roses</td><td style="color:var(--muted)">—</td><td><span class="pill wait">To deliver</span></td></tr>
+              <thead><tr><th>Order</th><th>Recipient</th><th>Street</th><th>Item</th><th>Driver</th><th aria-sort="none" id="statusTh"><button type="button" class="sort" id="sortStatus" title="Sort by status">Status <span class="ar" id="sortArrow">⇅</span></button></th></tr></thead>
+              <tbody id="orderRows">
+                <tr class="hl" data-rank="1"><td><b>1800-48213</b></td><td><b>Sam Lee</b></td><td>214 Elm St</td><td>Dozen Red Roses</td><td>Marcus</td><td><svg class="mini" aria-hidden="true"><use href="#roses"/></svg> <span class="pill thx">Delivered 2:14 PM · Thanked</span></td></tr>
+                <tr data-rank="1"><td>1800-48207</td><td>Maria Gomez</td><td>9 Bay Ave</td><td>Sunflower Bouquet</td><td>Marcus</td><td><span class="pill del">Delivered 1:48 PM</span></td></tr>
+                <tr data-rank="1"><td>1800-48199</td><td>Ruth Klein</td><td>55 Park Pl</td><td>Get Well Tulips</td><td>Tasha</td><td><span class="pill thx">Delivered 1:02 PM · Thanked</span></td></tr>
+                <tr data-rank="1"><td>1800-48188</td><td>J. Okafor</td><td>120 Main St</td><td>Orchid Plant</td><td>Tasha</td><td><span class="pill del">Delivered 12:20 PM</span></td></tr>
+                <tr data-rank="1"><td>1800-48180</td><td>Linda Park</td><td>7 Ridge Rd</td><td>Birthday Mix</td><td>Marcus</td><td><span class="pill thx">Delivered 11:41 AM · Thanked</span></td></tr>
+                <tr data-rank="0"><td>1800-48221</td><td>Tom Reyes</td><td>31 Shore Dr</td><td>Pink Roses</td><td style="color:var(--muted)">—</td><td><span class="pill wait">To deliver</span></td></tr>
+                <tr data-rank="0"><td>1800-48224</td><td>Ava Chen</td><td>88 Oak Ln</td><td>Sympathy Lilies</td><td style="color:var(--muted)">—</td><td><span class="pill wait">To deliver</span></td></tr>
+                <tr data-rank="0"><td>1800-48230</td><td>Ben Ortiz</td><td>16 Mill St</td><td>Anniversary Roses</td><td style="color:var(--muted)">—</td><td><span class="pill wait">To deliver</span></td></tr>
               </tbody>
             </table></div>
           </div>
@@ -385,6 +391,17 @@ tr:last-child td{border-bottom:none}
   for (let i = 1; i <= 4; i++) document.getElementById('t' + i).addEventListener('click', () => show(i));
   document.getElementById('next').addEventListener('click', () => { show(cur + 1); document.querySelector('.tabs').scrollIntoView({ behavior: 'smooth' }); });
   document.getElementById('back').addEventListener('click', () => { show(cur - 1); document.querySelector('.tabs').scrollIntoView({ behavior: 'smooth' }); });
+  // Florist view: click "Status" to put deliveries left first, then delivered first.
+  const body = document.getElementById('orderRows'), th = document.getElementById('statusTh');
+  let mode = 0; // 0 = as listed, 1 = left to deliver first, 2 = delivered first
+  const original = Array.from(body.rows);
+  document.getElementById('sortStatus').addEventListener('click', () => {
+    mode = mode === 1 ? 2 : 1;
+    const rows = original.slice().sort((a, b) => (mode === 1 ? 1 : -1) * (a.dataset.rank - b.dataset.rank));
+    rows.forEach((r) => body.appendChild(r));
+    document.getElementById('sortArrow').textContent = mode === 1 ? '▲ To deliver first' : '▼ Delivered first';
+    th.setAttribute('aria-sort', mode === 1 ? 'ascending' : 'descending');
+  });
   const h = parseInt((location.hash || '').slice(1), 10);
   if (h >= 1 && h <= 4) show(h);
 })();
