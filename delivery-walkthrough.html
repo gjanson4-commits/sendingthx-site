@@ -367,7 +367,6 @@ tr:last-child td{border-bottom:none}
   <div class="nav">
     <button class="back" id="back" hidden>← Back</button>
     <button class="next" id="next">Next: Florist view →</button>
-    <a class="live" id="live" href="delivery-demo" hidden>See it on your own phone →</a>
   </div>
 
   <p class="foot">Sample data for illustration. © 2026 SendingThx LLC · <a href="privacy">Privacy</a><a href="sms-terms">SMS Terms</a></p>
@@ -384,8 +383,8 @@ tr:last-child td{border-bottom:none}
       document.getElementById('t' + i).setAttribute('aria-selected', i === n);
     }
     document.getElementById('back').hidden = n === 1;
-    const next = document.getElementById('next'), live = document.getElementById('live');
-    next.hidden = n === 4; live.hidden = n !== 4;
+    const next = document.getElementById('next');
+    next.hidden = n === 4;
     if (n < 4) next.textContent = 'Next: ' + names[n] + ' →';
     try { history.replaceState(null, '', '#' + n); } catch (_) {}
   };
