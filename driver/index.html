@@ -38,6 +38,9 @@ input:focus{outline:none;border-color:var(--gold-dark)}
 .list{display:flex;flex-direction:column;gap:.7rem}
 .stop{display:flex;align-items:center;justify-content:space-between;gap:1rem;background:#fff;border:1.5px solid var(--cream-border);border-radius:16px;padding:1rem 1.1rem;min-height:84px;cursor:pointer;text-align:left;font:inherit;color:inherit;width:100%}
 .stop:active{background:#FFF9E0}
+.stop:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+a.maplink{color:var(--ink);text-decoration:underline;text-decoration-color:#C9A200;text-underline-offset:3px;display:inline-block;padding:.15rem 0}
+a.maplink .dir{font-size:.8rem;font-weight:700;color:#8A6A0C;text-decoration:none;margin-left:.35rem;white-space:nowrap}
 .who{font-size:1.3rem;line-height:1.15}
 .what{color:var(--ink-mid);font-size:.92rem;margin-top:.15rem}
 .ref{color:var(--ink-light);font-size:.75rem;margin-top:.3rem;letter-spacing:.03em}
@@ -240,11 +243,11 @@ h2{font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--in
       $('count').textContent = d.open.length ? d.open.length + ' to deliver' : 'All delivered';
       sortByDistance(d.open);
       $('open').innerHTML = d.open.length ? d.open.map(function (o, i) {
-        return '<button class="stop" data-i="' + i + '"><div><div class="who fr">' + esc(o.recipient_name || 'Recipient') + '</div>' +
-          (o.street ? '<div class="where">' + esc(o.street) + (o._mi != null ? ' <span class="dist">· ' + o._mi + ' mi</span>' : '') + '</div>' : '') +
+        return '<div class="stop" role="button" tabindex="0" data-i="' + i + '"><div><div class="who fr">' + esc(o.recipient_name || 'Recipient') + '</div>' +
+          (o.street ? '<div class="where"><a class="maplink" href="' + esc(mapsUrl(o)) + '" target="_blank" rel="noopener">' + esc(o.street) + '</a>' + (o._mi != null ? ' <span class="dist">· ' + o._mi + ' mi</span>' : '') + '</div>' : '') +
           '<div class="what">' +
           esc(o.gift_description || 'Floral delivery') + '</div><div class="ref">' + (multi && o.shop_name ? esc(o.shop_name) + ' · ' : '') + (o.order_number ? '#' + esc(o.order_number) + ' · ' : '') + esc(o.reference) +
-          '</div></div><span class="go">›</span></button>';
+          '</div></div><span class="go">›</span></div>';
       }).join('') : '<div class="empty">Nothing waiting. New orders show up here automatically.</div>';
       $('doneWrap').style.display = d.done_today.length ? 'block' : 'none';
       $('done').innerHTML = d.done_today.map(function (o) {
@@ -283,9 +286,25 @@ h2{font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--in
   };
   $('refresh').onclick = function () { here = null; loadList().catch(function () {}); };
   $('open').onclick = function (e) {
+    if (e.target.closest('a.maplink')) return; // address opens the phone's maps app
     var b = e.target.closest('.stop'); if (!b || !lastList) return;
     openStop(lastList.open[+b.dataset.i]);
   };
+
+  $('open').onkeydown = function (e) {
+    if (e.key !== 'Enter' && e.key !== ' ') return;
+    var b = e.target.closest('.stop'); if (!b || !lastList || e.target.closest('a')) return;
+    e.preventDefault(); openStop(lastList.open[+b.dataset.i]);
+  };
+  // Address -> directions in the phone's own maps app (Apple Maps on iPhone,
+  // Google Maps elsewhere). Uses the street address; falls back to coordinates.
+  function mapsUrl(o) {
+    var addr = [o.street, o.city].filter(Boolean).join(', ');
+    var dest = addr || (o.dest_lat != null && o.dest_lng != null ? o.dest_lat + ',' + o.dest_lng : '');
+    var ios = /iPhone|iPad|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+    return ios ? 'https://maps.apple.com/?daddr=' + encodeURIComponent(dest)
+               : 'https://www.google.com/maps/dir/?api=1&destination=' + encodeURIComponent(dest);
+  }
 
   // ---- one delivery
   function resetPhoto() {
@@ -301,7 +320,8 @@ h2{font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--in
     current = o; err($('stopErr'), '');
     $('stopWho').textContent = o.recipient_name || 'Recipient';
     $('confirmWho').textContent = (o.recipient_name || 'the recipient') + (o.street ? ' at ' + o.street : '');
-    $('stopWhere').textContent = o.street ? o.street + (o.city ? ', ' + o.city : '') : '';
+    $('stopWhere').innerHTML = o.street ? '<a class="maplink" href="' + esc(mapsUrl(o)) + '" target="_blank" rel="noopener">' +
+      esc(o.street + (o.city ? ', ' + o.city : '')) + '<span class="dir">Directions ›</span></a>' : '';
     $('stopWhat').textContent = o.gift_description || 'Floral delivery';
     $('stopRef').textContent = (o.order_number ? '#' + o.order_number + ' · ' : '') + o.reference;
     resetPhoto(); $('yes').disabled = false; $('yes').textContent = 'Yes, delivered'; $('no').style.display = 'block';
