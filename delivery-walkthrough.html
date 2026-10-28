@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SendingThx — How a florist delivery flows</title>
+<link rel="icon" href="sendingthx-logo-224.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fraunces:wght@700;800&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#1C1A14;--ink-2:#4A4535;--muted:#6E6756;--line:#E3DCC8;--cream:#FAF6EC;--card:#FFFDF7;--gold:#E9CB63;--gold-soft:#FFF6D6;--gold-dark:#8A6A0C;--green:#1E7A4F;--green-soft:#E3F2EA;--blue:#2B5C8A;--blue-soft:#E6EEF6}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--cream);color:var(--ink);line-height:1.45}
+.top{background:var(--ink);color:var(--cream)}
+.top-in{max-width:1180px;margin:0 auto;padding:14px 20px;display:flex;align-items:center;gap:12px}
+.top img{width:36px;height:36px;border-radius:18px}
+.top .brand{font-weight:700;font-size:18px}
+.top .tag{margin-left:auto;font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--gold);font-weight:700;text-align:right}
+.wrap{max-width:1180px;margin:0 auto;padding:30px 20px 48px}
+.hero h1{font-family:'Fraunces',Georgia,serif;font-size:clamp(28px,4.4vw,42px);line-height:1.1;font-weight:800}
+.hero p{margin-top:10px;font-size:18px;color:var(--ink-2);max-width:760px}
+.order-pill{display:inline-flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:16px;background:#fff;border:1.5px solid var(--line);border-radius:999px;padding:8px 16px;font-size:14px;color:var(--ink-2)}
+.order-pill b{color:var(--ink)}
+/* tabs */
+.tabs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:24px 0 20px}
+@media (max-width:760px){.tabs{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.tab{display:flex;gap:10px;align-items:center;text-align:left;padding:12px 14px;border-radius:12px;border:2px solid var(--line);background:#fff;font-family:inherit;cursor:pointer;color:var(--ink)}
+.tab .n{width:28px;height:28px;border-radius:14px;background:#F1EAD6;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:14px}
+.tab b{display:block;font-size:15px}
+.tab small{display:block;font-size:12px;color:var(--muted)}
+.tab[aria-selected=true]{border-color:var(--ink);background:var(--gold-soft)}
+.tab[aria-selected=true] .n{background:var(--ink);color:var(--cream)}
+.panel{display:none}
+.panel.on{display:block}
+.panel-h{display:flex;align-items:flex-end;gap:16px;flex-wrap:wrap;margin-bottom:16px}
+.panel-h h2{font-family:'Fraunces',Georgia,serif;font-size:28px;line-height:1.15}
+.panel-h p{color:var(--ink-2);font-size:16px;max-width:720px;margin-top:4px}
+.two{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:22px;align-items:start}
+@media (max-width:900px){.two{grid-template-columns:minmax(0,1fr)}}
+.box{background:var(--card);border:2px solid var(--line);border-radius:16px;padding:20px}
+.label{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+.callout{background:var(--ink);color:var(--cream);border-radius:14px;padding:16px 18px;font-size:15px;line-height:1.5;margin-top:16px}
+.callout b{color:var(--gold)}
+/* browser frame */
+.browser{background:#fff;border:2px solid var(--line);border-radius:14px;overflow:hidden}
+.browser .bar{display:flex;align-items:center;gap:8px;padding:10px 14px;background:#F4F0E4;border-bottom:1.5px solid var(--line);font-size:13px;color:var(--muted)}
+.browser .bar i{width:10px;height:10px;border-radius:5px;background:#DDD5BF;display:inline-block}
+.browser .bar span{margin-left:8px;background:#fff;border-radius:6px;padding:3px 10px;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.browser .in{padding:18px}
+/* checkout mock */
+.co h3{font-size:18px;margin-bottom:12px}
+.co .line{display:flex;justify-content:space-between;font-size:14px;padding:6px 0;border-bottom:1px solid #EEE8D8;color:var(--ink-2)}
+.co .line b{color:var(--ink)}
+.co .fake{background:#F7F5EF;border:1px solid #E6E0CF;border-radius:8px;padding:9px 12px;font-size:14px;color:var(--ink-2);margin-top:8px}
+.new{position:relative;margin-top:16px;border:2.5px dashed var(--gold-dark);border-radius:12px;padding:16px 14px 12px;background:var(--gold-soft)}
+.new .badge{position:absolute;top:-12px;left:12px;background:var(--gold-dark);color:#fff;font-size:12px;font-weight:700;padding:3px 10px;border-radius:999px}
+.ck{display:flex;gap:10px;align-items:flex-start;font-size:12.5px;color:var(--ink-2);line-height:1.45;margin-bottom:10px}
+.ck .sq{width:16px;height:16px;border-radius:4px;background:var(--gold-dark);flex-shrink:0;margin-top:2px;position:relative}
+.ck .sq::after{content:"";position:absolute;left:5px;top:2px;width:4px;height:8px;border:solid #fff;border-width:0 2px 2px 0;transform:rotate(45deg)}
+.co .btnfake{margin-top:14px;background:#3C3A33;color:#fff;text-align:center;border-radius:8px;padding:11px;font-weight:700;font-size:14px}
+/* flow diagram */
+.flow{display:flex;flex-direction:column;gap:0;align-items:stretch}
+.node{border:2px solid var(--line);background:#fff;border-radius:12px;padding:12px 14px}
+.node b{display:block;font-size:15px}
+.node small{display:block;color:var(--muted);font-size:13px;margin-top:2px}
+.node.dark{background:var(--ink);border-color:var(--ink);color:var(--cream)}
+.node.dark small{color:#D9D2C0}
+.node.gold{background:var(--gold-soft);border-color:var(--gold-dark)}
+.arrow{align-self:center;width:2px;height:22px;background:var(--ink-2);position:relative;margin:2px 0}
+.arrow::after{content:"";position:absolute;bottom:-1px;left:-5px;border:6px solid transparent;border-top-color:var(--ink-2);border-bottom:0}
+.split{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.split .col{display:flex;flex-direction:column}
+.tagline{font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;text-align:center;margin:4px 0}
+.data{margin-top:16px}
+.data ul{list-style:none;font-size:14px;color:var(--ink-2)}
+.data li{display:flex;gap:8px;padding:6px 0;border-bottom:1px solid #EEE8D8}
+.data li b{min-width:150px;color:var(--ink)}
+@media (max-width:520px){.data li{flex-direction:column;gap:0}.data li b{min-width:0}}
+/* florist view */
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-bottom:16px}
+@media (max-width:620px){.stats{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.stat{border:1.5px solid var(--line);border-radius:12px;padding:12px;background:#FFFDF7}
+.stat b{font-family:'Fraunces',Georgia,serif;font-size:26px;display:block}
+.stat span{font-size:13px;color:var(--muted)}
+.tbl-wrap{overflow-x:auto;border:1.5px solid var(--line);border-radius:12px}
+table{width:100%;border-collapse:collapse;font-size:14px;min-width:680px}
+th{text-align:left;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);padding:10px 12px;background:#FAF7EE;border-bottom:1.5px solid var(--line)}
+td{padding:11px 12px;border-bottom:1px solid #EEE8D8;vertical-align:middle;color:var(--ink-2)}
+td b{color:var(--ink)}
+tr.hl td{background:var(--gold-soft)}
+tr:last-child td{border-bottom:none}
+.pill{display:inline-flex;align-items:center;gap:6px;padding:3px 10px;border-radius:999px;font-size:12px;font-weight:700;white-space:nowrap}
+.pill.wait{background:#F1EAD6;color:var(--ink-2)}
+.pill.del{background:var(--green-soft);color:var(--green)}
+.pill.thx{background:var(--blue-soft);color:var(--blue)}
+.mini{width:34px;height:34px;border-radius:8px;flex-shrink:0;display:inline-block;vertical-align:middle}
+.fl-side{display:grid;grid-template-columns:minmax(0,1fr) 250px;gap:18px;align-items:start}
+@media (max-width:900px){.fl-side{grid-template-columns:minmax(0,1fr)}}
+.drv{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid #EEE8D8;font-size:14px}
+.drv:last-child{border-bottom:none}
+.drv small{color:var(--muted);display:block;font-size:12px}
+.dot-g{width:9px;height:9px;border-radius:5px;background:var(--green);display:inline-block;margin-right:6px}
+/* phones */
+.phones{display:flex;gap:20px;overflow-x:auto;padding:4px 2px 14px}
+.phones>div{flex:0 0 260px;width:260px}
+.phones>div:first-child{margin-left:auto}.phones>div:last-child{margin-right:auto}
+.phone{width:260px;background:#111;border-radius:36px;padding:10px}
+.screen{background:#FBF8F1;border-radius:28px;height:520px;overflow:hidden;display:flex;flex-direction:column}
+.screen .sb{display:flex;justify-content:space-between;padding:12px 20px 6px;font-size:12px;font-weight:700}
+.screen .hd{padding:8px 16px 10px;border-bottom:1px solid var(--line);font-size:13px}
+.screen .hd b{display:block;font-size:14px}
+.screen .hd small{color:var(--muted)}
+.screen .bd{padding:14px 14px;flex:1;overflow:hidden}
+.screen h4{font-family:'Fraunces',Georgia,serif;font-size:24px;margin-bottom:4px}
+.screen .sub{font-size:12px;color:var(--muted);margin-bottom:12px}
+.stop{background:#fff;border:1.5px solid var(--line);border-radius:12px;padding:10px 12px;margin-bottom:8px;font-size:12px;color:var(--muted)}
+.stop b{display:block;font-family:'Fraunces',Georgia,serif;font-size:16px;color:var(--ink)}
+.stop.hl{border-color:var(--ink);background:var(--gold-soft)}
+.stop .mi{float:right;font-weight:700;color:var(--gold-dark)}
+.cap{text-align:center;font-size:13px;color:var(--ink-2);margin-top:10px;font-weight:600}
+.pbtn{display:block;text-align:center;border-radius:12px;padding:12px;font-weight:700;font-size:14px;margin-top:10px}
+.pbtn.gold{background:var(--gold)}
+.pbtn.dark{background:var(--ink);color:var(--cream)}
+.pbtn.ghost{border:1.5px solid var(--line);color:var(--ink-2)}
+.big-ok{width:64px;height:64px;border-radius:32px;background:var(--green);margin:28px auto 14px;position:relative}
+.big-ok::after{content:"";position:absolute;left:24px;top:14px;width:14px;height:26px;border:solid #fff;border-width:0 4px 4px 0;transform:rotate(45deg)}
+/* cs view */
+.search{display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap}
+.search .q{flex:1;min-width:200px;border:1.5px solid var(--line);border-radius:10px;padding:10px 12px;font-size:14px;color:var(--ink)}
+.search .go{background:var(--ink);color:var(--cream);border-radius:10px;padding:10px 16px;font-weight:700;font-size:14px}
+.cs-grid{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:18px}
+@media (max-width:900px){.cs-grid{grid-template-columns:minmax(0,1fr)}}
+.ohead{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;flex-wrap:wrap;padding-bottom:12px;border-bottom:1.5px solid var(--line);margin-bottom:14px}
+.ohead b{font-size:17px}
+.ohead small{display:block;color:var(--muted);font-size:13px}
+.tl{list-style:none;position:relative}
+.tl li{display:grid;grid-template-columns:72px 18px minmax(0,1fr);gap:10px;padding-bottom:16px;font-size:14px;position:relative}
+.tl .t{color:var(--muted);font-size:13px;text-align:right;padding-top:1px}
+.tl .d{width:14px;height:14px;border-radius:7px;background:var(--line);margin-top:3px;position:relative;z-index:1;border:2px solid #fff;box-shadow:0 0 0 1.5px var(--line)}
+.tl li.g .d{background:var(--green);box-shadow:0 0 0 1.5px var(--green)}
+.tl li.b .d{background:var(--blue);box-shadow:0 0 0 1.5px var(--blue)}
+.tl li::before{content:"";position:absolute;left:89px;top:16px;bottom:0;width:2px;background:var(--line)}
+.tl li:last-child::before{display:none}
+.tl .w b{display:block;color:var(--ink)}
+.tl .w span{color:var(--ink-2)}
+.photo{border-radius:12px;overflow:hidden;border:1.5px solid var(--line)}
+.photo svg{display:block;width:100%;height:150px}
+.cs-photo svg{height:230px}
+.bubble{background:#E9E9EB;color:#111;border-radius:16px 16px 16px 4px;padding:10px 12px;font-size:13px;line-height:1.45;white-space:pre-line;margin-bottom:10px}
+.bubble.me{background:#2E7CF6;color:#fff;border-radius:16px 16px 4px 16px;margin-left:30px}
+.who{font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin:12px 0 6px}
+.proposed{display:inline-block;font-size:12px;font-weight:700;background:var(--gold-soft);color:var(--gold-dark);border:1.5px solid var(--gold-dark);border-radius:999px;padding:3px 10px}
+/* nav */
+.nav{display:flex;justify-content:space-between;gap:12px;margin-top:22px}
+.nav button,.nav a{font-family:inherit;font-size:16px;font-weight:700;border-radius:12px;padding:14px 22px;cursor:pointer;border:2px solid var(--ink);text-decoration:none;text-align:center}
+.nav .back{background:#fff;color:var(--ink)}
+.nav .next{background:var(--ink);color:var(--cream);margin-left:auto}
+.nav .live{background:var(--gold);border-color:var(--gold);color:var(--ink);margin-left:auto}
+.nav button[hidden]{display:none}
+.foot{text-align:center;font-size:13px;color:var(--muted);margin-top:34px}
+.foot a{color:var(--muted);margin:0 10px;text-decoration:none}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="roses" viewBox="0 0 160 120">
+      <rect width="160" height="120" fill="#EDE4CF"/>
+      <rect y="86" width="160" height="34" fill="#C9B48E"/>
+      <path d="M58 118 L66 70 L94 70 L102 118 Z" fill="#F7F3EA" stroke="#D9CFB8"/>
+      <g fill="#4E7A44"><ellipse cx="54" cy="58" rx="12" ry="6" transform="rotate(-30 54 58)"/><ellipse cx="106" cy="58" rx="12" ry="6" transform="rotate(30 106 58)"/><ellipse cx="80" cy="66" rx="16" ry="6"/></g>
+      <g fill="#B3202E"><circle cx="66" cy="40" r="11"/><circle cx="92" cy="38" r="11"/><circle cx="79" cy="28" r="11"/><circle cx="58" cy="54" r="9"/><circle cx="100" cy="53" r="9"/><circle cx="80" cy="50" r="11"/></g>
+      <g fill="#7E1420" opacity=".55"><circle cx="66" cy="40" r="4"/><circle cx="92" cy="38" r="4"/><circle cx="79" cy="28" r="4"/><circle cx="80" cy="50" r="4"/></g>
+    </symbol>
+  </defs>
+</svg>
+
+<header class="top"><div class="top-in">
+  <img src="sendingthx-logo-224.png" alt="">
+  <span class="brand">SendingThx</span>
+  <span class="tag">For 1-800-Flowers.com</span>
+</div></header>
+
+<main class="wrap">
+  <section class="hero">
+    <h1>One florist order, from checkout to doorstep.</h1>
+    <p>Follow a sample order through the four screens: what 1-800-Flowers adds at checkout, what the florist sees, what the driver taps, and what your customer-service team can look up.</p>
+    <div class="order-pill"><span>Sample order</span><b>#1800-48213</b><span>· Dozen red roses · Dana Whitfield → Sam Lee · Bloom &amp; Stem Florist</span></div>
+  </section>
+
+  <nav class="tabs" role="tablist" aria-label="Walkthrough steps">
+    <button class="tab" role="tab" id="t1" aria-controls="s1" aria-selected="true"><span class="n">1</span><span><b>Checkout &amp; handoff</b><small>1-800-Flowers → SendingThx</small></span></button>
+    <button class="tab" role="tab" id="t2" aria-controls="s2" aria-selected="false"><span class="n">2</span><span><b>Florist view</b><small>Today's orders</small></span></button>
+    <button class="tab" role="tab" id="t3" aria-controls="s3" aria-selected="false"><span class="n">3</span><span><b>Driver view</b><small>Tap, photo, done</small></span></button>
+    <button class="tab" role="tab" id="t4" aria-controls="s4" aria-selected="false"><span class="n">4</span><span><b>Customer service</b><small>Window into delivery</small></span></button>
+  </nav>
+
+  <!-- 1 -->
+  <section class="panel on" id="s1" role="tabpanel" aria-labelledby="t1">
+    <div class="panel-h"><div><h2>Two checkboxes at checkout. Everything else stays the same.</h2>
+      <p>The order still reaches the florist the way it does today. A copy, with the customer's consent, goes to SendingThx — matched by order number.</p></div></div>
+    <div class="two">
+      <div>
+        <div class="label">1-800-Flowers checkout · illustration</div>
+        <div class="browser co"><div class="bar"><i></i><i></i><i></i><span>1-800-Flowers.com · Checkout</span></div>
+          <div class="in">
+            <h3>Review your order</h3>
+            <div class="line"><span>Dozen Red Roses</span><b>$69.99</b></div>
+            <div class="line"><span>Deliver to Sam Lee · 214 Elm St, Huntington, NY</span><span>Tue, Oct 28</span></div>
+            <div class="line"><span>Delivered by a local florist</span><span>Same day</span></div>
+            <div class="new"><span class="badge">The only thing you add</span>
+              <div class="ck"><span class="sq"></span><span>I agree to receive SMS notifications from SendingThx about this order at the number I provide below, including a one-time message if the recipient responds to you. Msg &amp; data rates may apply. Reply HELP for help, STOP to opt out.</span></div>
+              <div class="fake">(631) 555-0148</div>
+              <div class="ck" style="margin-top:12px"><span class="sq"></span><span>I confirm I have the recipient's consent to receive this one-time delivery notification via text message from SendingThx at the number I provide below. Msg &amp; data rates may apply. Reply HELP for help and STOP to opt out.</span></div>
+              <div class="fake">(631) 555-0172</div>
+              <p style="font-size:11.5px;color:var(--muted);margin-top:8px">Carrier-approved wording, used as is. Can read “SendingThx on behalf of 1-800-Flowers.com”.</p>
+            </div>
+            <div class="btnfake">Place order</div>
+          </div></div>
+      </div>
+      <div>
+        <div class="label">Where the order goes</div>
+        <div class="box">
+          <div class="flow">
+            <div class="node"><b>Dana places the order</b><small>Ticks both boxes at checkout</small></div>
+            <div class="arrow"></div>
+            <div class="node dark"><b>1-800-Flowers</b><small>Order #1800-48213</small></div>
+            <div class="arrow"></div>
+            <div class="split">
+              <div class="col"><div class="tagline">Unchanged</div><div class="node"><b>BloomNet</b><small>Order wired to Bloom &amp; Stem Florist, as today</small></div></div>
+              <div class="col"><div class="tagline">New</div><div class="node gold"><b>SendingThx</b><small>Order copy + consent, by order number</small></div></div>
+            </div>
+            <div class="arrow"></div>
+            <div class="node"><b>Florist &amp; driver</b><small>Florist makes it; the driver signs in on SendingThx and confirms at the door</small></div>
+          </div>
+        </div>
+        <div class="box data"><div class="label">What SendingThx receives</div>
+          <ul>
+            <li><b>Order</b><span>#1800-48213 · Dozen Red Roses</span></li>
+            <li><b>Florist</b><span>Bloom &amp; Stem Florist (BloomNet member)</span></li>
+            <li><b>Sender</b><span>Dana Whitfield · mobile · consent ✓</span></li>
+            <li><b>Recipient</b><span>Sam Lee · mobile · consent ✓</span></li>
+            <li><b>Delivery address</b><span>214 Elm St, Huntington, NY</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="callout"><b>For your team:</b> add the two checkboxes and send one order copy per florist order (an API call or a daily feed). No change to how orders reach florists, and nothing new for the florist to type.</div>
+  </section>
+
+  <!-- 2 -->
+  <section class="panel" id="s2" role="tabpanel" aria-labelledby="t2">
+    <div class="panel-h"><div><h2>The florist sees today's orders — no retyping.</h2>
+      <p>Orders with consent show up on their own. The shop adds each driver's phone once; every delivery after that is tracked here.</p></div></div>
+    <div class="browser"><div class="bar"><i></i><i></i><i></i><span>sendingthx.com/florist · Bloom &amp; Stem Florist</span></div>
+      <div class="in">
+        <div class="fl-side">
+          <div>
+            <div class="stats">
+              <div class="stat"><b>8</b><span>Orders today</span></div>
+              <div class="stat"><b>3</b><span>To deliver</span></div>
+              <div class="stat"><b>5</b><span>Delivered</span></div>
+              <div class="stat"><b>3</b><span>Thank-yous sent back</span></div>
+            </div>
+            <div class="tbl-wrap"><table>
+              <thead><tr><th>Order</th><th>Recipient</th><th>Street</th><th>Item</th><th>Status</th></tr></thead>
+              <tbody>
+                <tr class="hl"><td><b>1800-48213</b></td><td><b>Sam Lee</b></td><td>214 Elm St</td><td>Dozen Red Roses</td><td><svg class="mini" aria-hidden="true"><use href="#roses"/></svg> <span class="pill thx">Delivered 2:14 PM · Thanked</span></td></tr>
+                <tr><td>1800-48207</td><td>Maria Gomez</td><td>9 Bay Ave</td><td>Sunflower Bouquet</td><td><span class="pill del">Delivered 1:48 PM</span> <small>by Marcus</small></td></tr>
+                <tr><td>1800-48199</td><td>Ruth Klein</td><td>55 Park Pl</td><td>Get Well Tulips</td><td><span class="pill thx">Delivered 1:02 PM · Thanked</span></td></tr>
+                <tr><td>1800-48188</td><td>J. Okafor</td><td>120 Main St</td><td>Orchid Plant</td><td><span class="pill del">Delivered 12:20 PM</span> <small>by Tasha</small></td></tr>
+                <tr><td>1800-48180</td><td>Linda Park</td><td>7 Ridge Rd</td><td>Birthday Mix</td><td><span class="pill thx">Delivered 11:41 AM · Thanked</span></td></tr>
+                <tr><td>1800-48221</td><td>Tom Reyes</td><td>31 Shore Dr</td><td>Pink Roses</td><td><span class="pill wait">To deliver</span></td></tr>
+                <tr><td>1800-48224</td><td>Ava Chen</td><td>88 Oak Ln</td><td>Sympathy Lilies</td><td><span class="pill wait">To deliver</span></td></tr>
+                <tr><td>1800-48230</td><td>Ben Ortiz</td><td>16 Mill St</td><td>Anniversary Roses</td><td><span class="pill wait">To deliver</span></td></tr>
+              </tbody>
+            </table></div>
+          </div>
+          <div class="box" style="padding:16px">
+            <div class="label">Drivers</div>
+            <div class="drv"><span><span class="dot-g"></span><b>Marcus</b><small>Signed in · 3 delivered today</small></span></div>
+            <div class="drv"><span><span class="dot-g"></span><b>Tasha</b><small>Signed in · 2 delivered today</small></span></div>
+            <div class="drv"><span><b>Leo</b><small>Weekends</small></span></div>
+            <p style="font-size:13px;color:var(--muted);margin-top:10px">Add a driver with a name and mobile number. They sign in with a texted code — nothing to download.</p>
+          </div>
+        </div>
+      </div></div>
+    <div class="callout"><b>For the florist:</b> nothing new per order. Delivered times and photos fill in as drivers tap — the end-of-day batch goes away.</div>
+  </section>
+
+  <!-- 3 -->
+  <section class="panel" id="s3" role="tabpanel" aria-labelledby="t3">
+    <div class="panel-h"><div><h2>The driver taps Delivered at the door.</h2>
+      <p>A sign-in website on any phone — nothing to download. Three screens, about ten seconds a stop.</p></div></div>
+    <div class="phones">
+      <div><div class="phone"><div class="screen">
+        <div class="sb"><span>1:58</span><span>●●●</span></div>
+        <div class="hd"><b>SendingThx</b><small>Signed in as Marcus · Bloom &amp; Stem</small></div>
+        <div class="bd">
+          <h4>4 to deliver</h4><div class="sub">Nearest first</div>
+          <div class="stop hl"><span class="mi">0.3 mi</span><b>Sam Lee</b>Dozen Red Roses · 214 Elm St</div>
+          <div class="stop"><span class="mi">1.1 mi</span><b>Tom Reyes</b>Pink Roses · 31 Shore Dr</div>
+          <div class="stop"><span class="mi">2.4 mi</span><b>Ava Chen</b>Sympathy Lilies · 88 Oak Ln</div>
+          <div class="stop"><span class="mi">3.0 mi</span><b>Ben Ortiz</b>Anniversary Roses · 16 Mill St</div>
+        </div></div></div><p class="cap">1 · Pick the stop</p></div>
+      <div><div class="phone"><div class="screen">
+        <div class="sb"><span>2:13</span><span>●●●</span></div>
+        <div class="hd"><b>Sam Lee</b><small>214 Elm St, Huntington</small></div>
+        <div class="bd">
+          <h4 style="font-size:20px">Delivering to Sam Lee at 214 Elm St?</h4>
+          <div class="sub">Dozen Red Roses · #1800-48213</div>
+          <div class="photo"><svg viewBox="0 0 160 120" preserveAspectRatio="xMidYMid slice" aria-label="Delivery photo of red roses" role="img"><use href="#roses"/></svg></div>
+          <span class="pbtn gold">Mark delivered</span>
+          <span class="pbtn ghost">Use a different photo</span>
+        </div></div></div><p class="cap">2 · Snap the photo</p></div>
+      <div><div class="phone"><div class="screen">
+        <div class="sb"><span>2:14</span><span>●●●</span></div>
+        <div class="hd"><b>SendingThx</b><small>Signed in as Marcus · Bloom &amp; Stem</small></div>
+        <div class="bd" style="text-align:center">
+          <div class="big-ok"></div>
+          <h4>Delivered</h4>
+          <div class="sub" style="font-size:13px">Dana and Sam were texted just now, photo included.</div>
+          <span class="pbtn dark">Next stop · Tom Reyes</span>
+        </div></div></div><p class="cap">3 · Done — texts go out</p></div>
+    </div>
+    <div class="callout"><b>Built in:</b> the photo is checked before anyone sees it, the recipient's copy is cropped to the flowers (no house number), and a tap far from the address is flagged.</div>
+  </section>
+
+  <!-- 4 -->
+  <section class="panel" id="s4" role="tabpanel" aria-labelledby="t4">
+    <div class="panel-h"><div><h2>When a customer calls, your team can see the delivery.</h2>
+      <p>Look up an order and see exactly what happened and when — with the photo and the texts. <span class="proposed">Proposed screen · data captured today</span></p></div></div>
+    <div class="browser"><div class="bar"><i></i><i></i><i></i><span>1-800-Flowers customer service · Delivery lookup (powered by SendingThx)</span></div>
+      <div class="in">
+        <div class="search"><span class="q">1800-48213</span><span class="go">Look up</span></div>
+        <div class="cs-grid">
+          <div>
+            <div class="ohead"><div><b>#1800-48213 · Dozen Red Roses</b><small>Dana Whitfield → Sam Lee · 214 Elm St, Huntington, NY</small><small>Florist: Bloom &amp; Stem · Driver: Marcus</small></div><span class="pill thx">Delivered · Thanked</span></div>
+            <ul class="tl">
+              <li><span class="t">9:12 AM</span><span class="d"></span><span class="w"><b>Order placed</b><span>Text consent from Dana and for Sam</span></span></li>
+              <li><span class="t">9:12 AM</span><span class="d"></span><span class="w"><b>Sent to Bloom &amp; Stem Florist</b><span>Via BloomNet; order copy to SendingThx</span></span></li>
+              <li class="g"><span class="t">2:14 PM</span><span class="d"></span><span class="w"><b>Delivered by Marcus</b><span>Photo taken at the address</span></span></li>
+              <li class="g"><span class="t">2:14 PM</span><span class="d"></span><span class="w"><b>Dana texted</b><span>“Sam Lee's roses just arrived!” + photo</span></span></li>
+              <li class="g"><span class="t">2:14 PM</span><span class="d"></span><span class="w"><b>Sam texted</b><span>Delivery text + photo cropped to the flowers</span></span></li>
+              <li class="b"><span class="t">2:21 PM</span><span class="d"></span><span class="w"><b>Sam replied — passed to Dana</b><span>“Thank you so much! They're gorgeous.”</span></span></li>
+            </ul>
+          </div>
+          <div>
+            <div class="label">Delivery photo</div>
+            <div class="photo cs-photo"><svg viewBox="0 0 160 120" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Delivery photo of red roses"><use href="#roses"/></svg></div>
+            <div class="who">What Dana received</div>
+            <div class="bubble">Sam Lee's dozen red roses just arrived! We'll text you if they reply — no guarantee they will. Reply STOP to opt out.</div>
+            <div class="bubble">Sam Lee said “Thank you so much! They're gorgeous.” — relayed via SendingThx.</div>
+          </div>
+        </div>
+      </div></div>
+    <div class="callout"><b>For customer service:</b> “Was it delivered?” becomes a ten-second lookup with photo proof — instead of a call to the florist.</div>
+  </section>
+
+  <div class="nav">
+    <button class="back" id="back" hidden>← Back</button>
+    <button class="next" id="next">Next: Florist view →</button>
+    <a class="live" id="live" href="delivery-demo.html" hidden>See it on your own phone →</a>
+  </div>
+
+  <p class="foot">Sample data for illustration. © 2026 SendingThx LLC · <a href="privacy.html">Privacy</a><a href="sms-terms.html">SMS Terms</a></p>
+</main>
+
+<script>
+(function(){
+  const names = ['Checkout & handoff', 'Florist view', 'Driver view', 'Customer service'];
+  let cur = 1;
+  const show = (n) => {
+    cur = n;
+    for (let i = 1; i <= 4; i++) {
+      document.getElementById('s' + i).classList.toggle('on', i === n);
+      document.getElementById('t' + i).setAttribute('aria-selected', i === n);
+    }
+    document.getElementById('back').hidden = n === 1;
+    const next = document.getElementById('next'), live = document.getElementById('live');
+    next.hidden = n === 4; live.hidden = n !== 4;
+    if (n < 4) next.textContent = 'Next: ' + names[n] + ' →';
+    try { history.replaceState(null, '', '#' + n); } catch (_) {}
+  };
+  for (let i = 1; i <= 4; i++) document.getElementById('t' + i).addEventListener('click', () => show(i));
+  document.getElementById('next').addEventListener('click', () => { show(cur + 1); document.querySelector('.tabs').scrollIntoView({ behavior: 'smooth' }); });
+  document.getElementById('back').addEventListener('click', () => { show(cur - 1); document.querySelector('.tabs').scrollIntoView({ behavior: 'smooth' }); });
+  const h = parseInt((location.hash || '').slice(1), 10);
+  if (h >= 1 && h <= 4) show(h);
+})();
+</script>
+</body>
+</html>
