@@ -88,7 +88,7 @@ ol.do li::before{content:counter(d);width:22px;height:22px;border-radius:11px;ba
 .bubbles{padding-top:14px}
 .bubbles .who{font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin:10px 0 6px}
 .bubble{background:#E9E9EB;color:#111;border-radius:16px 16px 16px 4px;padding:10px 12px;font-size:13px;line-height:1.45;white-space:pre-line}
-.bubble .ph{display:block;height:64px;border-radius:10px;margin-bottom:8px;background:radial-gradient(ellipse at center,#6E9A5B 0,#4E7A44 45%,#DCE6D5 72%,#F2F2F2 100%)}
+.bubble .ph{display:flex;align-items:center;justify-content:center;gap:6px;height:64px;border-radius:10px;margin-bottom:8px;background:#F4EBCF;color:#8A6A0C;font-size:12px;font-weight:600}
 .foot{text-align:center;font-size:13px;color:var(--muted);margin-top:30px}
 .foot a{color:var(--muted);margin:0 10px;text-decoration:none}
 </style>
@@ -197,9 +197,9 @@ ol.do li::before{content:counter(d);width:22px;height:22px;border-radius:11px;ba
       </div>
       <div class="bubbles">
         <div class="who">Sender gets</div>
-        <div class="bubble"><span class="ph"></span><span id="bS"></span></div>
+        <div class="bubble"><span class="ph"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="7" r="2.6"/><circle cx="7.5" cy="10" r="2.6"/><circle cx="16.5" cy="10" r="2.6"/><path d="M12 12v9"/></svg>Driver's full photo</span><span id="bS"></span></div>
         <div class="who">Recipient gets</div>
-        <div class="bubble"><span class="ph"></span><span id="bR"></span></div>
+        <div class="bubble"><span class="ph"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="7" r="2.6"/><circle cx="7.5" cy="10" r="2.6"/><circle cx="16.5" cy="10" r="2.6"/><path d="M12 12v9"/></svg>Photo cropped to the flowers</span><span id="bR"></span></div>
       </div>
     </aside>
   </div>
