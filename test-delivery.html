@@ -230,7 +230,7 @@ ol.do li::before{content:counter(d);width:22px;height:22px;border-radius:11px;ba
     const sFirst = clean($('sf').value) || 'Pat', sFull = clean(`${$('sf').value} ${$('sl').value}`) || 'Pat Smith';
     const rFirst = clean($('rf').value) || 'Sam', rFull = clean(`${$('rf').value} ${$('rl').value}`) || 'Sam Lee';
     $('bS').textContent = `${rFull}'s candle gift set just arrived! We'll text you if they reply - no guarantee they will. Msg & data rates may apply. Reply HELP for help, STOP to opt out.`;
-    $('bR').textContent = `${sFull} sent ${rFirst} a candle gift set - just delivered!\n\nTo thank ${sFirst}, reply to this text with a note or photo, or tap the link for more.\n\nOne-time msg sent at ${sFirst}'s request. Reply STOP to opt out.`;
+    $('bR').textContent = `${sFull} sent ${rFirst} a candle gift set - just delivered!\n\nTo thank ${sFirst}, ${(consent && consent.giftNote) ? `reply to this text, or tap to read ${sFirst}'s note and say thanks.` : `reply to this text with a note or photo, or tap to send a thank-you.`}\n\nOne-time msg sent at ${sFirst}'s request. Reply STOP to opt out.`;
   }
   ['sf','sl','rf','rl'].forEach((id) => $(id).addEventListener('input', update));
   update();
