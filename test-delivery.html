@@ -105,7 +105,7 @@ ol.do li::before{content:counter(d);width:22px;height:22px;border-radius:11px;ba
 <main class="wrap">
   <section class="hero">
     <h1>Test a gift delivery on your phone.</h1>
-    <p>A test store checkout with the same SendingThx opt-in shoppers see. Place the order and we simulate the carrier's delivered scan, so the real texts arrive within seconds.</p>
+    <p>A test checkout at Demo Gift Shop with the same SendingThx opt-in shoppers see. Place the order and we simulate the carrier's delivered scan, so the real texts arrive within seconds.</p>
   </section>
 
   <div class="progress" aria-label="Progress">
@@ -229,8 +229,8 @@ ol.do li::before{content:counter(d);width:22px;height:22px;border-radius:11px;ba
     $('go').disabled = !s2; $('hint').style.display = s2 ? 'none' : 'block';
     const sFirst = clean($('sf').value) || 'Pat', sFull = clean(`${$('sf').value} ${$('sl').value}`) || 'Pat Smith';
     const rFirst = clean($('rf').value) || 'Sam', rFull = clean(`${$('rf').value} ${$('rl').value}`) || 'Sam Lee';
-    $('bS').textContent = `${rFull}'s candle gift set just arrived! We'll text you if they reply - no guarantee they will. Msg & data rates may apply. Reply HELP for help, STOP to opt out.`;
-    $('bR').textContent = `${sFull} sent ${rFirst} a candle gift set - just delivered!\n\nReply to this text to thank ${sFirst}, or tap the link to ${(consent && consent.giftNote) ? `read ${sFirst}'s note and reply` : `pick a quick reply or send a photo`}.\n\nOne-time msg sent at ${sFirst}'s request. Reply STOP to opt out.`;
+    $('bS').textContent = `${rFull}'s candle gift set from Demo Gift Shop just arrived! We'll text you if they reply - no guarantee they will. Msg & data rates may apply. Reply HELP for help, STOP to opt out.`;
+    $('bR').textContent = `${sFull} sent ${rFirst} a candle gift set from Demo Gift Shop - just delivered!\n\nReply to this text to thank ${sFirst}, or tap the link to ${(consent && consent.giftNote) ? `read ${sFirst}'s note and reply` : `pick a quick reply or send a photo`}.\n\nOne-time msg sent at ${sFirst}'s request. Reply STOP to opt out.`;
   }
   ['sf','sl','rf','rl'].forEach((id) => $(id).addEventListener('input', update));
   update();
