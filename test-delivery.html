@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SendingThx — Try a delivery on your phone</title>
+<title>SendingThx — Test the gift delivery texts</title>
 <link rel="icon" href="sendingthx-logo-224.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fraunces:wght@700;800&display=swap" rel="stylesheet">
@@ -99,19 +99,19 @@ ol.do li::before{content:counter(d);width:22px;height:22px;border-radius:11px;ba
 <header class="top"><div class="top-in">
   <img src="sendingthx-logo-224.png" alt="">
   <span class="brand">SendingThx</span>
-  <span class="tag">Live demo · 2 minutes</span>
+  <span class="tag">Test checkout</span>
 </div></header>
 
 <main class="wrap">
   <section class="hero">
-    <h1>Try a real delivery on your phone.</h1>
-    <p>Three quick steps. You'll get the same texts a customer would — with the delivery photo.</p>
+    <h1>Test a gift delivery on your phone.</h1>
+    <p>A test store checkout with the same SendingThx opt-in shoppers see. Place the order and a simulated carrier marks it delivered, so the real texts arrive within a couple of minutes.</p>
   </section>
 
   <div class="progress" aria-label="Progress">
-    <div class="dot on" id="p1"><span class="num">1</span>You</div><span class="bar"></span>
-    <div class="dot" id="p2"><span class="num">2</span>Recipient</div><span class="bar"></span>
-    <div class="dot" id="p3"><span class="num">3</span>Deliver</div>
+    <div class="dot on" id="p1"><span class="num">1</span>Order</div><span class="bar"></span>
+    <div class="dot" id="p2"><span class="num">2</span>Texts</div><span class="bar"></span>
+    <div class="dot" id="p3"><span class="num">3</span>Delivery</div>
   </div>
 
   <div class="grid">
@@ -119,7 +119,7 @@ ol.do li::before{content:counter(d);width:22px;height:22px;border-radius:11px;ba
       <!-- STEP 1 -->
       <section class="card active" id="c1">
         <div class="card-h">
-          <span class="step">1</span><h2>Who's in the order?</h2>
+          <span class="step">1</span><h2>Your gift order</h2>
           <div class="qtip"><button type="button" aria-label="What is this step?">?</button>
             <div class="tip" role="tooltip">The sender ordered the flowers; the recipient gets them. Testing alone? Use your own name for both.</div></div>
         </div>
@@ -148,30 +148,24 @@ ol.do li::before{content:counter(d);width:22px;height:22px;border-radius:11px;ba
       <!-- STEP 3 -->
       <section class="card locked" id="c3">
         <div class="card-h">
-          <span class="step">3</span><h2>Deliver it</h2>
+          <span class="step">3</span><h2>Place the order</h2>
           <div class="qtip"><button type="button" aria-label="What is this step?">?</button>
-            <div class="tip" role="tooltip">In real life this is the florist's driver. For the demo, you're the driver: open the driver website on your phone, sign in with a texted code, tap the delivery and snap a photo. The texts go out the second you tap Delivered.</div></div>
+            <div class="tip" role="tooltip">The order ships with a simulated carrier tracking number (EasyPost test code EZ4000000004) that always ends in "delivered". The delivery scan triggers the same texts a real order does.</div></div>
         </div>
         <div id="pre3">
-          <p class="card-sub">You'll play the driver too.</p>
-          <button class="btn" id="go" disabled>Create my demo delivery</button>
+          <p class="card-sub">Ships with a simulated carrier tracking number that ends in "delivered".</p>
+          <button class="btn" id="go" disabled>Place test order</button>
           <p class="err" id="err" role="alert"></p>
           <p class="hint" id="hint">Fill in steps 1 and 2 to continue.</p>
         </div>
         <div id="post3" class="hide">
-          <p class="card-sub">Your delivery is ready. Grab your phone.</p>
-          <div class="done-box">
-            <div class="qr-wrap"><div id="qr"></div><p>Scan with your phone</p></div>
-            <div>
-              <a class="btn dark" href="https://sendingthx.com/driver/" target="_blank" rel="noopener">Open the driver website</a>
-              <ol class="do">
-                <li><span>Sign in with <b id="signPhone"></b> — we'll text you a code.</span></li>
-                <li><span>Tap the delivery to <b id="toName"></b>.</span></li>
-                <li><span>Snap a photo of any flowers or plant, then tap <b>Delivered</b>.</span></li>
-              </ol>
-            </div>
-          </div>
-          <p class="note">Photos that don't show flowers or a plant aren't sent — that's the built-in privacy check. The texts still go out.</p>
+          <p class="card-sub">Order placed. Tracking <b>EZ4000000004</b> (simulated carrier).</p>
+          <ol class="do">
+            <li><span>The carrier scan marks it delivered, usually within 1–2 minutes.</span></li>
+            <li><span><b id="toName"></b> gets the delivery text, and the sender gets a delivery confirmation.</span></li>
+            <li><span>Reply to the delivery text with a thank-you; it's relayed to the sender.</span></li>
+            <li><span>Reply <b>HELP</b> for support info or <b>STOP</b> to opt out.</span></li>
+          </ol>
         </div>
       </section>
     </div>
@@ -181,18 +175,18 @@ ol.do li::before{content:counter(d);width:22px;height:22px;border-radius:11px;ba
       <h3>Order summary</h3>
       <div class="item">
         <div class="thumb"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#8A6A0C" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="7" r="2.6"/><circle cx="7.5" cy="10" r="2.6"/><circle cx="16.5" cy="10" r="2.6"/><path d="M12 12v9M12 16c-2-1-3.5-1-5-.5M12 16c2-1 3.5-1 5-.5"/></svg></div>
-        <div><b>Bouquet of flowers</b><span>Demo order</span></div>
+        <div><b>Candle gift set</b><span>Test order</span></div>
         <div class="price">$0.00</div>
       </div>
       <div class="lines">
-        <div><span>Delivery</span><span>Local driver</span></div>
-        <div><span>Delivery texts + photo</span><span class="free">Included</span></div>
+        <div><span>Shipping</span><span>Carrier (simulated)</span></div>
+        <div><span>Delivery texts</span><span class="free">Included</span></div>
       </div>
       <div class="bubbles">
         <div class="who">Sender gets</div>
-        <div class="bubble"><span class="ph"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="7" r="2.6"/><circle cx="7.5" cy="10" r="2.6"/><circle cx="16.5" cy="10" r="2.6"/><path d="M12 12v9"/></svg>Driver's full photo</span><span id="bS"></span></div>
+        <div class="bubble"><span id="bS"></span></div>
         <div class="who">Recipient gets</div>
-        <div class="bubble"><span class="ph"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="7" r="2.6"/><circle cx="7.5" cy="10" r="2.6"/><circle cx="16.5" cy="10" r="2.6"/><path d="M12 12v9"/></svg>Photo cropped to the flowers</span><span id="bR"></span></div>
+        <div class="bubble"><span id="bR"></span></div>
       </div>
     </aside>
   </div>
@@ -200,14 +194,12 @@ ol.do li::before{content:counter(d);width:22px;height:22px;border-radius:11px;ba
   <p class="foot">© 2026 SendingThx LLC · <a href="privacy">Privacy</a><a href="sms-terms">SMS Terms</a></p>
 </main>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <script>
 !function(n){"use strict";const e={mount:function(n,e={}){const t=document.querySelector(n);if(!t)return void console.error(`[SendingThx] Container not found: ${n}`);const i={senderLabel:e.senderLabel||"I agree to receive SMS notifications from SendingThx about this order at the number I provide below, including a one-time message if the recipient responds to you. Msg & data rates may apply. Reply HELP for help, STOP to opt out.",recipientLabel:e.recipientLabel||"I confirm I have the recipient's consent to receive this one-time delivery notification via text message from SendingThx at the number I provide below. Msg & data rates may apply. Reply HELP for help and STOP to opt out.",onConsent:e.onConsent||(()=>{}),theme:e.theme||"light"},o=this._createWidget(i);return t.appendChild(o),this._attachListeners(o,i),o},_createWidget:function(n){const e=document.createElement("div");return e.className="sendingthx-consent-wrapper",e.setAttribute("data-theme",n.theme),e.innerHTML=`<style>.sendingthx-consent-wrapper{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','DM Sans',sans-serif;color:#1C1A14;--gold:#F5C842;--gold-dark:#C9A200;--cream:#FDFAF3;--cream-border:#E8E0CC;--ink:#1C1A14;--ink-mid:#4A4535;--radius:10px}.sendingthx-consent-wrapper[data-theme=dark]{color:#fff;--ink:#fff;--ink-mid:#e0e0e0}.sendingthx-section{margin:1.5rem 0;padding:1.25rem;background:var(--cream);border:1.5px solid var(--cream-border);border-radius:var(--radius)}.sendingthx-section h3{font-family:'Fraunces',serif;font-size:1rem;font-weight:900;margin:0 0 .875rem 0;color:var(--ink)}.sendingthx-field{margin-bottom:.75rem}.sendingthx-field:last-child{margin-bottom:0}.sendingthx-label{display:flex;align-items:flex-start;gap:.625rem;cursor:pointer;font-size:.85rem;line-height:1.4}.sendingthx-checkbox{width:16px;height:16px;margin-top:2px;cursor:pointer;accent-color:var(--gold-dark);flex-shrink:0}.sendingthx-input{width:100%;padding:.5rem .625rem;font-family:inherit;font-size:.85rem;border:1px solid var(--cream-border);border-radius:6px;background:#fff;color:var(--ink);box-sizing:border-box;transition:border-color .2s}.sendingthx-input:focus{outline:0;border-color:var(--gold-dark);box-shadow:0 0 0 3px rgba(201,162,0,.1)}.sendingthx-input:disabled{background-color:#f9f9f9;color:#ccc;cursor:not-allowed;border-color:#e0e0e0}.sendingthx-input-label{display:block;font-size:.8rem;font-weight:500;margin-bottom:.25rem;color:var(--ink-mid)}.sendingthx-input-wrapper{margin-bottom:.75rem}.sendingthx-input-wrapper:last-child{margin-bottom:0}.sendingthx-consent-block{padding:.875rem;background:#fff;border:1px solid var(--cream-border);border-radius:6px;margin-bottom:.75rem}.sendingthx-consent-block:last-child{margin-bottom:0}.sendingthx-hint{font-size:.8rem;color:#888;margin-top:.25rem}</style><div class="sendingthx-section"><h3>SMS Notifications & Replies</h3><div class="sendingthx-consent-block"><div class="sendingthx-field"><label class="sendingthx-label"><input type="checkbox" class="sendingthx-checkbox" name="sendingthx_sender_consent" value="true"><span>${n.senderLabel}</span></label></div><div class="sendingthx-input-wrapper"><label class="sendingthx-input-label">Your phone number <span style="color:#d03b3b">*</span></label><input type="tel" class="sendingthx-input sendingthx-phone-input" name="sendingthx_sender_phone" placeholder="(555) 123-4567" disabled maxlength="14" inputmode="numeric"></div></div><div class="sendingthx-consent-block"><div class="sendingthx-field"><label class="sendingthx-label"><input type="checkbox" class="sendingthx-checkbox" name="sendingthx_recipient_consent" value="true" disabled><span>${n.recipientLabel}</span></label></div><div class="sendingthx-input-wrapper"><label class="sendingthx-input-label">Recipient's phone number <span style="color:#d03b3b">*</span></label><input type="tel" class="sendingthx-input sendingthx-phone-input" name="sendingthx_recipient_phone" placeholder="(555) 123-4567" disabled maxlength="14" inputmode="numeric"></div></div><div class="sendingthx-consent-block"><div class="sendingthx-input-wrapper"><label class="sendingthx-input-label">Occasion (optional)</label><select class="sendingthx-input" name="sendingthx_occasion" disabled style="appearance:none;background-image:url(data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%234A4535' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e);background-repeat:no-repeat;background-position:right .75rem center;background-size:1.5em 1.5em;padding-right:2.5rem;cursor:pointer"><option value="">Package</option><option value="gift">Gift</option><option value="birthday">Birthday</option><option value="sympathy">Sympathy</option><option value="anniversary">Anniversary</option><option value="get-well">Get Well</option><option value="congratulations">Congratulations</option><option value="thank-you">Thank You</option></select></div></div><div class="sendingthx-consent-block"><div class="sendingthx-input-wrapper"><label class="sendingthx-input-label">Personal Note (optional)</label><textarea class="sendingthx-input" name="sendingthx_gift_note" placeholder="Optional note here." maxlength="160" disabled style="resize:vertical;min-height:80px"></textarea><div class="sendingthx-hint">Shown to the recipient on their thank-you page only. Never sent by text, never used for marketing.</div></div></div><div style="margin-top:1.25rem;padding-top:1rem;border-top:1px solid var(--cream-border);font-size:.8rem;color:#888;text-align:center;line-height:1.5"><p style="margin:0 0 .5rem">This is a one-time message delivery. No recurring messages will be sent. Msg &amp; data rates may apply. Reply HELP for help and STOP to opt out.</p><div><a href="https://www.sendingthx.com/privacy" target="_blank" rel="noopener noreferrer" style="color:var(--gold-dark);text-decoration:none">Privacy Policy</a><span style="margin:0 .5rem;color:#ccc">·</span><a href="https://www.sendingthx.com/sms-terms" target="_blank" rel="noopener noreferrer" style="color:var(--gold-dark);text-decoration:none">SMS Terms</a></div></div></div>`,e},_attachListeners:function(n,e){const t=n.querySelector('[name="sendingthx_sender_consent"]'),i=n.querySelector('[name="sendingthx_sender_phone"]'),o=n.querySelector('[name="sendingthx_recipient_consent"]'),r=n.querySelector('[name="sendingthx_recipient_phone"]'),a=n.querySelector('[name="sendingthx_occasion"]'),s=n.querySelector('[name="sendingthx_gift_note"]'),l=()=>{const n=t.checked;i.disabled=!n,n||(i.value="");const e=n&&this._isValidPhone(i.value);o.disabled=!e,e||(o.checked=!1,r.value="");const l=e&&o.checked;r.disabled=!l,l||(r.value="");const d=l&&this._isValidPhone(r.value);a.disabled=!d,s.disabled=!d,d||(a.value="")},d=()=>{l.call(this);const t=this.getConsentData(n);e.onConsent(t)};t.addEventListener("change",()=>d.call(this)),i.addEventListener("input",()=>d.call(this)),o.addEventListener("change",()=>d.call(this)),r.addEventListener("input",()=>d.call(this)),a.addEventListener("change",()=>d.call(this)),s.addEventListener("input",()=>d.call(this)),i.addEventListener("blur",()=>{const n=i.value;n&&!this._isValidPhone(n)?i.style.borderColor="#d03b3b":i.style.borderColor="var(--cream-border)",d.call(this)}),r.addEventListener("blur",()=>{const n=r.value;n&&!this._isValidPhone(n)?r.style.borderColor="#d03b3b":r.style.borderColor="var(--cream-border)",d.call(this)});const c=n=>{let e=n.value.replace(/\D/g,"");e=e.substring(0,10),0===e.length?n.value="":e.length<=3?n.value=e:e.length<=6?n.value=`(${e.substring(0,3)}) ${e.substring(3)}`:n.value=`(${e.substring(0,3)}) ${e.substring(3,6)}-${e.substring(6)}`};i.addEventListener("input",n=>{c(n.target),d.call(this)}),r.addEventListener("input",n=>{c(n.target),d.call(this)}),l.call(this),window.SendingThxConsentData=()=>this.getConsentData(n)},getConsentData:function(n){const e=n.querySelector('[name="sendingthx_sender_consent"]'),t=n.querySelector('[name="sendingthx_sender_phone"]'),i=n.querySelector('[name="sendingthx_recipient_consent"]'),o=n.querySelector('[name="sendingthx_recipient_phone"]'),r=n.querySelector('[name="sendingthx_occasion"]'),a=n.querySelector('[name="sendingthx_gift_note"]'),s=this._isValidPhone(t.value),l=this._isValidPhone(o.value),d=e.checked&&s&&i.checked&&l;return{senderConsent:e.checked,senderPhone:this._normalizePhone(t.value),recipientConsent:i.checked,recipientPhone:this._normalizePhone(o.value),occasion:r.value,giftNote:a.value.trim(),isValid:d}},_isValidPhone:function(n){const e=n.replace(/[\s\-().]/g,"");return/^(\+1)?[0-9]{10,}$/.test(e)},_normalizePhone:function(n){let e=n.replace(/\D/g,"");return 10!==e.length?"":"+1"+e}};n.SendingThxConsent=e,"undefined"!=typeof module&&module.exports&&(module.exports=e)}("undefined"!=typeof window?window:global);
 </script>
 <script>
 (function(){
-  const API = 'https://go.sendingthx.com/api/v1/florist-demo';
-  const DRIVER_URL = 'https://sendingthx.com/driver/';
+  const API = 'https://go.sendingthx.com/api/v1/internal-demo-order';
   const $ = (id) => document.getElementById(id);
   const digits = (v) => String(v || '').replace(/\D/g, '').slice(-10);
   const pretty = (v) => { const d = digits(v); return `(${d.slice(0,3)}) ${d.slice(3,6)}-${d.slice(6)}`; };
@@ -237,8 +229,8 @@ ol.do li::before{content:counter(d);width:22px;height:22px;border-radius:11px;ba
     $('go').disabled = !s2; $('hint').style.display = s2 ? 'none' : 'block';
     const sFirst = clean($('sf').value) || 'Pat', sFull = clean(`${$('sf').value} ${$('sl').value}`) || 'Pat Smith';
     const rFirst = clean($('rf').value) || 'Sam', rFull = clean(`${$('rf').value} ${$('rl').value}`) || 'Sam Lee';
-    $('bS').textContent = `${rFull}'s bouquet of flowers just arrived! We'll text you if they reply - no guarantee they will. Msg & data rates may apply. Reply HELP for help, STOP to opt out.`;
-    $('bR').textContent = `${sFull} sent ${rFirst} a bouquet of flowers - just delivered!\n\nTo thank ${sFirst}, reply to this text with a note or photo, or tap the link for more.\n\nOne-time msg sent at ${sFirst}'s request. Reply STOP to opt out.`;
+    $('bS').textContent = `${rFull}'s candle gift set just arrived! We'll text you if they reply - no guarantee they will. Msg & data rates may apply. Reply HELP for help, STOP to opt out.`;
+    $('bR').textContent = `${sFull} sent ${rFirst} a candle gift set - just delivered!\n\nTo thank ${sFirst}, reply to this text with a note or photo, or tap the link for more.\n\nOne-time msg sent at ${sFirst}'s request. Reply STOP to opt out.`;
   }
   ['sf','sl','rf','rl'].forEach((id) => $(id).addEventListener('input', update));
   update();
@@ -249,22 +241,20 @@ ol.do li::before{content:counter(d);width:22px;height:22px;border-radius:11px;ba
     if (!d || !d.isValid) return;
     const sender = { name: clean(`${$('sf').value} ${$('sl').value}`), phone: d.senderPhone };
     const recipient = { name: clean(`${$('rf').value} ${$('rl').value}`), phone: d.recipientPhone };
-    $('go').disabled = true; $('go').textContent = 'Creating…';
+    $('go').disabled = true; $('go').textContent = 'Placing order…';
     try {
       const res = await fetch(API, { method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ gift_description: 'a bouquet of flowers', gifter: sender, recipient, occasion: d.occasion || undefined, gift_note: d.giftNote || undefined }) });
+        body: JSON.stringify({ tracking_number: 'EZ4000000004', carrier: 'usps', gift_description: 'a candle gift set', gifter: sender, recipient, occasion: d.occasion || undefined, gift_note: d.giftNote || undefined }) });
       const data = await res.json().catch(() => ({}));
       if (!res.ok || !data.success) throw new Error(data.error || 'Something went wrong - please try again.');
-      $('signPhone').textContent = pretty(d.senderPhone);
       $('toName').textContent = recipient.name;
       $('pre3').classList.add('hide'); $('post3').classList.remove('hide');
       $('p3').className = 'dot done';
       ['c1','c2'].forEach((id) => $(id).querySelectorAll('input,select,textarea').forEach((el) => el.disabled = true));
-      try { if (window.QRCode) new QRCode($('qr'), { text: DRIVER_URL, width: 132, height: 132, colorDark: '#1C1A14', colorLight: '#ffffff' }); } catch (_) {}
       $('c3').scrollIntoView({ behavior: 'smooth', block: 'start' });
     } catch (e) {
       err.textContent = e.message || 'Could not reach the server - check your connection and try again.';
-      err.style.display = 'block'; $('go').disabled = false; $('go').textContent = 'Create my demo delivery';
+      err.style.display = 'block'; $('go').disabled = false; $('go').textContent = 'Place test order';
     }
   });
 })();
