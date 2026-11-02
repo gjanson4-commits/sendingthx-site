@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SendingThx — Try a delivery on your phone</title>
+<link rel="icon" href="sendingthx-logo-224.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fraunces:wght@700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#1C1A14; --ink-2:#4A4535; --muted:#6E6756; --line:#E3DCC8; --cream:#FAF6EC;
+  --card:#FFFDF7; --gold:#E9CB63; --gold-dark:#8A6A0C; --green:#1E7A4F; --red:#A32D2D;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--cream);color:var(--ink);line-height:1.45}
+a{color:var(--gold-dark)}
+.top{background:var(--ink);color:var(--cream)}
+.top-in{max-width:1080px;margin:0 auto;padding:14px 20px;display:flex;align-items:center;gap:12px}
+.top img{width:36px;height:36px;border-radius:18px}
+.top .brand{font-weight:700;font-size:18px}
+.top .tag{margin-left:auto;font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--gold);font-weight:700}
+.wrap{max-width:1080px;margin:0 auto;padding:32px 20px 48px}
+.hero h1{font-family:'Fraunces',Georgia,serif;font-size:clamp(30px,5vw,44px);line-height:1.08;font-weight:800}
+.hero p{margin-top:10px;font-size:18px;color:var(--ink-2);max-width:640px}
+.progress{display:flex;gap:8px;margin:22px 0 26px;align-items:center;font-size:14px;color:var(--muted);font-weight:600;flex-wrap:wrap}
+.progress .dot{display:flex;align-items:center;gap:8px}
+.progress .num{width:26px;height:26px;border-radius:13px;border:2px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:13px;background:#fff;color:var(--muted)}
+.progress .dot.done .num{background:var(--green);border-color:var(--green);color:#fff}
+.progress .dot.on .num{border-color:var(--ink);color:var(--ink)}
+.progress .bar{width:36px;height:2px;background:var(--line)}
+.grid{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:24px;align-items:start}
+@media (max-width:860px){.grid{grid-template-columns:minmax(0,1fr)}}
+.card{background:var(--card);border:2px solid var(--line);border-radius:16px;padding:22px 22px 24px;margin-bottom:18px;transition:border-color .2s,opacity .2s}
+.card.active{border-color:var(--ink)}
+.card.locked{opacity:.55}
+.card-h{display:flex;align-items:center;gap:10px;margin-bottom:6px}
+.card-h .step{width:30px;height:30px;border-radius:15px;background:var(--ink);color:var(--cream);font-weight:700;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
+.card.complete .card-h .step{background:var(--green)}
+.card-h h2{font-family:'Fraunces',Georgia,serif;font-size:22px;font-weight:700}
+.card-sub{color:var(--muted);font-size:15px;margin:0 0 16px 40px}
+@media (max-width:520px){.card-sub{margin-left:0}}
+.qtip{position:relative;margin-left:auto;flex-shrink:0}
+.qtip button{width:28px;height:28px;border-radius:14px;border:2px solid var(--line);background:#fff;color:var(--ink-2);font-weight:700;font-size:14px;cursor:help;font-family:inherit}
+.qtip button:hover,.qtip button:focus-visible{border-color:var(--ink);outline:none}
+.qtip .tip{display:none;position:absolute;right:0;top:36px;width:280px;max-width:80vw;background:var(--ink);color:var(--cream);padding:12px 14px;border-radius:10px;font-size:14px;line-height:1.5;z-index:5;box-shadow:0 8px 24px rgba(0,0,0,.18)}
+.qtip:hover .tip,.qtip:focus-within .tip,.qtip.open .tip{display:block}
+.row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+@media (max-width:520px){.row{grid-template-columns:minmax(0,1fr)}}
+label.f{display:block;font-size:13px;font-weight:600;color:var(--ink-2);margin-bottom:6px}
+input[type=text],input[type=tel]{width:100%;padding:13px 14px;border:1.5px solid var(--line);border-radius:10px;font-size:16px;font-family:inherit;background:#fff;color:var(--ink)}
+input:focus{outline:none;border-color:var(--ink);box-shadow:0 0 0 3px rgba(233,203,99,.35)}
+.field{margin-bottom:12px}
+.consent{display:flex;gap:10px;align-items:flex-start;background:#fff;border:1.5px solid var(--line);border-radius:10px;padding:12px 14px;font-size:13px;color:var(--ink-2);line-height:1.5;cursor:pointer;margin-top:4px}
+.consent input{width:18px;height:18px;margin-top:1px;accent-color:var(--gold-dark);flex-shrink:0}
+.choice{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-bottom:14px}
+.choice button{padding:14px;border-radius:12px;border:2px solid var(--line);background:#fff;font-family:inherit;font-size:15px;font-weight:600;color:var(--ink);cursor:pointer;text-align:left;line-height:1.3}
+.choice button small{display:block;font-weight:400;color:var(--muted);font-size:13px;margin-top:3px}
+.choice button[aria-pressed=true]{border-color:var(--ink);background:#FFF8DD}
+.hide{display:none!important}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:16px 20px;border-radius:12px;border:none;background:var(--gold);color:var(--ink);font-family:inherit;font-size:17px;font-weight:700;cursor:pointer;text-decoration:none}
+.btn:hover{background:#DDBB45}
+.btn:disabled{background:#EDE6D2;color:#9A927E;cursor:not-allowed}
+.btn.dark{background:var(--ink);color:var(--cream)}
+.btn.dark:hover{background:#38342A}
+.err{color:var(--red);font-size:14px;margin-top:10px;display:none}
+.hint{font-size:13px;color:var(--muted);margin-top:10px;text-align:center}
+.done-box{display:grid;grid-template-columns:auto minmax(0,1fr);gap:20px;align-items:center}
+@media (max-width:620px){.done-box{grid-template-columns:minmax(0,1fr)}.qr-wrap{display:none}}
+.qr-wrap{background:#fff;border:1.5px solid var(--line);border-radius:12px;padding:12px;text-align:center}
+.qr-wrap #qr{width:132px;height:132px;margin:0 auto}
+.qr-wrap p{font-size:12px;color:var(--muted);margin-top:6px}
+ol.do{list-style:none;counter-reset:d;margin:14px 0 0}
+ol.do li{counter-increment:d;display:flex;gap:10px;margin-bottom:10px;font-size:15px;color:var(--ink-2)}
+ol.do li::before{content:counter(d);width:22px;height:22px;border-radius:11px;background:#F1EAD6;color:var(--ink);font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.note{margin-top:12px;font-size:13px;color:var(--muted);background:#F6F0DF;border-radius:10px;padding:10px 12px}
+/* summary */
+.summary{position:sticky;top:20px;background:#fff;border:2px solid var(--line);border-radius:16px;padding:20px}
+.summary h3{font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:14px}
+.item{display:flex;gap:12px;align-items:center;padding-bottom:14px;border-bottom:1px solid var(--line)}
+.item .thumb{width:54px;height:54px;border-radius:12px;background:#F4EBCF;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.item b{display:block;font-size:15px}
+.item span{font-size:13px;color:var(--muted)}
+.item .price{margin-left:auto;font-weight:700}
+.lines{padding:12px 0;border-bottom:1px solid var(--line);font-size:14px}
+.lines div{display:flex;justify-content:space-between;margin:4px 0;color:var(--ink-2)}
+.lines .free{color:var(--green);font-weight:600}
+.bubbles{padding-top:14px}
+.bubbles .who{font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin:10px 0 6px}
+.bubble{background:#E9E9EB;color:#111;border-radius:16px 16px 16px 4px;padding:10px 12px;font-size:13px;line-height:1.45;white-space:pre-line}
+.bubble .ph{display:flex;align-items:center;justify-content:center;gap:6px;height:64px;border-radius:10px;margin-bottom:8px;background:#F4EBCF;color:#8A6A0C;font-size:12px;font-weight:600}
+.foot{text-align:center;font-size:13px;color:var(--muted);margin-top:30px}
+.foot a{color:var(--muted);margin:0 10px;text-decoration:none}
+</style>
+<script>window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };</script>
+<script defer src="/_vercel/insights/script.js"></script>
+</head>
+<body>
+<header class="top"><div class="top-in">
+  <img src="sendingthx-logo-224.png" alt="">
+  <span class="brand">SendingThx</span>
+  <span class="tag">Live demo · 2 minutes</span>
+</div></header>
+
+<main class="wrap">
+  <section class="hero">
+    <h1>Try a real delivery on your phone.</h1>
+    <p>Three quick steps. You'll get the same texts a customer would — with the delivery photo.</p>
+  </section>
+
+  <div class="progress" aria-label="Progress">
+    <div class="dot on" id="p1"><span class="num">1</span>You</div><span class="bar"></span>
+    <div class="dot" id="p2"><span class="num">2</span>Recipient</div><span class="bar"></span>
+    <div class="dot" id="p3"><span class="num">3</span>Deliver</div>
+  </div>
+
+  <div class="grid">
+    <div>
+      <!-- STEP 1 -->
+      <section class="card active" id="c1">
+        <div class="card-h">
+          <span class="step">1</span><h2>Who's in the order?</h2>
+          <div class="qtip"><button type="button" aria-label="What is this step?">?</button>
+            <div class="tip" role="tooltip">The sender ordered the flowers; the recipient gets them. Testing alone? Use your own name for both.</div></div>
+        </div>
+        <p class="card-sub">Testing alone? Use your own name for both.</p>
+        <div class="row">
+          <div class="field"><label class="f" for="sf">Sender first name</label><input type="text" id="sf" autocomplete="given-name"></div>
+          <div class="field"><label class="f" for="sl">Sender last name</label><input type="text" id="sl" autocomplete="family-name"></div>
+        </div>
+        <div class="row">
+          <div class="field"><label class="f" for="rf">Recipient first name</label><input type="text" id="rf"></div>
+          <div class="field"><label class="f" for="rl">Recipient last name</label><input type="text" id="rl"></div>
+        </div>
+      </section>
+
+      <!-- STEP 2 -->
+      <section class="card locked" id="c2">
+        <div class="card-h">
+          <span class="step">2</span><h2>Text notifications</h2>
+          <div class="qtip"><button type="button" aria-label="What is this step?">?</button>
+            <div class="tip" role="tooltip">This is the same opt-in a shopper sees at checkout. Testing alone? Enter your own number in both places to get both texts on one phone.</div></div>
+        </div>
+        <p class="card-sub">The same opt-in shoppers see at checkout. Testing alone? Enter your own number in both places.</p>
+        <div id="sendingthx-consent"></div>
+      </section>
+
+      <!-- STEP 3 -->
+      <section class="card locked" id="c3">
+        <div class="card-h">
+          <span class="step">3</span><h2>Deliver it</h2>
+          <div class="qtip"><button type="button" aria-label="What is this step?">?</button>
+            <div class="tip" role="tooltip">In real life this is the florist's driver. For the demo, you're the driver: open the driver website on your phone, sign in with a texted code, tap the delivery and snap a photo. The texts go out the second you tap Delivered.</div></div>
+        </div>
+        <div id="pre3">
+          <p class="card-sub">You'll play the driver too.</p>
+          <button class="btn" id="go" disabled>Create my demo delivery</button>
+          <p class="err" id="err" role="alert"></p>
+          <p class="hint" id="hint">Fill in steps 1 and 2 to continue.</p>
+        </div>
+        <div id="post3" class="hide">
+          <p class="card-sub">Your delivery is ready. Grab your phone.</p>
+          <div class="done-box">
+            <div class="qr-wrap"><div id="qr"></div><p>Scan with your phone</p></div>
+            <div>
+              <a class="btn dark" href="https://sendingthx.com/driver/" target="_blank" rel="noopener">Open the driver website</a>
+              <ol class="do">
+                <li><span>Sign in with <b id="signPhone"></b> — we'll text you a code.</span></li>
+                <li><span>Tap the delivery to <b id="toName"></b>.</span></li>
+                <li><span>Snap a photo of any flowers or plant, then tap <b>Delivered</b>.</span></li>
+              </ol>
+            </div>
+          </div>
+          <p class="note">Photos that don't show flowers or a plant aren't sent — that's the built-in privacy check. The texts still go out.</p>
+        </div>
+      </section>
+    </div>
+
+    <!-- ORDER SUMMARY -->
+    <aside class="summary" aria-label="Order summary">
+      <h3>Order summary</h3>
+      <div class="item">
+        <div class="thumb"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#8A6A0C" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="7" r="2.6"/><circle cx="7.5" cy="10" r="2.6"/><circle cx="16.5" cy="10" r="2.6"/><path d="M12 12v9M12 16c-2-1-3.5-1-5-.5M12 16c2-1 3.5-1 5-.5"/></svg></div>
+        <div><b>Bouquet of flowers</b><span>Demo order</span></div>
+        <div class="price">$0.00</div>
+      </div>
+      <div class="lines">
+        <div><span>Delivery</span><span>Local driver</span></div>
+        <div><span>Delivery texts + photo</span><span class="free">Included</span></div>
+      </div>
+      <div class="bubbles">
+        <div class="who">Sender gets</div>
+        <div class="bubble"><span class="ph"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="7" r="2.6"/><circle cx="7.5" cy="10" r="2.6"/><circle cx="16.5" cy="10" r="2.6"/><path d="M12 12v9"/></svg>Driver's full photo</span><span id="bS"></span></div>
+        <div class="who">Recipient gets</div>
+        <div class="bubble"><span class="ph"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="7" r="2.6"/><circle cx="7.5" cy="10" r="2.6"/><circle cx="16.5" cy="10" r="2.6"/><path d="M12 12v9"/></svg>Photo cropped to the flowers</span><span id="bR"></span></div>
+      </div>
+    </aside>
+  </div>
+
+  <p class="foot">© 2026 SendingThx LLC · <a href="privacy">Privacy</a><a href="sms-terms">SMS Terms</a></p>
+</main>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script>
+!function(n){"use strict";const e={mount:function(n,e={}){const t=document.querySelector(n);if(!t)return void console.error(`[SendingThx] Container not found: ${n}`);const i={senderLabel:e.senderLabel||"I agree to receive SMS notifications from SendingThx about this order at the number I provide below, including a one-time message if the recipient responds to you. Msg & data rates may apply. Reply HELP for help, STOP to opt out.",recipientLabel:e.recipientLabel||"I confirm I have the recipient's consent to receive this one-time delivery notification via text message from SendingThx at the number I provide below. Msg & data rates may apply. Reply HELP for help and STOP to opt out.",onConsent:e.onConsent||(()=>{}),theme:e.theme||"light"},o=this._createWidget(i);return t.appendChild(o),this._attachListeners(o,i),o},_createWidget:function(n){const e=document.createElement("div");return e.className="sendingthx-consent-wrapper",e.setAttribute("data-theme",n.theme),e.innerHTML=`<style>.sendingthx-consent-wrapper{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','DM Sans',sans-serif;color:#1C1A14;--gold:#F5C842;--gold-dark:#C9A200;--cream:#FDFAF3;--cream-border:#E8E0CC;--ink:#1C1A14;--ink-mid:#4A4535;--radius:10px}.sendingthx-consent-wrapper[data-theme=dark]{color:#fff;--ink:#fff;--ink-mid:#e0e0e0}.sendingthx-section{margin:1.5rem 0;padding:1.25rem;background:var(--cream);border:1.5px solid var(--cream-border);border-radius:var(--radius)}.sendingthx-section h3{font-family:'Fraunces',serif;font-size:1rem;font-weight:900;margin:0 0 .875rem 0;color:var(--ink)}.sendingthx-field{margin-bottom:.75rem}.sendingthx-field:last-child{margin-bottom:0}.sendingthx-label{display:flex;align-items:flex-start;gap:.625rem;cursor:pointer;font-size:.85rem;line-height:1.4}.sendingthx-checkbox{width:16px;height:16px;margin-top:2px;cursor:pointer;accent-color:var(--gold-dark);flex-shrink:0}.sendingthx-input{width:100%;padding:.5rem .625rem;font-family:inherit;font-size:.85rem;border:1px solid var(--cream-border);border-radius:6px;background:#fff;color:var(--ink);box-sizing:border-box;transition:border-color .2s}.sendingthx-input:focus{outline:0;border-color:var(--gold-dark);box-shadow:0 0 0 3px rgba(201,162,0,.1)}.sendingthx-input:disabled{background-color:#f9f9f9;color:#ccc;cursor:not-allowed;border-color:#e0e0e0}.sendingthx-input-label{display:block;font-size:.8rem;font-weight:500;margin-bottom:.25rem;color:var(--ink-mid)}.sendingthx-input-wrapper{margin-bottom:.75rem}.sendingthx-input-wrapper:last-child{margin-bottom:0}.sendingthx-consent-block{padding:.875rem;background:#fff;border:1px solid var(--cream-border);border-radius:6px;margin-bottom:.75rem}.sendingthx-consent-block:last-child{margin-bottom:0}.sendingthx-hint{font-size:.8rem;color:#888;margin-top:.25rem}</style><div class="sendingthx-section"><h3>SMS Notifications & Replies</h3><div class="sendingthx-consent-block"><div class="sendingthx-field"><label class="sendingthx-label"><input type="checkbox" class="sendingthx-checkbox" name="sendingthx_sender_consent" value="true"><span>${n.senderLabel}</span></label></div><div class="sendingthx-input-wrapper"><label class="sendingthx-input-label">Your phone number <span style="color:#d03b3b">*</span></label><input type="tel" class="sendingthx-input sendingthx-phone-input" name="sendingthx_sender_phone" placeholder="(555) 123-4567" disabled maxlength="14" inputmode="numeric"></div></div><div class="sendingthx-consent-block"><div class="sendingthx-field"><label class="sendingthx-label"><input type="checkbox" class="sendingthx-checkbox" name="sendingthx_recipient_consent" value="true" disabled><span>${n.recipientLabel}</span></label></div><div class="sendingthx-input-wrapper"><label class="sendingthx-input-label">Recipient's phone number <span style="color:#d03b3b">*</span></label><input type="tel" class="sendingthx-input sendingthx-phone-input" name="sendingthx_recipient_phone" placeholder="(555) 123-4567" disabled maxlength="14" inputmode="numeric"></div></div><div class="sendingthx-consent-block"><div class="sendingthx-input-wrapper"><label class="sendingthx-input-label">Occasion (optional)</label><select class="sendingthx-input" name="sendingthx_occasion" disabled style="appearance:none;background-image:url(data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%234A4535' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e);background-repeat:no-repeat;background-position:right .75rem center;background-size:1.5em 1.5em;padding-right:2.5rem;cursor:pointer"><option value="">Package</option><option value="gift">Gift</option><option value="birthday">Birthday</option><option value="sympathy">Sympathy</option><option value="anniversary">Anniversary</option><option value="get-well">Get Well</option><option value="congratulations">Congratulations</option><option value="thank-you">Thank You</option></select></div></div><div class="sendingthx-consent-block"><div class="sendingthx-input-wrapper"><label class="sendingthx-input-label">Personal Note (optional)</label><textarea class="sendingthx-input" name="sendingthx_gift_note" placeholder="Optional note here." maxlength="160" disabled style="resize:vertical;min-height:80px"></textarea><div class="sendingthx-hint">Shown to the recipient on their thank-you page only. Never sent by text, never used for marketing.</div></div></div><div style="margin-top:1.25rem;padding-top:1rem;border-top:1px solid var(--cream-border);font-size:.8rem;color:#888;text-align:center;line-height:1.5"><p style="margin:0 0 .5rem">This is a one-time message delivery. No recurring messages will be sent. Msg &amp; data rates may apply. Reply HELP for help and STOP to opt out.</p><div><a href="https://www.sendingthx.com/privacy" target="_blank" rel="noopener noreferrer" style="color:var(--gold-dark);text-decoration:none">Privacy Policy</a><span style="margin:0 .5rem;color:#ccc">·</span><a href="https://www.sendingthx.com/sms-terms" target="_blank" rel="noopener noreferrer" style="color:var(--gold-dark);text-decoration:none">SMS Terms</a></div></div></div>`,e},_attachListeners:function(n,e){const t=n.querySelector('[name="sendingthx_sender_consent"]'),i=n.querySelector('[name="sendingthx_sender_phone"]'),o=n.querySelector('[name="sendingthx_recipient_consent"]'),r=n.querySelector('[name="sendingthx_recipient_phone"]'),a=n.querySelector('[name="sendingthx_occasion"]'),s=n.querySelector('[name="sendingthx_gift_note"]'),l=()=>{const n=t.checked;i.disabled=!n,n||(i.value="");const e=n&&this._isValidPhone(i.value);o.disabled=!e,e||(o.checked=!1,r.value="");const l=e&&o.checked;r.disabled=!l,l||(r.value="");const d=l&&this._isValidPhone(r.value);a.disabled=!d,s.disabled=!d,d||(a.value="")},d=()=>{l.call(this);const t=this.getConsentData(n);e.onConsent(t)};t.addEventListener("change",()=>d.call(this)),i.addEventListener("input",()=>d.call(this)),o.addEventListener("change",()=>d.call(this)),r.addEventListener("input",()=>d.call(this)),a.addEventListener("change",()=>d.call(this)),s.addEventListener("input",()=>d.call(this)),i.addEventListener("blur",()=>{const n=i.value;n&&!this._isValidPhone(n)?i.style.borderColor="#d03b3b":i.style.borderColor="var(--cream-border)",d.call(this)}),r.addEventListener("blur",()=>{const n=r.value;n&&!this._isValidPhone(n)?r.style.borderColor="#d03b3b":r.style.borderColor="var(--cream-border)",d.call(this)});const c=n=>{let e=n.value.replace(/\D/g,"");e=e.substring(0,10),0===e.length?n.value="":e.length<=3?n.value=e:e.length<=6?n.value=`(${e.substring(0,3)}) ${e.substring(3)}`:n.value=`(${e.substring(0,3)}) ${e.substring(3,6)}-${e.substring(6)}`};i.addEventListener("input",n=>{c(n.target),d.call(this)}),r.addEventListener("input",n=>{c(n.target),d.call(this)}),l.call(this),window.SendingThxConsentData=()=>this.getConsentData(n)},getConsentData:function(n){const e=n.querySelector('[name="sendingthx_sender_consent"]'),t=n.querySelector('[name="sendingthx_sender_phone"]'),i=n.querySelector('[name="sendingthx_recipient_consent"]'),o=n.querySelector('[name="sendingthx_recipient_phone"]'),r=n.querySelector('[name="sendingthx_occasion"]'),a=n.querySelector('[name="sendingthx_gift_note"]'),s=this._isValidPhone(t.value),l=this._isValidPhone(o.value),d=e.checked&&s&&i.checked&&l;return{senderConsent:e.checked,senderPhone:this._normalizePhone(t.value),recipientConsent:i.checked,recipientPhone:this._normalizePhone(o.value),occasion:r.value,giftNote:a.value.trim(),isValid:d}},_isValidPhone:function(n){const e=n.replace(/[\s\-().]/g,"");return/^(\+1)?[0-9]{10,}$/.test(e)},_normalizePhone:function(n){let e=n.replace(/\D/g,"");return 10!==e.length?"":"+1"+e}};n.SendingThxConsent=e,"undefined"!=typeof module&&module.exports&&(module.exports=e)}("undefined"!=typeof window?window:global);
+</script>
+<script>
+(function(){
+  const API = 'https://go.sendingthx.com/api/v1/florist-demo';
+  const DRIVER_URL = 'https://sendingthx.com/driver/';
+  const $ = (id) => document.getElementById(id);
+  const digits = (v) => String(v || '').replace(/\D/g, '').slice(-10);
+  const pretty = (v) => { const d = digits(v); return `(${d.slice(0,3)}) ${d.slice(3,6)}-${d.slice(6)}`; };
+  const clean = (v) => String(v || '').trim().replace(/\s+/g, ' ');
+  let consent = { isValid: false };
+
+  document.querySelectorAll('.qtip button').forEach((b) => b.addEventListener('click', (e) => {
+    e.stopPropagation(); const q = b.parentElement; const open = q.classList.contains('open');
+    document.querySelectorAll('.qtip.open').forEach((x) => x.classList.remove('open'));
+    if (!open) q.classList.add('open');
+  }));
+  document.addEventListener('click', () => document.querySelectorAll('.qtip.open').forEach((x) => x.classList.remove('open')));
+
+  SendingThxConsent.mount('#sendingthx-consent', { onConsent: (d) => { consent = d; update(); } });
+
+  function step1(){ return clean($('sf').value) && clean($('sl').value) && clean($('rf').value) && clean($('rl').value); }
+  function step2(){ return !!(consent && consent.isValid); }
+
+  function update(){
+    const s1 = !!step1(), s2 = s1 && step2();
+    $('c1').classList.toggle('complete', s1); $('c1').classList.toggle('active', !s1);
+    $('c2').classList.toggle('locked', !s1); $('c2').classList.toggle('active', s1 && !s2); $('c2').classList.toggle('complete', s2);
+    $('c3').classList.toggle('locked', !s2); $('c3').classList.toggle('active', s2);
+    $('p1').className = 'dot ' + (s1 ? 'done' : 'on');
+    $('p2').className = 'dot ' + (s2 ? 'done' : s1 ? 'on' : '');
+    $('p3').className = 'dot ' + (s2 ? 'on' : '');
+    $('go').disabled = !s2; $('hint').style.display = s2 ? 'none' : 'block';
+    const sFirst = clean($('sf').value) || 'Pat', sFull = clean(`${$('sf').value} ${$('sl').value}`) || 'Pat Smith';
+    const rFirst = clean($('rf').value) || 'Sam', rFull = clean(`${$('rf').value} ${$('rl').value}`) || 'Sam Lee';
+    $('bS').textContent = `${rFull}'s bouquet of flowers just arrived! We'll text you if they reply - no guarantee they will. Msg & data rates may apply. Reply HELP for help, STOP to opt out.`;
+    $('bR').textContent = `${sFull} sent ${rFirst} a bouquet of flowers - just delivered!\n\nTo thank ${sFirst}, reply to this text with a note or photo, or tap the link for more.\n\nOne-time msg sent at ${sFirst}'s request. Reply STOP to opt out.`;
+  }
+  ['sf','sl','rf','rl'].forEach((id) => $(id).addEventListener('input', update));
+  update();
+
+  $('go').addEventListener('click', async () => {
+    const err = $('err'); err.style.display = 'none';
+    const d = window.SendingThxConsentData ? window.SendingThxConsentData() : consent;
+    if (!d || !d.isValid) return;
+    const sender = { name: clean(`${$('sf').value} ${$('sl').value}`), phone: d.senderPhone };
+    const recipient = { name: clean(`${$('rf').value} ${$('rl').value}`), phone: d.recipientPhone };
+    $('go').disabled = true; $('go').textContent = 'Creating…';
+    try {
+      const res = await fetch(API, { method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ gift_description: 'a bouquet of flowers', gifter: sender, recipient, occasion: d.occasion || undefined, gift_note: d.giftNote || undefined }) });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok || !data.success) throw new Error(data.error || 'Something went wrong - please try again.');
+      $('signPhone').textContent = pretty(d.senderPhone);
+      $('toName').textContent = recipient.name;
+      $('pre3').classList.add('hide'); $('post3').classList.remove('hide');
+      $('p3').className = 'dot done';
+      ['c1','c2'].forEach((id) => $(id).querySelectorAll('input,select,textarea').forEach((el) => el.disabled = true));
+      try { if (window.QRCode) new QRCode($('qr'), { text: DRIVER_URL, width: 132, height: 132, colorDark: '#1C1A14', colorLight: '#ffffff' }); } catch (_) {}
+      $('c3').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    } catch (e) {
+      err.textContent = e.message || 'Could not reach the server - check your connection and try again.';
+      err.style.display = 'block'; $('go').disabled = false; $('go').textContent = 'Create my demo delivery';
+    }
+  });
+})();
+</script>
+</body>
+</html>
