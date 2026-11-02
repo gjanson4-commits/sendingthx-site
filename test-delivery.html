@@ -105,7 +105,7 @@ ol.do li::before{content:counter(d);width:22px;height:22px;border-radius:11px;ba
 <main class="wrap">
   <section class="hero">
     <h1>Test a gift delivery on your phone.</h1>
-    <p>A test store checkout with the same SendingThx opt-in shoppers see. Place the order and a simulated carrier marks it delivered, so the real texts arrive within a couple of minutes.</p>
+    <p>A test store checkout with the same SendingThx opt-in shoppers see. Place the order and we simulate the carrier's delivered scan, so the real texts arrive within seconds.</p>
   </section>
 
   <div class="progress" aria-label="Progress">
@@ -150,18 +150,18 @@ ol.do li::before{content:counter(d);width:22px;height:22px;border-radius:11px;ba
         <div class="card-h">
           <span class="step">3</span><h2>Place the order</h2>
           <div class="qtip"><button type="button" aria-label="What is this step?">?</button>
-            <div class="tip" role="tooltip">The order ships with a simulated carrier tracking number (EasyPost test code EZ4000000004) that always ends in "delivered". The delivery scan triggers the same texts a real order does.</div></div>
+            <div class="tip" role="tooltip">Placing the order simulates the carrier's delivered scan right away. It runs the same delivery code a real USPS, UPS or FedEx scan does, so you get the exact texts a customer would.</div></div>
         </div>
         <div id="pre3">
-          <p class="card-sub">Ships with a simulated carrier tracking number that ends in "delivered".</p>
+          <p class="card-sub">We simulate the carrier's delivered scan as soon as the order is placed.</p>
           <button class="btn" id="go" disabled>Place test order</button>
           <p class="err" id="err" role="alert"></p>
           <p class="hint" id="hint">Fill in steps 1 and 2 to continue.</p>
         </div>
         <div id="post3" class="hide">
-          <p class="card-sub">Order placed. Tracking <b>EZ4000000004</b> (simulated carrier).</p>
+          <p class="card-sub">Order placed and marked delivered (simulated carrier scan, tracking <b id="trk"></b>).</p>
           <ol class="do">
-            <li><span>The carrier scan marks it delivered, usually within 1–2 minutes.</span></li>
+            <li><span>Check your phone. The texts arrive within a few seconds.</span></li>
             <li><span><b id="toName"></b> gets the delivery text, and the sender gets a delivery confirmation.</span></li>
             <li><span>Reply to the delivery text with a thank-you; it's relayed to the sender.</span></li>
             <li><span>Reply <b>HELP</b> for support info or <b>STOP</b> to opt out.</span></li>
@@ -199,7 +199,7 @@ ol.do li::before{content:counter(d);width:22px;height:22px;border-radius:11px;ba
 </script>
 <script>
 (function(){
-  const API = 'https://go.sendingthx.com/api/v1/internal-demo-order';
+  const API = 'https://go.sendingthx.com/api/v1/test-delivery';
   const $ = (id) => document.getElementById(id);
   const digits = (v) => String(v || '').replace(/\D/g, '').slice(-10);
   const pretty = (v) => { const d = digits(v); return `(${d.slice(0,3)}) ${d.slice(3,6)}-${d.slice(6)}`; };
@@ -244,10 +244,11 @@ ol.do li::before{content:counter(d);width:22px;height:22px;border-radius:11px;ba
     $('go').disabled = true; $('go').textContent = 'Placing order…';
     try {
       const res = await fetch(API, { method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ tracking_number: 'EZ4000000004', carrier: 'usps', gift_description: 'a candle gift set', gifter: sender, recipient, occasion: d.occasion || undefined, gift_note: d.giftNote || undefined }) });
+        body: JSON.stringify({ gift_description: 'a candle gift set', gifter: { ...sender, consent: d.senderConsent === true }, recipient: { ...recipient, consent: d.recipientConsent === true }, occasion: d.occasion || undefined, gift_note: d.giftNote || undefined }) });
       const data = await res.json().catch(() => ({}));
       if (!res.ok || !data.success) throw new Error(data.error || 'Something went wrong - please try again.');
       $('toName').textContent = recipient.name;
+      $('trk').textContent = data.tracking_number || '';
       $('pre3').classList.add('hide'); $('post3').classList.remove('hide');
       $('p3').className = 'dot done';
       ['c1','c2'].forEach((id) => $(id).querySelectorAll('input,select,textarea').forEach((el) => el.disabled = true));
