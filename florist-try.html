@@ -375,7 +375,7 @@ function updateSmsPreview() {
   // arrived!" with any leading "a"/"an" dropped from the item, so it never
   // reads "Your a ..." or "Jim's a ...".
   const giftDescNoArticle = giftDesc.replace(/^(a|an)\s+/i, '');
-  const senderBody = `${addressee}'s ${giftDescNoArticle} just arrived! We'll text you if they reply — no guarantee they will. Reply STOP to opt out.`;
+  const senderBody = `SendingThx: ${addressee}'s ${giftDescNoArticle} just arrived! We'll text you if they reply - no guarantee they will. One-time alert. Msg & data rates may apply. Help: support@sendingthx.com. Reply HELP for help, STOP to opt out.`;
 
   document.getElementById('preview-recipient').textContent = recipientBody;
   document.getElementById('preview-sender').textContent = senderBody;
