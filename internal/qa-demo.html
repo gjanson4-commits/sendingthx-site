@@ -352,7 +352,7 @@ function updateSmsPreview() {
   // detail end users have no reason to see.
   const link = 'sendingthx.com/t/••••••••••••••••';
 
-  const recipientBody = `${senderName} sent ${addressee} ${giftDesc} - just delivered!\n\nReply to this text to thank ${senderFirstOnly}, or tap the link to ${(window.SendingThxConsentData && window.SendingThxConsentData().giftNote) ? `read ${senderFirstOnly}'s note and reply` : `pick a quick reply or send a photo`}: ${link}\n\nOne-time msg sent at ${senderFirstOnly}'s request. Reply STOP to opt out.`;
+  const recipientBody = `${senderName} sent ${addressee} ${giftDesc} - just delivered!\n\n${(window.SendingThxConsentData && window.SendingThxConsentData().giftNote) ? `${senderFirstOnly} left you a note: ${link}\n\nReply to this text to thank ${senderFirstOnly}.` : `Reply to this text to thank ${senderFirstOnly}, or tap the link to pick a quick reply or send a photo: ${link}`}\n\nOne-time msg sent at ${senderFirstOnly}'s request. Reply STOP to opt out.`;
   const senderBody = `SendingThx: Your ${giftDesc} just arrived at ${addressee}'s door. We'll text you if they reply - no guarantee they will. One-time alert. Msg & data rates may apply. Help: support@sendingthx.com. Reply HELP for help, STOP to opt out.`;
 
   document.getElementById('preview-recipient').textContent = recipientBody;
