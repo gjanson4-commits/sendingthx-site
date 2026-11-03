@@ -29,6 +29,10 @@ a{color:var(--gold-dark)}
 .progress .dot.done .num{background:var(--green);border-color:var(--green);color:#fff}
 .progress .dot.on .num{border-color:var(--ink);color:var(--ink)}
 .progress .bar{width:36px;height:2px;background:var(--line)}
+.vid{margin:22px 0 6px;max-width:760px}
+.vid video{display:block;width:100%;height:auto;border-radius:16px;border:2px solid var(--line);background:#F6F3E8}
+.vid-cap{margin-top:8px;font-size:14px;color:var(--muted)}
+.try-h{font-family:'Fraunces',Georgia,serif;font-size:24px;font-weight:700;margin-top:26px}
 .grid{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:24px;align-items:start}
 @media (max-width:860px){.grid{grid-template-columns:minmax(0,1fr)}}
 .card{background:var(--card);border:2px solid var(--line);border-radius:16px;padding:22px 22px 24px;margin-bottom:18px;transition:border-color .2s,opacity .2s}
@@ -107,6 +111,14 @@ ol.do li::before{content:counter(d);width:22px;height:22px;border-radius:11px;ba
     <h1>Test a gift delivery on your phone.</h1>
     <p>A test checkout at Demo Gift Shop with the same SendingThx opt-in shoppers see. Place the order and we simulate the carrier's delivered scan, so the real texts arrive within seconds.</p>
   </section>
+
+  <div class="vid">
+    <video controls playsinline preload="metadata" poster="/media/SendingThx_demo_poster.jpg" aria-label="SendingThx demo: checkout opt-in, delivery texts, and the thank-you reply">
+      <source src="/media/SendingThx_demo.mp4" type="video/mp4">
+    </video>
+    <div class="vid-cap">Watch the whole flow in 45 seconds, then try it yourself below.</div>
+  </div>
+  <h2 class="try-h">Try it yourself</h2>
 
   <div class="progress" aria-label="Progress">
     <div class="dot on" id="p1"><span class="num">1</span>Order</div><span class="bar"></span>

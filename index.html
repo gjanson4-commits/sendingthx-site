@@ -65,6 +65,8 @@ a{color:inherit}
 
 /* ── PROBLEM SECTION ─────────────────────────────────────────────── */
 .section{max-width:1180px;margin:0 auto;padding:4.5rem 2rem}
+.vid-wrap{max-width:960px;margin:0 auto;border-radius:var(--radius-xl);overflow:hidden;background:#F6F3E8;box-shadow:0 18px 50px rgba(28,26,20,.14);border:1px solid var(--cream-border)}
+.vid-wrap video{display:block;width:100%;height:auto}
 .section-narrow{max-width:760px}
 .section-eyebrow{font-size:.72rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--gold-dark);margin-bottom:.75rem;text-align:center}
 .section-head{text-align:center;margin-bottom:3rem}
@@ -268,7 +270,7 @@ footer{border-top:1px solid var(--cream-border);padding:3rem 2rem 2.5rem;margin-
   <h1>Delivery notifications that <em>close the loop.</em></h1>
   <p>SendingThx turns a carrier's "delivered" scan into a two-way moment — an instant alert to the recipient, a confirmation to the sender, and an easy way to say thank you. No app. No sign-up. Just a text.</p>
   <div class="hero-ctas">
-    <a href="#demo" class="btn btn-gold">See it live →</a>
+    <a href="#video" class="btn btn-gold">Watch the demo →</a>
     <a href="#how" class="btn btn-outline">How it works</a>
   </div>
 </header>
@@ -280,6 +282,19 @@ footer{border-top:1px solid var(--cream-border);padding:3rem 2rem 2.5rem;margin-
     <span>Real-Time Gratitude</span> • Delivered. Confirmed. Felt. • <span>Next-Gen Thank You</span> • Did You Say Thx Yet? • <span>Loop Closed</span> • Real-Time Gratitude • Delivered. Confirmed. Felt. • <span>Next-Gen Thank You</span> • Did You Say Thx Yet? • <span>Loop Closed</span> •
   </div>
 </div>
+
+<!-- ══ VIDEO ════════════════════════════════════════════════════════ -->
+<section class="section" id="video">
+  <div class="section-eyebrow">See how it works</div>
+  <div class="section-head">
+    <h2>From checkout to thank-you. <em>In 45 seconds.</em></h2>
+  </div>
+  <div class="vid-wrap">
+    <video controls playsinline preload="metadata" poster="/media/SendingThx_demo_poster.jpg" aria-label="SendingThx demo: checkout opt-in, delivery texts, and the thank-you reply">
+      <source src="/media/SendingThx_demo.mp4" type="video/mp4">
+    </video>
+  </div>
+</section>
 
 <!-- ══ PROBLEM ══════════════════════════════════════════════════════ -->
 <section class="section section-narrow" style="margin:0 auto">
