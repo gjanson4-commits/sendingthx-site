@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SendingThx — Add a tracking number</title>
+<title>SendingThx — Try it now</title>
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
 body {
@@ -208,9 +208,9 @@ button:disabled { opacity: 0.6; cursor: not-allowed; }
 <div class="container">
   <a href="index.html" class="brand-link">Sending<span>Thx</span></a>
   <div id="form-intro">
-    <h1>Add a tracking number</h1>
-    <p class="subtitle">Already shipped? Register the tracking number and we'll text you and the recipient when it's delivered — same SMS consent widget used at checkout.</p>
-    <p class="test-tip">💡 Just testing it out? Enter your own name and phone number for both the sender and recipient below — you'll get both texts yourself.</p>
+    <h1>Try SendingThx on a real delivery</h1>
+    <p class="subtitle">Have a package on the way? Enter its tracking number and we'll text the recipient the moment it's delivered, then relay their thank-you back to you. It's the same opt-in shoppers see at checkout.</p>
+    <p class="test-tip">💡 Sending a gift? Enter the real recipient — they'll get a text when it arrives and can thank you right back. No recipient handy, or want to see every step? Use your own name and number for both, and you'll get both texts when the package is delivered.</p>
   </div>
 
   <form id="tracking-form">
@@ -256,14 +256,14 @@ button:disabled { opacity: 0.6; cursor: not-allowed; }
     <!-- SMS Consent Widget Container -->
     <div id="sendingthx-consent"></div>
 
-    <button type="submit" id="submit-btn">Start tracking</button>
+    <button type="submit" id="submit-btn">Try it now</button>
     <div class="submit-error" id="submit-error"></div>
   </form>
 
   <!-- Confirmation (shown after a successful POST) -->
   <div class="confirm" id="confirm-box">
     <div class="confirm-icon">✓</div>
-    <h2>Tracking added</h2>
+    <h2>You're all set</h2>
     <p id="confirm-body"></p>
 
     <div class="lead-capture" id="lead-capture">
@@ -587,14 +587,14 @@ document.getElementById('tracking-form').addEventListener('submit', async (e) =>
       errorBox.textContent = data.error || 'Something went wrong — please try again.';
       errorBox.style.display = 'block';
       submitBtn.disabled = false;
-      submitBtn.textContent = 'Start tracking';
+      submitBtn.textContent = 'Try it now';
     }
   } catch (err) {
     log('[ERROR] Network request failed: ' + err.message);
     errorBox.textContent = 'Could not reach the server — check your connection and try again.';
     errorBox.style.display = 'block';
     submitBtn.disabled = false;
-    submitBtn.textContent = 'Start tracking';
+    submitBtn.textContent = 'Try it now';
   }
 });
 

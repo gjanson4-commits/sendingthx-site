@@ -1,6 +1,26 @@
 {
   "cleanUrls": true,
   "rewrites": [
-    { "source": "/demo", "destination": "/test-delivery" }
+    {
+      "source": "/demo",
+      "destination": "/test-delivery"
+    }
+  ],
+  "redirects": [
+    {
+      "source": "/add-tracking",
+      "destination": "/try-it-now",
+      "permanent": true
+    },
+    {
+      "source": "/add-tracking.html",
+      "destination": "/try-it-now",
+      "permanent": true
+    },
+    {
+      "source": "/tryitnow",
+      "destination": "/try-it-now",
+      "permanent": true
+    }
   ]
 }
