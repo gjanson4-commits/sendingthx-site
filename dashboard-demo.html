@@ -103,7 +103,7 @@ tr:last-child td{border-bottom:none}
 .matches button:hover{background:#FFFBEC}
 .cs-empty{text-align:center;color:var(--muted);padding:34px 10px;font-size:15px}
 .cs-grid{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:18px}
-@media (max-width:900px){.cs-grid{grid-template-columns:minmax(0,1fr)}}
+@media (max-width:900px){.cs-grid{grid-template-columns:minmax(0,1fr)}.cs-grid>div:last-child{order:-1}}
 .ohead{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;flex-wrap:wrap;padding-bottom:12px;border-bottom:1.5px solid var(--line);margin-bottom:14px}
 .ohead b{font-size:17px}
 .ohead small{display:block;color:var(--muted);font-size:13px}
@@ -140,6 +140,16 @@ tr:last-child td{border-bottom:none}
 .dcard .ph{width:104px;height:104px;border-radius:12px;overflow:hidden;flex-shrink:0;position:relative;background:#EDE4CF}
 .dcard .ph svg{width:104px;height:104px;display:block}
 .trust{display:flex;gap:8px;align-items:flex-start;background:var(--green-soft);border:1.5px solid #B9DCC8;color:var(--green);border-radius:10px;padding:8px 10px;font-size:12.5px;font-weight:600;margin:0 0 10px;line-height:1.4}
+.more{margin-top:12px;border-top:1px solid #EEE8D8;padding-top:10px}
+.more summary{cursor:pointer;font-size:13px;font-weight:700;color:var(--gold-dark);list-style:none}
+.more summary::-webkit-details-marker{display:none}
+.more summary::before{content:"▸ ";}
+.more[open] summary::before{content:"▾ ";}
+.more .photo{margin-top:10px}
+.photo.door svg{height:170px}
+.cs-sub{font-size:12.5px;color:var(--green);font-weight:600;margin:0 0 4px}
+.cs-wait{background:#F7F3E8;border:1.5px dashed var(--line);border-radius:12px;padding:18px;font-size:14px;color:var(--ink-2)}
+.cs-wait b{display:block;font-size:16px;color:var(--ink);margin-bottom:4px}
 .bubble{background:#E9E9EB;color:#111;border-radius:16px 16px 16px 4px;padding:10px 12px;font-size:13px;line-height:1.45;white-space:pre-line;margin-bottom:10px}
 .bubble.me{background:#2E7CF6;color:#fff;border-radius:16px 16px 4px 16px}
 .who{font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin:14px 0 6px}
@@ -327,7 +337,6 @@ tr:last-child td{border-bottom:none}
   function card(o){
     return `<div class="dcard" role="img" aria-label="Delivered card picture"><div class="l"><div class="st">1-800-Flowers.com</div><div class="ok"><i></i>Delivered</div><div class="it">${esc(o.item)}</div><div class="fr">From ${esc(o.sender)}</div><div class="cta">Send a thank-you below</div></div><div class="ph crop">${photo(o.kind)}</div></div>`;
   }
-  const TRUST = (R) => `<div class="trust">✓ ${esc(R)} sees a photo of their own gift right in the text thread, as a picture with nothing to tap. That shows the text is real before they open any link.</div>`;
 
   // ---- Sample data ----
   const SEED = {
@@ -409,45 +418,49 @@ tr:last-child td{border-bottom:none}
 
   // ---- Shared order history ----
   function timeline(o){
-    const R = first(o.rec), D = first(o.sender), items = [];
-    items.push(['', o.placed, 'Order placed', o.mode === 'forward'
-      ? `Text consent from ${o.sender} (sender) only. Recipient's number not needed.`
-      : `Text consent from ${o.sender} (sender) and for ${o.rec} (recipient)`]);
-    items.push(['', o.placed, 'Sent to Bloom & Stem Florist', 'Via BloomNet, as today. Order copy to SendingThx.']);
-    if (!o.at) { items.push(['w', 'Now', 'Out for delivery', 'The texts go out the moment the driver taps Delivered']); return items; }
-    items.push(['g', o.at, `Delivered by ${o.driver}`, 'Photo taken at the door']);
+    const R = first(o.rec), D = first(o.sender), main = [], minor = [];
+    minor.push(['', o.placed, 'Order placed', o.mode === 'forward' ? `Text consent from ${D} only. No recipient number needed.` : `Text consent from ${D}, for ${D} and ${R}`]);
+    minor.push(['', o.placed, 'Sent to Bloom & Stem Florist', 'Via BloomNet, as today']);
+    if (!o.at) { main.push(['w', 'Now', 'Out for delivery', 'Texts go out the moment the driver taps Delivered']); return {main, minor}; }
+    main.push(['g', o.at, `Delivered by ${o.driver}`, 'Photo taken at the door']);
     if (o.mode === 'forward') {
-      items.push(['g', o.at, `Delivery text sent to ${D} (sender)`, 'With the photo and a one-tap link to share the news with ' + R]);
-      if (o.fwd) items.push(['p', o.fwd, `${D} shared the delivered note with ${R}`, `Sent from ${D}'s own phone, so ${R} sees it from someone they know`]);
+      main.push(['g', o.at, `${D} texted`, `With the photo and a link to share it with ${R}`]);
+      if (o.fwd) main.push(['p', o.fwd, `${D} shared it with ${R}`, `From ${D}'s own phone`]);
     } else {
-      items.push(['g', o.at, `Delivery text sent to ${D} (sender)`, `"${o.rec}'s ${o.say} just arrived!" + photo`]);
-      items.push(['g', o.at, `Delivery text sent to ${R} (recipient)`, 'As a Delivered card picture with the photo cropped to the flowers, no link to tap']);
-      if (o.thx) items.push(['b', o.thx, `${R} sent a thank-you to ${D}`, 'The message stays private and isn\'t shown here']);
+      main.push(['g', o.at, `${D} and ${R} texted`, 'Both with the delivery photo']);
+      if (o.thx) main.push(['b', o.thx, `${R} thanked ${D}`, 'Message stays private']);
     }
-    return items;
+    return {main, minor};
   }
+  const li = ([c, t, b, s]) => `<li class="${c}"><span class="t">${t}</span><span class="d"></span><span class="w"><b>${esc(b)}</b><span>${esc(s)}</span></span></li>`;
   function historyHTML(o){
-    const R = first(o.rec), D = first(o.sender);
-    const tl = timeline(o).map(([c, t, b, s]) => `<li class="${c}"><span class="t">${t}</span><span class="d"></span><span class="w"><b>${esc(b)}</b><span>${esc(s)}</span></span></li>`).join('');
+    const R = first(o.rec), D = first(o.sender), {main, minor} = timeline(o);
     let right;
     if (!o.at) {
-      right = `<div class="label">Delivery photo</div><div class="photo none">Not delivered yet</div>
-        <p class="priv" style="margin-top:12px">Phone numbers: sender ••• ${o.mode === 'forward' ? '0148 · recipient not collected' : '0148 · recipient ••• 0172'}</p>`;
+      right = `<div class="cs-wait"><b>Not delivered yet</b><span>The moment the driver taps Delivered, ${esc(D)}${o.mode === 'forward' ? '' : ` and ${esc(R)}`} get a text with the photo, and it shows up here.</span></div>`;
     } else {
       const senderText = o.mode === 'forward'
         ? `SendingThx: ${o.rec}'s ${o.say} just arrived! Tap to send ${R} the delivered note from your phone: [link]`
         : `SendingThx: ${o.rec}'s ${o.say} just arrived! We'll text you if they reply - no guarantee they will. One-time alert. Msg & data rates may apply. Help: support@sendingthx.com. Reply HELP for help, STOP to opt out.`;
-      const second = o.mode === 'forward'
-        ? (o.fwd ? `<div class="who">What ${esc(R)} got, from ${esc(D)}'s phone</div>${card(o)}<div class="bubble me">${esc(`${o.sender} sent you ${o.say} - just delivered! Tap to see the photo and send a thank-you: [link]`)}</div>` : `<div class="who">Waiting on ${esc(D)}</div><p class="priv">${esc(D)} hasn't shared the note yet.</p>`)
-        : `<div class="who">Delivery text ${esc(R)} (recipient) got</div>${TRUST(R)}${card(o)}<div class="bubble">${esc(`${o.sender} sent ${R} ${o.say} - just delivered!\n\nReply to this text to thank ${D}. One-time msg sent at ${D}'s request. Reply STOP to opt out.\n\nOr tap to pick a quick reply or send a photo: [link]`)}</div>`;
-      right = `<div class="label">Delivery photo</div>
-        <div class="pair"><div><div class="photo">${photo(o.kind)}</div><p class="cap">Sender's copy</p></div><div><div class="photo crop">${photo(o.kind)}</div><p class="cap">Recipient's copy, cropped to the flowers, no house number</p></div></div>
-        <div class="who">Delivery text ${esc(D)} (sender) got</div><div class="bubble">${esc(senderText)}</div>${second}
-        <p class="priv">Thank-you messages between ${esc(R)} and ${esc(D)} stay private. Your team sees that a reply was sent and when, but not what it says.</p>`;
+      const recText = o.mode === 'forward'
+        ? `${o.sender} sent you ${o.say} - just delivered! Tap to see the photo and send a thank-you: [link]`
+        : `${o.sender} sent ${R} ${o.say} - just delivered!\n\nReply to this text to thank ${D}. One-time msg sent at ${D}'s request. Reply STOP to opt out.\n\nOr tap to pick a quick reply or send a photo: [link]`;
+      const head = o.mode === 'forward'
+        ? (o.fwd ? `What ${esc(R)} got from ${esc(D)}'s phone at ${o.fwd}` : `${esc(D)} hasn't shared it with ${esc(R)} yet`)
+        : `What ${esc(R)} saw in their texts at ${o.at}`;
+      const showCard = o.mode !== 'forward' || o.fwd;
+      right = `<div class="label">${head}</div>${showCard ? card(o) + '<p class="cs-sub">Arrives as a picture, with nothing to tap.</p>' : ''}
+        <details class="more"><summary>Show the door photo and full texts</summary>
+          <div class="photo door">${photo(o.kind)}</div><p class="cap">Photo at the door (sent to ${esc(D)})</p>
+          <div class="who">${esc(D)} got</div><div class="bubble">${esc(senderText)}</div>
+          ${showCard ? `<div class="who">${esc(R)} got</div><div class="bubble${o.mode === 'forward' ? ' me' : ''}">${esc(recText)}</div>` : ''}
+        </details>`;
     }
     return `<div class="cs-grid"><div>
-      <div class="ohead"><div><b>#${o.id} · ${esc(o.item)}</b><small>${esc(o.sender)} (sender) → ${esc(o.rec)} (recipient) · ${esc(o.street)}, Huntington, NY</small><small>Florist: Bloom &amp; Stem · Driver: ${o.driver ? esc(o.driver) : 'not delivered yet'}${o.mode === 'forward' ? ' · Sender shares it from their phone' : ''}</small></div>${statusPill(o)}</div>
-      <ul class="tl">${tl}</ul></div><div>${right}</div></div>`;
+      <div class="ohead"><div><b>#${o.id} · ${esc(o.item)}</b><small>${esc(o.sender)} → ${esc(o.rec)} · ${esc(o.street)}</small></div>${statusPill(o)}</div>
+      <ul class="tl">${main.map(li).join('')}</ul>
+      <details class="more"><summary>Show order steps</summary><ul class="tl" style="margin-top:12px">${minor.map(li).join('')}</ul></details>
+    </div><div>${right}</div></div>`;
   }
 
   // ---- Detail modal ----
