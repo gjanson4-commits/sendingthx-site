@@ -88,6 +88,16 @@ ol.do li::before{content:counter(d);width:22px;height:22px;border-radius:11px;ba
 .bubbles{padding-top:14px}
 .bubbles .who{font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin:10px 0 6px}
 .bubble{background:#E9E9EB;color:#111;border-radius:16px 16px 16px 4px;padding:10px 12px;font-size:13px;line-height:1.45;white-space:pre-line}
+.dcard{display:flex;gap:10px;align-items:center;background:#FFFCF3;border:1.5px solid #E3DCC8;border-radius:14px;padding:12px;margin-bottom:6px}
+.dcard .l{flex:1;min-width:0}
+.dcard .ok{display:flex;align-items:center;gap:6px;font-weight:800;font-size:18px;margin-bottom:4px}
+.dcard .ok i{width:18px;height:18px;border-radius:9px;background:#1E7A4F;position:relative;flex-shrink:0}
+.dcard .ok i::after{content:"";position:absolute;left:6px;top:2px;width:4px;height:9px;border:solid #fff;border-width:0 2px 2px 0;transform:rotate(45deg)}
+.dcard .it{font-size:12.5px;line-height:1.3}
+.dcard .fr{font-size:11.5px;color:#6E6756;margin-top:2px}
+.dcard .cta{font-size:11.5px;font-weight:700;color:#1E7A4F;margin-top:8px}
+.dcard .cph{width:84px;height:84px;border-radius:10px;background:#F4EBCF;color:#8A6A0C;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;font-size:10px;font-weight:600;text-align:center;padding:6px;flex-shrink:0}
+.dnote{font-size:12px;color:#1E7A4F;font-weight:600;margin:0 0 8px;line-height:1.4}
 .bubble .ph{display:flex;align-items:center;justify-content:center;gap:6px;height:64px;border-radius:10px;margin-bottom:8px;background:#F4EBCF;color:#8A6A0C;font-size:12px;font-weight:600}
 .foot{text-align:center;font-size:13px;color:var(--muted);margin-top:30px}
 .foot a{color:var(--muted);margin:0 10px;text-decoration:none}
@@ -201,7 +211,9 @@ ol.do li::before{content:counter(d);width:22px;height:22px;border-radius:11px;ba
         <div class="who">Sender gets</div>
         <div class="bubble"><span class="ph"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="7" r="2.6"/><circle cx="7.5" cy="10" r="2.6"/><circle cx="16.5" cy="10" r="2.6"/><path d="M12 12v9"/></svg>Driver's full photo</span><span id="bS"></span></div>
         <div class="who">Recipient gets</div>
-        <div class="bubble"><span class="ph"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="7" r="2.6"/><circle cx="7.5" cy="10" r="2.6"/><circle cx="16.5" cy="10" r="2.6"/><path d="M12 12v9"/></svg>Photo cropped to the flowers</span><span id="bR"></span></div>
+        <div class="dcard" role="img" aria-label="Delivered card picture"><div class="l"><div class="ok"><i></i>Delivered</div><div class="it">Bouquet of flowers</div><div class="fr" id="rcFrom">From Pat Smith</div><div class="cta">Send a thank-you below</div></div><div class="cph"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="7" r="2.6"/><circle cx="7.5" cy="10" r="2.6"/><circle cx="16.5" cy="10" r="2.6"/><path d="M12 12v9"/></svg><span>Your photo, cropped to the flowers</span></div></div>
+        <p class="dnote">Shows in the text thread as a picture, with nothing to tap. Seeing their own gift tells the recipient the text is real.</p>
+        <div class="bubble"><span id="bR"></span></div>
       </div>
     </aside>
   </div>
@@ -261,6 +273,7 @@ ol.do li::before{content:counter(d);width:22px;height:22px;border-radius:11px;ba
     const rFirst = toMe ? (clean($('sf').value) || 'Pat') : (clean($('rf').value) || 'Sam');
     const rFull = toMe ? sFull : (clean(`${$('rf').value} ${$('rl').value}`) || 'Sam Lee');
     $('bS').textContent = `SendingThx: ${rFull}'s bouquet of flowers just arrived! We'll text you if they reply - no guarantee they will. One-time alert. Msg & data rates may apply. Help: support@sendingthx.com. Reply HELP for help, STOP to opt out.`;
+    $('rcFrom').textContent = `From ${sFull}`;
     $('bR').textContent = `${sFull} sent ${rFirst} a bouquet of flowers - just delivered!\n\nReply to this text to thank ${sFirst}. One-time msg sent at ${sFirst}'s request. Reply STOP to opt out.\n\nOr tap to pick a quick reply or send a photo: [link]`;
   }
   ['sf','sl','sp','rf','rl','rp'].forEach((id) => $(id).addEventListener('input', update));
