@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SendingThx — Florist &amp; customer service demo</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="sendingthx-logo-224.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fraunces:wght@700;800&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#1C1A14;--ink-2:#4A4535;--muted:#6E6756;--line:#E3DCC8;--cream:#FAF6EC;--card:#FFFDF7;--gold:#E9CB63;--gold-soft:#FFF6D6;--gold-dark:#8A6A0C;--green:#1E7A4F;--green-soft:#E3F2EA;--blue:#2B5C8A;--blue-soft:#E6EEF6;--plum:#6B3F7A;--plum-soft:#F2E9F5}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--cream);color:var(--ink);line-height:1.45}
+button{font-family:inherit}
+.top{background:var(--ink);color:var(--cream)}
+.top-in{max-width:1180px;margin:0 auto;padding:14px 20px;display:flex;align-items:center;gap:12px}
+.top img{width:36px;height:36px;border-radius:18px}
+.top .brand{font-weight:700;font-size:18px}
+.top .tag{margin-left:auto;font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--gold);font-weight:700;text-align:right}
+.demo-band{background:var(--gold);color:var(--ink);font-size:14px;font-weight:600}
+.demo-band .in{max-width:1180px;margin:0 auto;padding:9px 20px;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.demo-band button{margin-left:auto;background:transparent;border:1.5px solid var(--ink);border-radius:999px;padding:4px 12px;font-weight:700;font-size:13px;cursor:pointer;color:var(--ink)}
+.wrap{max-width:1180px;margin:0 auto;padding:28px 20px 48px}
+.hero h1{font-family:'Fraunces',Georgia,serif;font-size:clamp(28px,4.4vw,40px);line-height:1.1;font-weight:800}
+.hero p{margin-top:10px;font-size:18px;color:var(--ink-2);max-width:780px}
+.tabs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:22px 0 18px;max-width:720px}
+.tab{display:flex;gap:10px;align-items:center;text-align:left;padding:12px 14px;border-radius:12px;border:2px solid var(--line);background:#fff;cursor:pointer;color:var(--ink)}
+.tab .n{width:28px;height:28px;border-radius:14px;background:#F1EAD6;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:14px}
+.tab b{display:block;font-size:15px}
+.tab small{display:block;font-size:12px;color:var(--muted)}
+@media (max-width:520px){.tab{padding:10px}.tab b{font-size:14px}.tab small{display:none}}
+.tab[aria-selected=true]{border-color:var(--ink);background:var(--gold-soft)}
+.tab[aria-selected=true] .n{background:var(--ink);color:var(--cream)}
+.panel{display:none}.panel.on{display:block}
+.hint{display:flex;gap:10px;align-items:flex-start;background:#fff;border:1.5px dashed var(--gold-dark);border-radius:12px;padding:10px 14px;font-size:14px;color:var(--ink-2);margin-bottom:14px}
+.hint b{color:var(--ink)}
+.hint .ic{flex-shrink:0;width:22px;height:22px;border-radius:11px;background:var(--gold);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px}
+.browser{background:#fff;border:2px solid var(--line);border-radius:14px;overflow:hidden}
+.browser .bar{display:flex;align-items:center;gap:8px;padding:10px 14px;background:#F4F0E4;border-bottom:1.5px solid var(--line);font-size:13px;color:var(--muted)}
+.browser .bar i{width:10px;height:10px;border-radius:5px;background:#DDD5BF;display:inline-block}
+.browser .bar span{margin-left:8px;background:#fff;border-radius:6px;padding:3px 10px;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.browser .in{padding:18px}
+.shop-h{display:flex;justify-content:space-between;align-items:flex-end;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+.shop-h h2{font-family:'Fraunces',Georgia,serif;font-size:24px;line-height:1.1}
+.shop-h small{color:var(--muted);font-size:14px}
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-bottom:14px}
+@media (max-width:620px){.stats{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.stat{border:1.5px solid var(--line);border-radius:12px;padding:12px;background:#FFFDF7}
+.stat b{font-family:'Fraunces',Georgia,serif;font-size:26px;display:block}
+.stat span{font-size:13px;color:var(--muted)}
+.stat.s-del{background:var(--green-soft);border-color:#B9DCC8}.stat.s-del b,.stat.s-del span{color:var(--green)}
+.stat.s-wait{background:#F1EAD6;border-color:#DDD1B0}.stat.s-wait b,.stat.s-wait span{color:var(--ink-2)}
+.stat.s-thx{background:var(--blue-soft);border-color:#C3D4E6}.stat.s-thx b,.stat.s-thx span{color:var(--blue)}
+.filters{display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap}
+.filters button{border:1.5px solid var(--line);background:#fff;border-radius:999px;padding:6px 14px;font-size:13px;font-weight:700;cursor:pointer;color:var(--ink-2)}
+.filters button[aria-pressed=true]{background:var(--ink);border-color:var(--ink);color:var(--cream)}
+.tbl-wrap{overflow-x:auto;border:1.5px solid var(--line);border-radius:12px}
+table{width:100%;border-collapse:collapse;font-size:14px;min-width:680px}
+.stw{display:flex;align-items:center;gap:6px}
+th{text-align:left;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);padding:10px 12px;background:#FAF7EE;border-bottom:1.5px solid var(--line)}
+td{padding:10px 12px;border-bottom:1px solid #EEE8D8;vertical-align:middle;color:var(--ink-2)}
+td b{color:var(--ink)}
+td:nth-child(1),td:nth-child(2){white-space:nowrap}
+tbody tr{cursor:pointer}
+tbody tr:hover td{background:#FFFBEC}
+tr.flash td{animation:flash 2.4s ease-out}
+@keyframes flash{0%,40%{background:var(--gold-soft)}100%{background:transparent}}
+tr:last-child td{border-bottom:none}
+.empty td{text-align:center;color:var(--muted);padding:22px;cursor:default}
+.pill{display:inline-flex;align-items:center;gap:6px;padding:3px 10px;border-radius:999px;font-size:12px;font-weight:700;white-space:nowrap}
+.pill.wait{background:#F1EAD6;color:var(--ink-2)}
+.pill.del{background:var(--green-soft);color:var(--green)}
+.pill.thx{background:var(--blue-soft);color:var(--blue)}
+.pill.fwd{background:var(--plum-soft);color:var(--plum)}
+.mini{width:34px;height:34px;border-radius:8px;flex-shrink:0;display:inline-block;vertical-align:middle;overflow:hidden}
+.mini svg{width:34px;height:34px;display:block}
+.act{border:1.5px solid var(--ink);background:var(--ink);color:var(--cream);border-radius:9px;padding:6px 12px;font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap}
+.act.ghost{background:#fff;color:var(--ink);border-color:var(--line)}
+.fl-side{display:grid;grid-template-columns:minmax(0,1fr) 230px;gap:18px;align-items:start}
+@media (max-width:900px){.fl-side{grid-template-columns:minmax(0,1fr)}}
+.box{background:var(--card);border:2px solid var(--line);border-radius:16px;padding:16px}
+.label{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+.drv{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:9px 0;border-bottom:1px solid #EEE8D8;font-size:14px}
+.drv small{color:var(--muted);display:block;font-size:12px}
+.drv button{border:none;background:none;color:var(--muted);font-size:12px;font-weight:700;cursor:pointer;text-decoration:underline}
+.dot-g{width:9px;height:9px;border-radius:5px;background:var(--green);display:inline-block;margin-right:6px}
+.addf{display:flex;flex-direction:column;gap:8px;margin-top:12px}
+.addf input{border:1.5px solid var(--line);border-radius:9px;padding:8px 10px;font-size:14px;font-family:inherit;background:#fff}
+.addf button{background:var(--gold);border:none;border-radius:9px;padding:9px;font-weight:700;font-size:14px;cursor:pointer}
+.note{font-size:12.5px;color:var(--muted);margin-top:8px;line-height:1.45}
+.callout{background:var(--ink);color:var(--cream);border-radius:14px;padding:16px 18px;font-size:15px;line-height:1.5;margin-top:16px}
+.callout b{color:var(--gold)}
+/* CS */
+.search{display:flex;gap:10px;margin-bottom:8px;flex-wrap:wrap}
+.search input{flex:1;min-width:200px;border:1.5px solid var(--line);border-radius:10px;padding:10px 12px;font-size:15px;color:var(--ink);font-family:inherit}
+.search button{background:var(--ink);color:var(--cream);border:none;border-radius:10px;padding:10px 18px;font-weight:700;font-size:14px;cursor:pointer}
+.try{font-size:13px;color:var(--muted);margin-bottom:16px;display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.try button{border:1.5px solid var(--line);background:#fff;border-radius:999px;padding:3px 10px;font-size:12.5px;font-weight:700;cursor:pointer;color:var(--ink-2)}
+.matches{border:1.5px solid var(--line);border-radius:12px;overflow:hidden;margin-bottom:16px}
+.matches button{display:flex;justify-content:space-between;gap:10px;width:100%;text-align:left;background:#fff;border:none;border-bottom:1px solid #EEE8D8;padding:10px 14px;font-size:14px;cursor:pointer;color:var(--ink-2)}
+.matches button:last-child{border-bottom:none}
+.matches button:hover{background:#FFFBEC}
+.cs-empty{text-align:center;color:var(--muted);padding:34px 10px;font-size:15px}
+.cs-grid{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:18px}
+@media (max-width:900px){.cs-grid{grid-template-columns:minmax(0,1fr)}}
+.ohead{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;flex-wrap:wrap;padding-bottom:12px;border-bottom:1.5px solid var(--line);margin-bottom:14px}
+.ohead b{font-size:17px}
+.ohead small{display:block;color:var(--muted);font-size:13px}
+.tl{list-style:none;position:relative}
+.tl li{display:grid;grid-template-columns:72px 18px minmax(0,1fr);gap:10px;padding-bottom:16px;font-size:14px;position:relative}
+.tl .t{color:var(--muted);font-size:13px;text-align:right;padding-top:1px}
+.tl .d{width:14px;height:14px;border-radius:7px;background:var(--line);margin-top:3px;position:relative;z-index:1;border:2px solid #fff;box-shadow:0 0 0 1.5px var(--line)}
+.tl li.g .d{background:var(--green);box-shadow:0 0 0 1.5px var(--green)}
+.tl li.b .d{background:var(--blue);box-shadow:0 0 0 1.5px var(--blue)}
+.tl li.p .d{background:var(--plum);box-shadow:0 0 0 1.5px var(--plum)}
+.tl li.w .d{background:#fff;box-shadow:0 0 0 1.5px var(--muted)}
+.tl li::before{content:"";position:absolute;left:89px;top:16px;bottom:0;width:2px;background:var(--line)}
+.tl li:last-child::before{display:none}
+.tl .w b{display:block;color:var(--ink)}
+.tl .w span{color:var(--ink-2)}
+.tl li.w .w b{color:var(--muted)}
+.photo{border-radius:12px;overflow:hidden;border:1.5px solid var(--line);background:#EDE4CF}
+.photo svg{display:block;width:100%;height:220px}
+.photo.none{height:120px;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:14px;background:#F7F3E8}
+.pair{display:grid;grid-template-columns:2fr 1fr;gap:10px}
+.pair .photo svg{height:200px}
+.crop{position:relative}
+.crop::after{content:"";position:absolute;inset:0;background:radial-gradient(ellipse 46% 52% at 50% 48%,transparent 62%,rgba(250,246,236,.92) 76%)}
+.cap{font-size:12px;color:var(--muted);margin-top:4px}
+.bubble{background:#E9E9EB;color:#111;border-radius:16px 16px 16px 4px;padding:10px 12px;font-size:13px;line-height:1.45;white-space:pre-line;margin-bottom:10px}
+.bubble.me{background:#2E7CF6;color:#fff;border-radius:16px 16px 4px 16px}
+.who{font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin:14px 0 6px}
+.priv{font-size:13px;color:var(--muted);margin-top:4px}
+/* modal */
+.modal{position:fixed;inset:0;background:rgba(28,26,20,.55);display:none;align-items:center;justify-content:center;padding:16px;z-index:50}
+.modal.on{display:flex}
+.sheet{background:var(--cream);border-radius:18px;max-width:880px;width:100%;max-height:92vh;overflow:auto;padding:20px;position:relative}
+.sheet .x{position:absolute;top:12px;right:12px;width:34px;height:34px;border-radius:17px;border:1.5px solid var(--line);background:#fff;font-size:18px;cursor:pointer;line-height:1}
+.drive-wrap{display:grid;grid-template-columns:280px minmax(0,1fr);gap:22px;align-items:center}
+@media (max-width:700px){.drive-wrap{grid-template-columns:minmax(0,1fr)}.drive-side .steps,.drive-side p:not(.note){display:none}.drive-side h3{font-size:19px}.sheet{padding:14px}}
+.phone{width:270px;margin:0 auto;background:#111;border-radius:36px;padding:10px}
+.screen{background:#FBF8F1;border-radius:28px;height:520px;overflow:hidden;display:flex;flex-direction:column}
+.screen .sb{display:flex;justify-content:space-between;padding:12px 20px 6px;font-size:12px;font-weight:700}
+.screen .hd{padding:8px 16px 10px;border-bottom:1px solid var(--line);font-size:13px}
+.screen .hd b{display:block;font-size:14px}
+.screen .hd small{color:var(--muted)}
+.screen .bd{padding:14px;flex:1;overflow:auto}
+.screen h4{font-family:'Fraunces',Georgia,serif;font-size:21px;line-height:1.15;margin-bottom:4px}
+.screen .sub{font-size:12px;color:var(--muted);margin-bottom:12px}
+.pbtn{display:block;width:100%;text-align:center;border-radius:12px;padding:12px;font-weight:700;font-size:14px;margin-top:10px;cursor:pointer;border:none}
+.pbtn.gold{background:var(--gold);color:var(--ink)}
+.pbtn.dark{background:var(--ink);color:var(--cream)}
+.pbtn.ghost{background:#fff;border:1.5px solid var(--line);color:var(--ink-2)}
+.pbtn:disabled{opacity:.45;cursor:not-allowed}
+.camera{height:170px;border-radius:12px;border:2px dashed var(--line);display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--muted);font-size:13px;gap:6px;background:#fff}
+.camera .lens{width:40px;height:40px;border-radius:20px;border:3px solid var(--muted)}
+.screen .photo svg{height:170px}
+.big-ok{width:64px;height:64px;border-radius:32px;background:var(--green);margin:24px auto 14px;position:relative}
+.big-ok::after{content:"";position:absolute;left:24px;top:14px;width:14px;height:26px;border:solid #fff;border-width:0 4px 4px 0;transform:rotate(45deg)}
+.signed{display:flex;flex-direction:column;gap:8px}
+.signed button{text-align:left;border:1.5px solid var(--line);background:#fff;border-radius:12px;padding:10px 12px;font-size:14px;cursor:pointer}
+.signed button b{display:block;font-family:'Fraunces',Georgia,serif;font-size:16px}
+.signed button small{color:var(--muted)}
+.drive-side h3{font-family:'Fraunces',Georgia,serif;font-size:24px;line-height:1.15;margin-bottom:8px}
+.drive-side p{color:var(--ink-2);font-size:15px;margin-bottom:10px}
+.steps{list-style:none;font-size:14px;color:var(--ink-2)}
+.steps li{padding:7px 0;border-bottom:1px solid #EEE8D8;display:flex;gap:10px}
+.steps li span{width:22px;height:22px;border-radius:11px;background:#F1EAD6;font-weight:700;font-size:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.steps li.on span{background:var(--ink);color:var(--cream)}
+.steps li.done span{background:var(--green);color:#fff}
+.toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%) translateY(120px);background:var(--ink);color:var(--cream);padding:12px 18px;border-radius:12px;font-size:14px;max-width:92vw;box-shadow:0 8px 24px rgba(0,0,0,.2);transition:transform .35s,opacity .35s;z-index:60;opacity:0;visibility:hidden}
+.toast.on{transform:translateX(-50%) translateY(0);opacity:1;visibility:visible}
+.toast b{color:var(--gold)}
+.foot{text-align:center;font-size:13px;color:var(--muted);margin-top:34px}
+.foot a{color:var(--muted);margin:0 10px;text-decoration:none}
+</style>
+<script>window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };</script>
+<script defer src="/_vercel/insights/script.js"></script>
+</head>
+<body>
+<header class="top"><div class="top-in">
+  <img src="sendingthx-logo-224.png" alt="">
+  <span class="brand">SendingThx</span>
+  <span class="tag">For 1-800-Flowers.com</span>
+</div></header>
+<div class="demo-band"><div class="in">
+  <span>Interactive demo with sample orders. Nothing you click here sends a real text.</span>
+  <button type="button" id="reset">Reset demo</button>
+</div></div>
+
+<main class="wrap">
+  <section class="hero">
+    <h1>Click through a florist's day.</h1>
+    <p>Deliver an order as the driver and watch it update live on the florist's dashboard, then look it up the way a customer service agent would.</p>
+  </section>
+
+  <nav class="tabs" role="tablist" aria-label="Demo views">
+    <button class="tab" role="tab" id="t-florist" aria-controls="p-florist" aria-selected="true"><span class="n">1</span><span><b>Florist dashboard</b><small>Today's orders and drivers</small></span></button>
+    <button class="tab" role="tab" id="t-support" aria-controls="p-support" aria-selected="false"><span class="n">2</span><span><b>Customer service lookup</b><small>Any order, in seconds</small></span></button>
+  </nav>
+
+  <!-- Florist -->
+  <section class="panel on" id="p-florist" role="tabpanel" aria-labelledby="t-florist">
+    <div class="hint"><span class="ic">!</span><span><b>Try it:</b> tap <b>Deliver</b> on an order to play the driver. Tap any row to see its full history.</span></div>
+    <div class="browser"><div class="bar"><i></i><i></i><i></i><span>sendingthx.com/florist · Bloom &amp; Stem Florist</span></div>
+      <div class="in">
+        <div class="shop-h"><h2>Bloom &amp; Stem Florist</h2><small id="today"></small></div>
+        <div class="fl-side">
+          <div>
+            <div class="stats">
+              <div class="stat"><b id="stTotal">0</b><span>Orders today</span></div>
+              <div class="stat s-del"><b id="stDel">0</b><span>Delivered</span></div>
+              <div class="stat s-wait"><b id="stLeft">0</b><span>Left to deliver</span></div>
+              <div class="stat s-thx"><b id="stThx">0</b><span>Thanked</span></div>
+            </div>
+            <div class="filters" role="group" aria-label="Filter orders">
+              <button type="button" data-f="todo" aria-pressed="false">Out for delivery</button>
+              <button type="button" data-f="done" aria-pressed="false">Delivered</button>
+              <button type="button" data-f="all" aria-pressed="true">All</button>
+            </div>
+            <div class="tbl-wrap"><table>
+              <thead><tr><th>Order</th><th>Recipient</th><th>Item</th><th>Driver</th><th>Status</th><th></th></tr></thead>
+              <tbody id="rows"></tbody>
+            </table></div>
+          </div>
+          <div class="box">
+            <div class="label">Drivers</div>
+            <div id="drivers"></div>
+            <form class="addf" id="addDriver" autocomplete="off">
+              <input id="dName" placeholder="Driver name" maxlength="24" required>
+              <input id="dPhone" placeholder="Mobile number" inputmode="tel" maxlength="20" required>
+              <button type="submit">Add driver</button>
+            </form>
+            <p class="note">The shop adds each driver once. Drivers sign in on a website with a texted code. Nothing to download, and they never see customer phone numbers.</p>
+          </div>
+        </div>
+      </div></div>
+    <div class="callout"><b>For the florist:</b> no extra work per order. Delivery times, photos and thank-yous fill in the moment the driver taps Delivered, with no end-of-day batch.</div>
+  </section>
+
+  <!-- Support -->
+  <section class="panel" id="p-support" role="tabpanel" aria-labelledby="t-support">
+    <div class="hint"><span class="ic">!</span><span><b>Try it:</b> search an order number or a sender or recipient name. Orders you deliver on the florist dashboard show up here right away.</span></div>
+    <div class="browser"><div class="bar"><i></i><i></i><i></i><span>1-800-Flowers customer service · Delivery lookup (powered by SendingThx)</span></div>
+      <div class="in">
+        <form class="search" id="csForm" autocomplete="off">
+          <input id="q" placeholder="Order #, sender or recipient name" aria-label="Search orders">
+          <button type="submit">Look up</button>
+        </form>
+        <div class="try" id="tryChips"><span>Try:</span></div>
+        <div id="matches"></div>
+        <div id="csResult"><div class="cs-empty">Search for an order to see its delivery timeline, photo and texts.</div></div>
+      </div></div>
+    <div class="callout"><b>For customer service:</b> "Was it delivered?" becomes a ten-second lookup with photo proof, without a call to the florist.</div>
+  </section>
+
+  <p class="foot">Sample data for illustration. © 2026 SendingThx LLC · <a href="delivery-walkthrough">Walkthrough</a><a href="delivery-demo">Live demo with real texts</a><a href="privacy">Privacy</a></p>
+</main>
+
+<!-- Order detail -->
+<div class="modal" id="mDetail" role="dialog" aria-modal="true" aria-label="Order details">
+  <div class="sheet"><button class="x" type="button" data-close aria-label="Close">×</button><div id="detailBody"></div></div>
+</div>
+
+<!-- Driver simulation -->
+<div class="modal" id="mDrive" role="dialog" aria-modal="true" aria-label="Driver view">
+  <div class="sheet"><button class="x" type="button" data-close aria-label="Close">×</button>
+    <div class="drive-wrap">
+      <div><div class="phone"><div class="screen">
+        <div class="sb"><span id="clk"></span><span>●●●</span></div>
+        <div class="hd"><b>Bloom &amp; Stem Florist</b><small id="signedAs">sendingthx.com/driver</small></div>
+        <div class="bd" id="phoneBody"></div>
+      </div></div></div>
+      <div class="drive-side">
+        <h3>You're the driver.</h3>
+        <p>This is what the driver sees on their own phone, in a normal web browser.</p>
+        <ol class="steps" id="steps">
+          <li data-s="1"><span>1</span>Signed in with a texted code</li>
+          <li data-s="2"><span>2</span>Snap the photo at the door (required)</li>
+          <li data-s="3"><span>3</span>Tap Mark delivered: texts go out right away</li>
+        </ol>
+        <p class="note" style="margin-top:12px">In the demo no texts are sent. To get the real texts on your own phone, try the <a href="delivery-demo" style="color:var(--gold-dark)">live demo</a>.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(function(){
+  const $ = (id) => document.getElementById(id);
+  const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const first = (n) => n.split(' ')[0];
+
+  // ---- Photos (simple illustrated arrangements) ----
+  const KINDS = {
+    roses:{p:['#B3202E','#C42535','#9E1B28'],c:'#7E1420',v:'#F7F3EA'},
+    pink:{p:['#E07A9A','#EB93AE','#D1668A'],c:'#B44D70',v:'#F7F3EA'},
+    sunflowers:{p:['#F2B705','#F5C426','#E3A500'],c:'#6B3E12',v:'#8FB3C9'},
+    tulips:{p:['#E8553A','#F28C38','#F6C343'],c:'#B83A22',v:'#F7F3EA'},
+    orchid:{p:['#F3E6F7','#E7CDEF','#F7EEF9'],c:'#9B4FB2',v:'#E9DDCB',plant:true},
+    lilies:{p:['#FBFAF5','#F2EFE4','#FFFFFF'],c:'#D9A441',v:'#C9D6DF'},
+    mix:{p:['#E8553A','#F6C343','#C77DDB','#E07A9A'],c:'#6B3E12',v:'#F7F3EA'}
+  };
+  function photo(kind){
+    const k = KINDS[kind] || KINDS.roses;
+    const pts = [[66,40],[92,38],[79,28],[58,54],[100,53],[80,50],[70,62],[90,62]];
+    const blooms = pts.map(([x,y],i)=>`<circle cx="${x}" cy="${y}" r="${i<3?11:9.5}" fill="${k.p[i%k.p.length]}" stroke="rgba(0,0,0,.08)"/><circle cx="${x}" cy="${y}" r="3.6" fill="${k.c}" opacity=".7"/>`).join('');
+    const vase = k.plant ? `<path d="M62 118 L66 84 L94 84 L98 118 Z" fill="#B77A4E"/><rect x="60" y="80" width="40" height="7" rx="2" fill="#A06A42"/>` : `<path d="M58 118 L66 70 L94 70 L102 118 Z" fill="${k.v}" stroke="#D9CFB8"/>`;
+    return `<svg viewBox="0 0 160 120" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Delivery photo"><rect width="160" height="120" fill="#EDE4CF"/><rect x="118" y="10" width="34" height="76" fill="#D8CBAE"/><rect y="86" width="160" height="34" fill="#C9B48E"/>${vase}<g fill="#4E7A44"><ellipse cx="54" cy="60" rx="12" ry="6" transform="rotate(-30 54 60)"/><ellipse cx="106" cy="60" rx="12" ry="6" transform="rotate(30 106 60)"/><ellipse cx="80" cy="70" rx="16" ry="6"/></g>${blooms}</svg>`;
+  }
+
+  // ---- Sample data ----
+  const SEED = {
+    drivers:[{name:'Marcus',phone:'(631) 555-0190',on:true},{name:'Tasha',phone:'(631) 555-0144',on:true},{name:'Leo',phone:'(631) 555-0117',on:false}],
+    orders:[
+      {id:'1800-48213',rec:'Sam Lee',street:'214 Elm St',item:'Dozen Red Roses',say:'dozen red roses',sender:'Dana Whitfield',kind:'roses',mode:'text',placed:'9:12 AM',driver:'Marcus',at:'2:14 PM',thx:'2:21 PM'},
+      {id:'1800-48207',rec:'Maria Gomez',street:'9 Bay Ave',item:'Sunflower Bouquet',say:'sunflower bouquet',sender:'Chris Gomez',kind:'sunflowers',mode:'text',placed:'8:47 AM',driver:'Marcus',at:'1:48 PM'},
+      {id:'1800-48199',rec:'Ruth Klein',street:'55 Park Pl',item:'Get Well Tulips',say:'get well tulips',sender:'Aaron Klein',kind:'tulips',mode:'text',placed:'8:31 AM',driver:'Tasha',at:'1:02 PM',thx:'1:09 PM'},
+      {id:'1800-48188',rec:'Joy Okafor',street:'120 Main St',item:'Orchid Plant',say:'orchid plant',sender:'Femi Okafor',kind:'orchid',mode:'forward',placed:'8:15 AM',driver:'Tasha',at:'12:20 PM',fwd:'12:22 PM'},
+      {id:'1800-48180',rec:'Linda Park',street:'7 Ridge Rd',item:'Birthday Mix',say:'birthday flowers',sender:'Grace Park',kind:'mix',mode:'text',placed:'8:05 AM',driver:'Marcus',at:'11:41 AM',thx:'11:50 AM'},
+      {id:'1800-48221',rec:'Tom Reyes',street:'31 Shore Dr',item:'Pink Roses',say:'pink roses',sender:'Elena Reyes',kind:'pink',mode:'text',placed:'9:40 AM'},
+      {id:'1800-48224',rec:'Ava Chen',street:'88 Oak Ln',item:'Sympathy Lilies',say:'sympathy lilies',sender:'Mark Chen',kind:'lilies',mode:'forward',placed:'10:05 AM'},
+      {id:'1800-48230',rec:'Ben Ortiz',street:'16 Mill St',item:'Anniversary Roses',say:'anniversary roses',sender:'Nina Ortiz',kind:'roses',mode:'text',placed:'10:30 AM'}
+    ]
+  };
+  let S, filter = 'all', timers = [];
+  const reset = () => { timers.forEach(clearTimeout); timers = []; S = JSON.parse(JSON.stringify(SEED)); };
+  reset();
+
+  const nowStr = () => new Date().toLocaleTimeString([], {hour:'numeric', minute:'2-digit'});
+  $('today').textContent = 'Today · ' + new Date().toLocaleDateString([], {weekday:'long', month:'short', day:'numeric'});
+  const find = (id) => S.orders.find((o) => o.id === id);
+
+  function statusPill(o){
+    if (!o.at) return '<span class="pill wait">Out for delivery</span>';
+    if (o.thx) return `<span class="pill thx">Delivered ${o.at} · Thanked</span>`;
+    if (o.fwd) return `<span class="pill fwd">Delivered ${o.at} · Sender shared it</span>`;
+    return `<span class="pill del">Delivered ${o.at}</span>`;
+  }
+
+  // ---- Florist dashboard ----
+  function render(flashId){
+    const del = S.orders.filter((o) => o.at);
+    $('stTotal').textContent = S.orders.length;
+    $('stDel').textContent = del.length;
+    $('stLeft').textContent = S.orders.length - del.length;
+    $('stThx').textContent = S.orders.filter((o) => o.thx).length;
+    const list = S.orders.filter((o) => filter === 'all' || (filter === 'todo' ? !o.at : !!o.at))
+      .sort((a, b) => (!!a.at - !!b.at));
+    $('rows').innerHTML = list.length ? list.map((o) => `
+      <tr data-id="${o.id}" class="${o.id === flashId ? 'flash' : ''}">
+        <td><b>${o.id}</b></td><td><b>${esc(o.rec)}</b><br><small style="color:var(--muted)">${esc(o.street)}</small></td><td>${esc(o.item)}</td>
+        <td>${o.driver ? esc(o.driver) : '<span style="color:var(--muted)">—</span>'}</td>
+        <td><span class="stw">${o.at ? `<span class="mini">${photo(o.kind)}</span>` : ''}${statusPill(o)}</span></td>
+        <td>${o.at ? '<button class="act ghost" data-view>View</button>' : '<button class="act" data-deliver>Deliver ›</button>'}</td>
+      </tr>`).join('') : '<tr class="empty"><td colspan="6">Nothing here. Every order is delivered.</td></tr>';
+    renderDrivers();
+  }
+  function renderDrivers(){
+    $('drivers').innerHTML = S.drivers.map((d, i) => {
+      const n = S.orders.filter((o) => o.driver === d.name).length;
+      return `<div class="drv"><span>${d.on ? '<span class="dot-g"></span>' : ''}<b>${esc(d.name)}</b><small>${d.on ? `Signed in · ${n} delivered today` : 'Not signed in today'}</small></span><button type="button" data-rm="${i}">Remove</button></div>`;
+    }).join('') || '<p class="note">No drivers yet. Add one below.</p>';
+  }
+  document.querySelectorAll('.filters button').forEach((b) => b.addEventListener('click', () => {
+    filter = b.dataset.f;
+    document.querySelectorAll('.filters button').forEach((x) => x.setAttribute('aria-pressed', x === b));
+    render();
+  }));
+  $('rows').addEventListener('click', (e) => {
+    const tr = e.target.closest('tr[data-id]'); if (!tr) return;
+    const o = find(tr.dataset.id);
+    if (e.target.closest('[data-deliver]')) return openDrive(o);
+    openDetail(o);
+  });
+  $('drivers').addEventListener('click', (e) => {
+    const b = e.target.closest('[data-rm]'); if (!b) return;
+    const d = S.drivers.splice(+b.dataset.rm, 1)[0];
+    renderDrivers(); toast(`<b>${esc(d.name)}</b> removed. Their sign-in stops working right away.`);
+  });
+  $('addDriver').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const name = $('dName').value.trim().slice(0, 24), phone = $('dPhone').value.trim();
+    if (!name || phone.replace(/\D/g, '').length < 10) { toast('Enter a name and a 10-digit mobile number.'); return; }
+    S.drivers.push({name, phone, on:true});
+    $('dName').value = ''; $('dPhone').value = '';
+    renderDrivers(); toast(`<b>${esc(name)}</b> added. They can sign in at sendingthx.com/driver with a texted code.`);
+  });
+
+  // ---- Shared order history ----
+  function timeline(o){
+    const R = first(o.rec), D = first(o.sender), items = [];
+    items.push(['', o.placed, 'Order placed', o.mode === 'forward'
+      ? `Text consent from ${o.sender} (sender) only. Recipient's number not needed.`
+      : `Text consent from ${o.sender} (sender) and for ${o.rec} (recipient)`]);
+    items.push(['', o.placed, 'Sent to Bloom & Stem Florist', 'Via BloomNet, as today. Order copy to SendingThx.']);
+    if (!o.at) { items.push(['w', 'Now', 'Out for delivery', 'The texts go out the moment the driver taps Delivered']); return items; }
+    items.push(['g', o.at, `Delivered by ${o.driver}`, 'Photo taken at the door']);
+    if (o.mode === 'forward') {
+      items.push(['g', o.at, `Delivery text sent to ${D} (sender)`, 'With the photo and a one-tap link to share the news with ' + R]);
+      if (o.fwd) items.push(['p', o.fwd, `${D} shared the delivered note with ${R}`, `Sent from ${D}'s own phone, so ${R} sees it from someone they know`]);
+    } else {
+      items.push(['g', o.at, `Delivery text sent to ${D} (sender)`, `"${o.rec}'s ${o.say} just arrived!" + photo`]);
+      items.push(['g', o.at, `Delivery text sent to ${R} (recipient)`, 'With a photo cropped to the flowers']);
+      if (o.thx) items.push(['b', o.thx, `${R} sent a thank-you to ${D}`, 'The message stays private and isn\'t shown here']);
+    }
+    return items;
+  }
+  function historyHTML(o){
+    const R = first(o.rec), D = first(o.sender);
+    const tl = timeline(o).map(([c, t, b, s]) => `<li class="${c}"><span class="t">${t}</span><span class="d"></span><span class="w"><b>${esc(b)}</b><span>${esc(s)}</span></span></li>`).join('');
+    let right;
+    if (!o.at) {
+      right = `<div class="label">Delivery photo</div><div class="photo none">Not delivered yet</div>
+        <p class="priv" style="margin-top:12px">Phone numbers: sender ••• ${o.mode === 'forward' ? '0148 · recipient not collected' : '0148 · recipient ••• 0172'}</p>`;
+    } else {
+      const senderText = o.mode === 'forward'
+        ? `SendingThx: ${o.rec}'s ${o.say} just arrived! Tap to send ${R} the delivered note from your phone: [link]`
+        : `SendingThx: ${o.rec}'s ${o.say} just arrived! We'll text you if they reply - no guarantee they will. One-time alert. Msg & data rates may apply. Help: support@sendingthx.com. Reply HELP for help, STOP to opt out.`;
+      const second = o.mode === 'forward'
+        ? (o.fwd ? `<div class="who">What ${esc(R)} got, from ${esc(D)}'s phone</div><div class="bubble me">${esc(`${o.sender} sent you ${o.say} - just delivered! Tap to see the photo and send a thank-you: [link]`)}</div>` : `<div class="who">Waiting on ${esc(D)}</div><p class="priv">${esc(D)} hasn't shared the note yet.</p>`)
+        : `<div class="who">Delivery text ${esc(R)} (recipient) got</div><div class="bubble">${esc(`${o.sender} sent ${R} ${o.say} - just delivered!\n\nReply to this text to thank ${D}. One-time msg sent at ${D}'s request. Reply STOP to opt out.\n\nOr tap to pick a quick reply or send a photo: [link]`)}</div>`;
+      right = `<div class="label">Delivery photo</div>
+        <div class="pair"><div><div class="photo">${photo(o.kind)}</div><p class="cap">Sender's copy</p></div><div><div class="photo crop">${photo(o.kind)}</div><p class="cap">Recipient's copy, cropped to the flowers, no house number</p></div></div>
+        <div class="who">Delivery text ${esc(D)} (sender) got</div><div class="bubble">${esc(senderText)}</div>${second}
+        <p class="priv">Thank-you messages between ${esc(R)} and ${esc(D)} stay private. Your team sees that a reply was sent and when, but not what it says.</p>`;
+    }
+    return `<div class="cs-grid"><div>
+      <div class="ohead"><div><b>#${o.id} · ${esc(o.item)}</b><small>${esc(o.sender)} (sender) → ${esc(o.rec)} (recipient) · ${esc(o.street)}, Huntington, NY</small><small>Florist: Bloom &amp; Stem · Driver: ${o.driver ? esc(o.driver) : 'not delivered yet'}${o.mode === 'forward' ? ' · Sender shares it from their phone' : ''}</small></div>${statusPill(o)}</div>
+      <ul class="tl">${tl}</ul></div><div>${right}</div></div>`;
+  }
+
+  // ---- Detail modal ----
+  function openDetail(o){
+    $('detailBody').innerHTML = historyHTML(o) + `<div style="display:flex;gap:10px;justify-content:flex-end;margin-top:14px;flex-wrap:wrap">${o.at ? '' : '<button class="act" id="dGo">Deliver as the driver ›</button>'}<button class="act ghost" id="dCs">Open in customer service ›</button></div>`;
+    open('mDetail');
+    const g = $('dGo'); if (g) g.onclick = () => { close('mDetail'); openDrive(o); };
+    $('dCs').onclick = () => { close('mDetail'); showTab('support'); $('q').value = o.id; lookup(o.id); };
+  }
+
+  // ---- Driver simulation ----
+  let cur = null, step = 0, driver = null, shot = false;
+  function setSteps(n){ document.querySelectorAll('#steps li').forEach((li) => { const s = +li.dataset.s; li.className = s < n ? 'done' : s === n ? 'on' : ''; }); }
+  function phone(){
+    $('clk').textContent = nowStr();
+    $('signedAs').textContent = driver ? `Signed in as ${driver}` : 'sendingthx.com/driver';
+    const b = $('phoneBody');
+    if (step === 1) {
+      const on = S.drivers.filter((d) => d.on);
+      b.innerHTML = `<h4>Who's driving?</h4><div class="sub">In real life the driver is already signed in on their own phone.</div><div class="signed">${on.map((d) => `<button type="button" data-d="${esc(d.name)}"><b>${esc(d.name)}</b><small>Signed in · ${esc(d.phone)}</small></button>`).join('') || '<p class="sub">Add a driver on the dashboard first.</p>'}</div>`;
+    } else if (step === 2) {
+      b.innerHTML = `<h4>Delivering to ${esc(cur.rec)} at ${esc(cur.street)}?</h4><div class="sub">${esc(cur.item)} · #${cur.id}</div>
+        ${shot ? `<div class="photo">${photo(cur.kind)}</div>` : '<div class="camera"><span class="lens"></span>Photo required</div>'}
+        ${shot ? '<button class="pbtn gold" id="pDone">Mark delivered</button><button class="pbtn ghost" id="pRe">Use a different photo</button>' : '<button class="pbtn dark" id="pShot">Take photo</button><button class="pbtn gold" disabled>Mark delivered</button>'}`;
+    } else {
+      b.innerHTML = `<div style="text-align:center"><div class="big-ok"></div><h4>Delivered</h4><div class="sub" style="font-size:13px">${cur.mode === 'forward' ? `${esc(first(cur.sender))} was texted just now, photo included, with a link to share it with ${esc(first(cur.rec))}.` : `${esc(first(cur.sender))} and ${esc(first(cur.rec))} were texted just now, photo included.`}</div>
+        <button class="pbtn dark" id="pBack">Back to the dashboard</button>${nextStop() ? `<button class="pbtn ghost" id="pNext">Next stop · ${esc(nextStop().rec)}</button>` : ''}</div>`;
+    }
+    setSteps(step);
+  }
+  const nextStop = () => S.orders.find((o) => !o.at && o !== cur);
+  function openDrive(o){
+    cur = o; shot = false;
+    step = driver && S.drivers.some((d) => d.on && d.name === driver) ? 2 : 1;
+    phone(); open('mDrive');
+  }
+  $('phoneBody').addEventListener('click', (e) => {
+    const d = e.target.closest('[data-d]');
+    if (d) { driver = d.dataset.d; step = 2; return phone(); }
+    const id = e.target.id;
+    if (id === 'pShot' || id === 'pRe') { shot = true; return phone(); }
+    if (id === 'pDone') return deliver();
+    if (id === 'pBack') { close('mDrive'); return; }
+    if (id === 'pNext') { const n = nextStop(); if (n) openDrive(n); }
+  });
+  function deliver(){
+    const o = cur;
+    o.at = nowStr(); o.driver = driver;
+    step = 3; phone(); render(o.id); refreshCS();
+    toast(o.mode === 'forward' ? `Delivered. <b>${esc(first(o.sender))}</b> got the photo and a link to share it.` : `Delivered. <b>${esc(first(o.sender))}</b> and <b>${esc(first(o.rec))}</b> were texted with the photo.`);
+    timers.push(setTimeout(() => {
+      if (o.mode === 'forward') { o.fwd = nowStr(); toast(`<b>${esc(first(o.sender))}</b> shared the delivered note with ${esc(first(o.rec))} from their own phone.`); }
+      else { o.thx = nowStr(); toast(`<b>${esc(first(o.rec))}</b> sent ${esc(first(o.sender))} a thank-you.`); }
+      render(o.id); refreshCS();
+    }, 7000));
+  }
+
+  // ---- Customer service ----
+  let csId = null;
+  const chips = ['1800-48213', 'Ava Chen', 'Femi Okafor'];
+  $('tryChips').insertAdjacentHTML('beforeend', chips.map((c) => `<button type="button" data-q="${c}">${c}</button>`).join(''));
+  $('tryChips').addEventListener('click', (e) => { const b = e.target.closest('[data-q]'); if (b) { $('q').value = b.dataset.q; lookup(b.dataset.q); } });
+  $('csForm').addEventListener('submit', (e) => { e.preventDefault(); lookup($('q').value); });
+  function lookup(q){
+    q = String(q || '').trim().toLowerCase().replace(/^#/, '');
+    const digits = q.replace(/\D/g, '');
+    const hits = q ? S.orders.filter((o) => o.id.includes(q) || (digits.length >= 4 && o.id.replace(/\D/g, '').includes(digits)) || o.rec.toLowerCase().includes(q) || o.sender.toLowerCase().includes(q)) : [];
+    $('matches').innerHTML = '';
+    if (!hits.length) { csId = null; $('csResult').innerHTML = `<div class="cs-empty">${q ? 'No order matches that. Try an order number like 1800-48213 or a name.' : 'Search for an order to see its delivery timeline, photo and texts.'}</div>`; return; }
+    if (hits.length > 1) {
+      $('matches').innerHTML = `<div class="matches">${hits.map((o) => `<button type="button" data-id="${o.id}"><span><b>#${o.id}</b> · ${esc(o.sender)} → ${esc(o.rec)}</span>${statusPill(o)}</button>`).join('')}</div>`;
+      $('csResult').innerHTML = ''; csId = null; return;
+    }
+    csId = hits[0].id; refreshCS();
+  }
+  $('matches').addEventListener('click', (e) => { const b = e.target.closest('[data-id]'); if (!b) return; $('matches').innerHTML = ''; $('q').value = b.dataset.id; csId = b.dataset.id; refreshCS(); });
+  function refreshCS(){ if (csId) $('csResult').innerHTML = historyHTML(find(csId)); }
+
+  // ---- Tabs, modals, toast ----
+  function showTab(name){
+    ['florist', 'support'].forEach((n) => { $('p-' + n).classList.toggle('on', n === name); $('t-' + n).setAttribute('aria-selected', n === name); });
+    try { history.replaceState(null, '', '#' + name); } catch (_) {}
+  }
+  $('t-florist').onclick = () => showTab('florist');
+  $('t-support').onclick = () => showTab('support');
+  function open(id){ $(id).classList.add('on'); document.body.style.overflow = 'hidden'; }
+  function close(id){ $(id).classList.remove('on'); if (!document.querySelector('.modal.on')) document.body.style.overflow = ''; }
+  document.querySelectorAll('.modal').forEach((m) => m.addEventListener('click', (e) => { if (e.target === m || e.target.closest('[data-close]')) close(m.id); }));
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') document.querySelectorAll('.modal.on').forEach((m) => close(m.id)); });
+  let tt; function toast(html){ const t = $('toast'); t.innerHTML = html; t.classList.add('on'); clearTimeout(tt); tt = setTimeout(() => t.classList.remove('on'), 4200); }
+  $('reset').onclick = () => { reset(); driver = null; csId = null; $('q').value = ''; $('matches').innerHTML = ''; lookup(''); render(); toast('Demo reset to this morning\'s orders.'); };
+
+  render();
+  const h = (location.hash || '').slice(1);
+  if (h === 'support') showTab('support');
+})();
+</script>
+</body>
+</html>
